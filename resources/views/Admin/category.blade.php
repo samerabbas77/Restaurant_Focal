@@ -97,7 +97,7 @@
 					<table id="example1" class="table key-buttons text-md-nowrap">
 						<thead>
 							<tr>
-								<th class="border-bottom-0">ID</th>
+								<th class="border-bottom-0">#N</th>
 								<th class="border-bottom-0">اسم التصنيف</th>
 								<th class="border-bottom-0">الأدوات</th>								
 							</tr>
@@ -176,11 +176,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-
-                    <form action="{{ route('categories.update',$category->id) }}" method="post" autocomplete="off">
+                    @if($categories->isEmpty())
+					    <P> No Category Found!</P>
+					@else	
+                    <form id="updateCategoryForm" method="post" autocomplete="off" enctype="multipart/form-data">
 					@method('PUT')
 					@csrf
 					<div class="form-group">
+						<input type="hidden" id="updateCategoryId" name="cat_id" value="">
 						<label for="exampleInputEmail1">اسم التصنيف</label>
 						<input type="text" class="form-control" id="name" name="name" value="{{ $category->name }}">
 					</div>
@@ -204,12 +207,12 @@
 				<h6 class="modal-title">Delete Company</h6><button aria-label="Close" class="close" data-dismiss="modal"
 					type="button"><span aria-hidden="true">&times;</span></button>
 			</div>
-			<form action="{{ route('categories.destroy',$category->id) }}" method="post">
+			<form id="deleteCategoryForm" method="post" autocomplete="off">
 				@method('DELETE')
 				@csrf
 				<div class="modal-body">
 					<p>Are you sure you want to delete?</p><br>
-					<input type="hidden" name="name" id="id" value="">
+					<input type="hidden" id="deleteCategoryId" name="cat_id" value="">
 					<input class="form-control" name="name" id="name" type="text" readonly>
 				</div>
 				<div class="modal-footer">
@@ -218,6 +221,7 @@
 				</div>
 		</div>
 		</form>
+		@endif
 	</div>
 </div>
 <!-- end delete model -->
@@ -278,4 +282,29 @@
     })
 
 </script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const modalLinks = document.querySelectorAll('.modal-effect');
+	
+		modalLinks.forEach(link => {
+			link.addEventListener('click', function (event) {
+				// Get the data-id value
+				const dataId = event.currentTarget.dataset.id;
+	
+				// Update Form
+				const updateForm = document.getElementById('updateCategoryForm');
+				const updateHiddenInput = document.getElementById('updateCategoryId');
+				updateHiddenInput.value = dataId;
+				updateForm.action = `{{ route('categories.update', '') }}/${dataId}`;
+	
+				// Delete Form
+				const deleteForm = document.getElementById('deleteCategoryForm');
+				const deleteHiddenInput = document.getElementById('deleteCategoryId');
+				deleteHiddenInput.value = dataId;
+				deleteForm.action = `{{ route('categories.destroy', '') }}/${dataId}`;
+			});
+		});
+	});
+	</script>
+
 @endsection
