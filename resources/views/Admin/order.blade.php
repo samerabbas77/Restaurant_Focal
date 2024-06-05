@@ -192,7 +192,7 @@
 
 
 
-
+@foreach($orders as $order)
 <!--start detils modal -->
 <div class="modal fade" id="detailsModal{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel{{$order->id}}" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -230,7 +230,7 @@
     </div>
 </div>
 <!--end detils modal -->
-
+@endforeach
 
 </div>
 <!-- edit modal -->
@@ -246,14 +246,14 @@
             </div>
             <div class="modal-body">
                 @if ($orders->isEmpty())
-                <p>no reservation data</p>
+                <p>No order data</p>
                 @else
                 <div class="modal-body">
                 <form id="updateOrderForm" method="post" autocomplete="off">
                     @csrf
 
                     <div class="form-group">
-                        <input type="hidden" id="updateOrderId" name="reservation_id" value="">
+                        <input type="hidden" id="updateOrderId" name="order_id" value="">
                         
                         <label for="table_id">رقم الطاولة</label>
                         <select id="table_id" name="table_id" class="form-control">
@@ -305,6 +305,7 @@
 
 
 <!-- delete model -->
+
 <!-- <div class="modal" id="modaldemo9">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content modal-content-demo">
@@ -328,6 +329,7 @@
 		@endif
 	</div>
 </div> -->
+
 <!-- end delete model -->
 
 

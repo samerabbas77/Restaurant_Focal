@@ -24,13 +24,7 @@ class CategoryController extends Controller
         }    
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    // public function create()
-    // {
-    //     return view('Admin.category');
-    // }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -44,7 +38,7 @@ class CategoryController extends Controller
            $category->name=$request->name;
            $category->save();
            session()->flash('Add','Add Susseccfully');
-           return redirect()->route('categories.store');
+           return redirect()->route('categories.index');
         } catch (\Throwable $th) {
             Log::error($th);
             return redirect()->back()->with('error', 'An error occurred');
@@ -55,26 +49,19 @@ class CategoryController extends Controller
      * Display the specified resource.
      */
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    // public function edit(Category $category)
-    // {
-    //     return view('Admin.category',compact('category'));
-    // }
+  
 
     /**
      * Update the specified resource in storage.
      */
     public function update(StoreCategoryRequest $request, Category $category)
     {
-        @dd($request);
         try{
            $request->validated();
            $category->name=$request->name;
            $category->save();
            session()->flash('edit','ُEdit Susseccfully');
-           return redirect()->route('categories.update');
+           return redirect()->route('categories.index');
         }catch (\Throwable $th) {
             Log::error($th);
             return redirect()->back()->with('error', 'An error occurred');
@@ -89,7 +76,7 @@ class CategoryController extends Controller
         try{
            $category->delete();
            session()->flash('delete','Delete Susseccfully');
-           return redirect()->route('categories.destroy') ;
+           return redirect()->route('categories.index') ;
         }catch (\Throwable $th) {
             Log::error($th);
             return redirect()->back()->with('error', 'An error occurred');

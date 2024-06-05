@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('Number')->unique();
             $table->integer('chair_number');
             $table->enum('Is_available', ['available','unavailable'])->default('available');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text("photo");
             $table->unsignedBigInteger("cat_id");
             $table->foreign("cat_id")->references('id')->on('categories')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
 }

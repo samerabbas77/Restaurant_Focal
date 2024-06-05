@@ -22,11 +22,13 @@ class DishController extends Controller
     {
         try {
             $dishes = Dish::all();
+            $deletedDishes = Dish::onlyTrashed()->get();
             $categories = Category::all();
-            return view('Admin.dishes', compact('dishes', 'categories'));
+            return view('Admin.dishes', compact('dishes', 'categories','deletedDishes'));
         } catch (\Exception $e) {
-            return redirect()->route('dishes.index')->with('error', 'Failed to load dishes: ' . $e->getMessage());
-        }
+            return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
+        }      
+
     }
 
     /**
@@ -71,7 +73,8 @@ class DishController extends Controller
                 
                 if ($dish->photo && file_exists(public_path('images') . '/' . $dish->photo)) {
                     unlink(public_path('images') . '/' . $dish->photo);
-                    File::delete(public_path('images/' . $dish->photo));
+                    //File::delete(public_path('images/' . $dish->photo));
+                    mkdir(public_path('images/Deleted'), 0755, true);
                 }
 
                 $dish->photo = $photoName;

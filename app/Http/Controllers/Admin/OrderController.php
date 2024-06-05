@@ -19,9 +19,10 @@ class OrderController extends Controller
             $tables = Table::all();
             $dishes = Dish::all();
             $users = User::all();
-            //dd($orders);
+
             return view('Admin.order',compact( 'orders','tables','dishes','users'));
         }catch (\Exception $e) {
+            
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }    
     }

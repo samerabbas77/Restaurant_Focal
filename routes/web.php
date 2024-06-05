@@ -44,13 +44,19 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
 
     Route::resource('/tables',TableController::class);
 
-    Route::resource('reservation',ReservationController::class);
-    Route::resource('client',ClientController::class);
+    Route::resource('/reservation',ReservationController::class);
+    Route::resource('/client',ClientController::class);
 
-    Route::resource('order', OrderController::class);
+    // Route::resource('order',OrderController::class);
 
-    
-    Route::resource('reviews',ReviewController::class);
+    // Route::resource('reviews',ReviewController::class);
+    Route::post('tables/{id}/restore', [TableController::class, 'restore'])->name('tables.restore');
+    Route::delete('tables/{id}/forceDelete', [TableController::class, 'forceDelete'])->name('tables.forceDelete');
+
+
+    Route::resource('/order', OrderController::class);
+ 
+    Route::resource('/reviews',ReviewController::class);
 
 });
 

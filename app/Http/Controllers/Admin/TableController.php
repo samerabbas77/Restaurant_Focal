@@ -7,6 +7,7 @@ use App\Models\Table;
 use Illuminate\Http\Request;
 use App\Http\Requests\TableRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateTableRequest;
 
 class TableController extends Controller
 {
@@ -15,15 +16,17 @@ class TableController extends Controller
      */
     public function index()
     {
-        try{ $tables = Table::all();
-        return view('Admin.tables', compact('tables'));}
+        try{
+            $tables = Table::all();
+            $trachedTables=Table::onlyTrashed()->get();
+        return view('Admin.tables', compact('tables','trachedTables'));}
         catch (Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }
 
     }
 
-    /**
+   /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -41,7 +44,7 @@ class TableController extends Controller
      */
     public function store(TableRequest $request)
     {
-        
+
         try
         {
         Table::create($request->validated());
@@ -54,39 +57,13 @@ class TableController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Table $table)
-    {
-        try{
-            return view('tables.show');
-        }
-        catch(Exception $e) {
-            return redirect()->back()->with('error', 'An error Show  ' . $e->getMessage());}
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit( $id)
-    {
-        try{
-        $table = Table::find($id);
-        session()->flash('edit','edit succsesfuly');
-        return view('tables.edit', compact('table'));
-        }
-        catch(Exception $e) {
-            return redirect()->back()->with('error', 'An error edit  ' . $e->getMessage());
-        }
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(TableRequest $request, Table $table)
+    public function update(UpdateTableRequest $request, Table $table)
     {
-      
+
         try {
             $table->update($request->validated());
             session()->flash('edit','edit succsesfuly');
@@ -109,6 +86,27 @@ class TableController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }
-        
+
     }
+        public function restore($id)
+    {    try {
+        $table = Table::withTrashed()->findOrFail($id);
+        $table->restore();
+
+        return redirect()->route('tables.index')->with('edit', 'Table restored successfully.');}
+    catch (Exception $e) {
+        return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
+    }
+    }
+    public function forceDelete($id)
+    {    try {
+        $table = Table::withTrashed()->findOrFail($id);
+        $table->forceDelete();
+
+        return redirect()->route('tables.index')->with('delete', 'Table permanently deleted.');}
+        catch (Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
+        }
+    }
+
 }
