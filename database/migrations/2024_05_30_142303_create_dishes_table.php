@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text("photo");
             $table->unsignedBigInteger("cat_id");
             $table->foreign("cat_id")->references('id')->on('categories')->onDelete('cascade');
-            $table->softDeletes(); // This adds the deleted_at column
             $table->timestamps();
         });
 }
@@ -30,6 +29,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('dishes');
-  
     }
 };

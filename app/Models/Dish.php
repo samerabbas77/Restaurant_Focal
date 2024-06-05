@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Dish extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable =[
-       'id',
        'name',
        'price',
        'descraption',
@@ -25,9 +23,9 @@ class Dish extends Model
         return  "app/public/images/". $this->photo; // Adjust this to your actual path logic
     }
 
-    public function oderers()
+    public function orders()
     {
-       return $this->belongsToMany(Order::class);
+        return $this->belongsToMany(Order::class, 'dish_order')->withPivot('quantity');
     }
  
     public function category()
