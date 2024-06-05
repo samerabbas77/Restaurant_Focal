@@ -101,13 +101,13 @@
 								<td> {{$table->Is_available}}</td>
 								<td>
 
-									<a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
-										data-id="{{$table->id}}"
-										data-table_number="{{$table->Number}}"
-										data-chair_number="{{$table->chair_number}}"
-										data-Is_available="{{$table->Is_available}}"
-										data-toggle="modal"
-										href="#exampleModal2" title="edit"><i class="las la-pen"></i></a>
+								<a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
+                                    data-id="{{ $table->id }}"
+                                    data-number="{{ $table->Number }}"
+                                    data-chair_number="{{ $table->chair_number }}"
+                                    data-is_available="{{ $table->Is_available }}"
+                                    data-toggle="modal"
+                                    href="#exampleModal2" title="edit"><i class="las la-pen"></i></a>
 
 									<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 										data-id="{{$table->id}}"
@@ -121,6 +121,44 @@
 					</table>
 				</div>
 			</div>
+            <div class="card-body">
+				<div class="table-responsive">
+                    <h3>الطاولات المحذوفة مؤقتا</h3>
+                    <table id="example2" class="table key-buttons text-md-nowrap">
+						<thead>
+							<tr>
+								<th class="border-bottom-0">ID</th>
+								<th class="border-bottom-0">رقم الطاولة</th>
+								<th class="border-bottom-0">عدد المقاعد</th>
+                                <th class="border-bottom-0">حالة الطاولة</th>
+								<th class="border-bottom-0">الأدوات</th>
+							</tr>
+						</thead>
+                        <tbody>
+                        @foreach($trachedTables as $table)
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{ $table->Number }}</td>
+                            <td>{{ $table->chair_number }}</td>
+                            <td>{{ $table->Is_available }}</td>
+                            <td>
+                                    <form action="{{ route('tables.restore', $table->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning">استعادة</button>
+                                    </form>
+                                    <form action="{{ route('tables.forceDelete', $table->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">حذف نهائي </button>
+                                    </form
+                            </td>
+                        </tr>
+                    @endforeach
+                	</tbody>
+					</table>
+
+            </div>
+            </div>
 		</div>
 		</div>
 		<!--/div-->
@@ -181,34 +219,34 @@
             </div>
             <div class="modal-body">
 				@if($tables->isEmpty())
-					<p> No Category Found!</p> 
+					<p> No Table Found!</p>
 				@else
-                <form action="{{ route('tables.update',$table->id) }}" method="post" autocomplete="off">
-                @method('PUT')
+                <form  method="post" autocomplete="off" id="updateTableForm" >
                 @csrf
+                @method('PUT')
                 <div class="form-group">
+
+                <input type="hidden" id="updateTableId" name="id" >
                     <label for="exampleInputEmail1">رقم الطاولة</label>
-                    <input type="number" class="form-control" id="" name="Number" value="{{$table->Number}}">
+                    <input type="number" class="form-control" id="number" name="Number" value="{{$table->Number}}">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">عدد الكراسي</label>
-                    <input type="number" class="form-control" id="" name="chair_number" value="{{$table->chair_number}}">
+                    <input type="number" class="form-control" id="chair_number" name="chair_number" value="{{$table->chair_number}}">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">حالة الطاولة</label>
-                    <select name="Is_available" class="form-control" required>
+                    <select name="Is_available" class="Is_available" id="updateIsAvailable" required>
                         <option value="available">available</option>
                         <option value="unavailable"> unavailable</option>
                     </select>
                 </div>
-
-
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">تعديل</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
             </div>
             </form>
-			
+
         </div>
     </div>
 </div>
@@ -224,13 +262,16 @@
 				<h6 class="modal-title"> Delete Table </h6><button aria-label="Close" class="close" data-dismiss="modal"
 					type="button"><span aria-hidden="true">&times;</span></button>
 			</div>
-			<form action="{{ route('tables.destroy',$table->id) }}" method="post">
+			<form  method="post" id="deleteTableForm">
+
 				@method('DELETE')
 				@csrf
 				<div class="modal-body">
 					<p>?Are you sure you want to delete</p><br>
-					<input type="hidden" name="id" id="id" value="">
-					<!-- <input class="form-control"   type="text" name="Number"   id="Number"  readonly> -->
+                    <input type="hidden" id="deleteTableId" name="id" autocomplete="off">
+
+					<input type="hidden" name="id" id="deleteTableId" autocomplete="off" >
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
@@ -271,31 +312,58 @@
 <script src="{{URL::asset('assets/js/table-data.js')}}"></script>
 <script src="{{URL::asset('assets/js/modal.js')}}"></script>
 <script>
-    $('#exampleModal2').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('id')
-        var Number = button.data('Number')
-        var chair_number = button.data('chair_number')
-        var Is_available = button.data('Is_available')
+  $('#exampleModal2').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget);
+    var id = button.data('id');
+    var number = button.data('number');
+    var chair_number = button.data('chair_number');
+    var is_available = button.data('is_available');
 
-        var modal = $(this)
-        modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #Number').val(Number);
-        modal.find('.modal-body #chair_number').val(chair_number);
-        modal.find('.modal-body #Is_available').val(Is_available);
-
-    })
+    var modal = $(this);
+    modal.find('.modal-body #updateTableId').val(id);
+    modal.find('.modal-body #number').val(number);
+    modal.find('.modal-body #chair_number').val(chair_number);
+    modal.find('.modal-body #is_available').val(is_available);
+});
 
 </script>
+
 
 <script>
     $('#modaldemo9').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)
         var id = button.data('id')
-        var Number = button.data('Number')
         var modal = $(this)
         modal.find('.modal-body #id').val(id);
     })
 
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	const modalLinks = document.querySelectorAll('.modal-effect');
+
+	modalLinks.forEach(link => {
+		link.addEventListener('click', function (event) {
+			// Get the data-id value
+			const dataId = event.currentTarget.dataset.id;
+
+			// Update Form
+			const updateForm = document.getElementById('updateTableForm');
+			const updateHiddenInput = document.getElementById('updateTableId');
+			updateHiddenInput.value = dataId;
+			updateForm.action = `{{ route('tables.update', '') }}/${dataId}`;
+
+			// Delete Form
+			const deleteForm = document.getElementById('deleteTableForm');
+			const deleteHiddenInput = document.getElementById('deleteTableId');
+			deleteHiddenInput.value = dataId;
+			deleteForm.action = `{{ route('tables.destroy', '') }}/${dataId}`;
+		});
+	});
+});
+
+</script>
+
+
+
 @endsection
