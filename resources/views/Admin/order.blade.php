@@ -109,11 +109,11 @@
                                     <a class="modal-effect btn btn-sm btn-info" href="{{ route('order.edit', $order->id) }}" class="btn btn-primary" title="edit"><i class="las la-pen"></i></a>
 								
                                     <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
-                                        data-id="{{ $order->id }}" 
-                                        data-toggle="modal" href="#modaldemo9" title="delete">
-                                        <i class="las la-trash"></i></a>
+										   data-id="{{$order->id}}" 
+										   data-toggle="modal" href="#modaldemo9" title="delete"><i
+										   class="las la-trash"></i></a>
 
-                                        <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
+                                    <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
                                         data-id="{{$order->id}}"
                                         data-toggle="modal"
                                         data-target="#detailsModal{{$order->id}}" 
@@ -234,7 +234,7 @@
 
 </div>
 <!-- edit modal -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -299,37 +299,35 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->
 <!-- end edit model -->
 
 
 
 <!-- delete model -->
-<div class="modal" id="modaldemo9">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content modal-content-demo">
-            <div class="modal-header">
-                <h6 class="modal-title">حذف الطلب</h6>
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="deleteOrderForm" method="post" autocomplete="off">
-                @csrf
-                @method('DELETE')
-                <div class="modal-body">
-                    <p>Are you sure you want to delete?</p><br>
-                    <input type="hidden" id="deleteOrderId" name="reservation_id" value="">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-danger">حذف</button>
-                </div>
-            </form>
-            @endif
-        </div>
-    </div>
-</div>
+<!-- <div class="modal" id="modaldemo9">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content modal-content-demo">
+			<div class="modal-header">
+				<h6 class="modal-title">حذف الطلب</h6><button aria-label="Close" class="close" data-dismiss="modal"
+					type="button"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<form id="deleteOrderForm" method="post" autocomplete="off" autocomplete="off">
+				@method('DELETE')
+				@csrf
+				<div class="modal-body">
+					<p>Are you sure you want to delete?</p><br>
+					<input type="hidden" id="deleteOrderId" name="Order_id" value="">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+					<button type="submit" class="btn btn-danger">حذف</button>
+				</div>
+		</div>
+		</form>
+		@endif
+	</div>
+</div> -->
 <!-- end delete model -->
 
 
@@ -399,6 +397,9 @@
     })
 
 </script>
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const modalLinks = document.querySelectorAll('.modal-effect');
@@ -413,13 +414,15 @@
 				updateForm.action = `{{ route('order.update', '') }}/${dataId}`;
 
                 const deleteForm = document.getElementById('deleteOrderForm');
-                const deleteHiddenInput = document.getElementById('deleteOrderId');
-                deleteHiddenInput.value = dataId;
-                deleteForm.action = `{{ route('order.destroy', '') }}/${dataId}`;
+				const deleteHiddenInput = document.getElementById('deleteOrderId');
+				deleteHiddenInput.value = dataId;
+				deleteForm.action = `{{ route('order.destroy', '') }}/${dataId}`;
             });
         });
     });
 </script>
+
+
 
 
 
