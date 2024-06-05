@@ -15,6 +15,7 @@ class ReservationController extends Controller
     {
         try{
             $reservations = reservation::all();
+            //dd($reservations);
             $users = User::all();
             $tables = Table::all();
             return view('Admin.reservation',compact('reservations' , 'users' , 'tables'));
