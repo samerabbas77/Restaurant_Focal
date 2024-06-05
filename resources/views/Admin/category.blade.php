@@ -33,6 +33,18 @@
     </div>
 @endif
 
+ <!-- Display session errors -->
+@if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{ session('error') }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+    
+
+<!-- Display session errors ends -->
 @if (session()->has('Add'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>{{ session()->get('Add') }}</strong>
@@ -42,14 +54,14 @@
     </div>
 @endif
 
-@if (session()->has('delete'))
+{{-- @if (session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>{{ session()->get('delete') }}</strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-@endif
+@endif --}}
 
 @if (session()->has('edit'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -221,6 +233,9 @@
 		</div>
 		<!-- main-content closed -->
 @endsection
+
+
+
 @section('js')
 <!-- Internal Data tables -->
 <script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>

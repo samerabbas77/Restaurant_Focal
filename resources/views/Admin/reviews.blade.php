@@ -8,13 +8,12 @@
 <link href="{{URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css')}}" rel="stylesheet">
 <link href="{{URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
 @endsection
-
 @section('page-header')
 				<!-- breadcrumb -->
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto"></h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/إضافة زبون</span>
+							<h4 class="content-title mb-0 my-auto">التقييمات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/إدارة التقييمات</span>
 						</div>
 					</div>
 				</div>
@@ -35,15 +34,6 @@
     </div>
 @endif
 
-@if (session()->has('Add'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>{{ session()->get('Add') }}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
-
 @if (session()->has('delete'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>{{ session()->get('delete') }}</strong>
@@ -53,14 +43,6 @@
     </div>
 @endif
 
-@if (session()->has('edit'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>{{ session()->get('edit') }}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
 <!-- validation  end -->
 
 
@@ -71,14 +53,13 @@
 		<div class="card mg-b-20">
 			<div class="card-header pb-0">
 				<div class="d-flex justify-content-between">
-					<h4 class="card-title mg-b-0">جدول الزبائن</h4>
+					<h4 class="card-title mg-b-0">جدول التقييمات</h4>
 					<i class="mdi mdi-dots-horizontal text-gray"></i>
 				</div>
 			</div>
 			<div class="col-sm-4 col-md-4">
-		
-			<div class="card-body">
-				<a class="btn ripple btn-warning" data-target="#modaldemo6" data-toggle="modal" href="">إضافة زبون جديد</a>
+            
+            <div class="card-body">
 				</div>
 			</div>
 		
@@ -87,72 +68,73 @@
 					<table id="example1" class="table key-buttons text-md-nowrap">
 						<thead>
 							<tr>
-								<th class="border-bottom-0">ID</th>
-								<th class="border-bottom-0">اسم الزبون</th>
-								<th class="border-bottom-0">ايميل الزبون</th>								
+								<th class="border-bottom-0">#N</th>
+								<th class="border-bottom-0">التقييم</th>
+								<th class="border-bottom-0">الزبون</th>								
+								<th class="border-bottom-0">التعليق</th>															
+								<th class="border-bottom-0">الأدوات</th>								
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($users as $user)
-							  <tr>
-								    <td>{{$loop->iteration}}</td>
-								    <td>{{$user->name}}</td>
-								    <td>{{$user->email}}</td>
-								    <td> 
-								    </td>									
-							  </tr>
-				            @endforeach
+							@foreach($reviews as $review)					
+							<tr>
+								<td>{{$loop->iteration}}</td>
+								<td>{{$review->service_rating}}</td>
+								<td>{{$review->user->name}}</td>
+								<td>{{$review->comments}}</td>
+								<td>
+                                    
+									<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
+										data-id="{{$review->id}}" 
+										data-name="{{$review->service_rating}}" 
+										data-toggle="modal"
+										 href="#modaldemo9" title="Delete"><i
+											class="las la-trash"></i></a>
+                                      
+								</td>									
+							</tr>
+							@endforeach
 						</tbody>
-					</table>
+					</table>	
 				</div>
 			</div>
 		</div>
 		</div>
-		<!--/div-->
+		</div>
 </div>
 <!-- /row -->
-
-<!-- Add modal -->
-		<div class="modal" id="modaldemo6">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content modal-content-demo">
-					<div class="modal-header">
-						<h6 class="modal-title">إضافة زبون جديد</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-					</div>
-					<div class="modal-body">
-						<form action="{{route('client.store')}}" method="post">
-							@method('POST')
-							@csrf 
-							<div class="form-group">
-
-							<div class="form-group">
-								<label for="exampleInputEmail1">اسم الزبون</label>
-								<input type="text" class="form-control" id="name" name="name">
-							</div>
-							
-							<div class="form-group">
-								<label for="exampleInputEmail1">ايميل الزبون</label>
-								<input type="email" class="form-control" id="email" name="email">
-							</div>
-
-							<div class="form-group">
-								<label for="exampleInputEmail1">كلمة السر</label>
-								<input type="password" class="form-control" id="password" name="password">
-							</div>
-
-							<div class="modal-footer">
-								<button type="submit" class="btn btn-success" >إضافة</button>
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
-							</div>
-						</form>						
-					</div>
-				</div>
-			</div>
-		</div>
-<!--End Add modal -->
-
-
 </div>
+
+<!-- delete model -->
+<div class="modal" id="modaldemo9">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content modal-content-demo">
+			<div class="modal-header">
+				<h6 class="modal-title">حذف التقييم</h6><button aria-label="Close" class="close" data-dismiss="modal"
+					type="button"><span aria-hidden="true">&times;</span></button>
+			</div>
+			@if ($reviews->isEmpty())
+					<p>no reservation data</p>
+			@else
+			<form id="deleteReviewForm" method="post" autocomplete="off">
+				@method('DELETE')
+				@csrf
+				<div class="modal-body">
+					<p>Are you sure you want to delete?</p><br>
+					<input type="hidden" id="deleteReviewId" name="review_id" value="">				
+					<input class="form-control" name="name" id="name" type="text" readonly>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
+					<button type="submit" class="btn btn-danger">Delete</button>
+				</div>
+				</div>
+			</form>
+			@endif
+		</div>
+	</div>
+
+<!-- end delete model -->
 
 				</div>
 				<!-- row closed -->
@@ -161,7 +143,6 @@
 		</div>
 		<!-- main-content closed -->
 @endsection
-
 @section('js')
 <!-- Internal Data tables -->
 <script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
@@ -183,4 +164,22 @@
 <!--Internal  Datatable js -->
 <script src="{{URL::asset('assets/js/table-data.js')}}"></script>
 <script src="{{URL::asset('assets/js/modal.js')}}"></script>
-@endsection
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const modalLinks = document.querySelectorAll('.modal-effect');
+	
+		modalLinks.forEach(link => {
+			link.addEventListener('click', function (event) {
+				// Get the data-id value
+				const dataId = event.currentTarget.dataset.id;
+		
+				// Delete Form
+				const deleteForm = document.getElementById('deleteReviewForm');
+				const deleteHiddenInput = document.getElementById('deleteReviewId');
+				deleteHiddenInput.value = dataId;
+				deleteForm.action = `{{ route('reviews.destroy', '') }}/${dataId}`;
+			});
+		});
+	});
+</script>
+@endsection  

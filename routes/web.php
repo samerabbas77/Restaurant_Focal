@@ -8,8 +8,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\DishController;
 
 
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ReservationController;
 
@@ -42,8 +44,8 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
 
     Route::resource('/tables',TableController::class);
 
-    Route::resource('reservation',ReservationController::class);
-    Route::resource('client',ClientController::class);
+    Route::resource('/reservation',ReservationController::class);
+    Route::resource('/client',ClientController::class);
 
     // Route::resource('order',OrderController::class);
 
@@ -52,6 +54,9 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
     Route::delete('tables/{id}/forceDelete', [TableController::class, 'forceDelete'])->name('tables.forceDelete');
 
 
+    Route::resource('/order', OrderController::class);
+ 
+    Route::resource('/reviews',ReviewController::class);
 
 });
 

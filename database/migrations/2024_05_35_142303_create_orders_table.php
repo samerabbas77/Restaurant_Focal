@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orderes', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string("status");
             $table->foreignId("user_id")->constrained('users')->onDelete('cascade');
             $table->unsignedBigInteger("table_id");
             $table->integer("total_price");
-            $table->softDeletes(); // This adds the deleted_at column
             $table->timestamps();
         });
     }
@@ -28,6 +27,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('orderies');
-        
     }
 };
