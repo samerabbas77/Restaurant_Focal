@@ -270,7 +270,8 @@
 				@csrf
 				<div class="modal-body">
 					<p>Are you sure you want to delete?</p><br>
-					<input type="hidden" id="deleteDishId" name="dish_id" value="">					<input class="form-control" name="name" id="name" type="text" readonly>
+					<input type="hidden" id="deleteDishId" name="dish_id" value="">				
+					<input class="form-control" name="name" id="name" type="text" readonly>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>

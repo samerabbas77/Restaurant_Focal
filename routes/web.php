@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
 
 });
 
+Route::post('tables/{id}/restore', [TableController::class, 'restore'])->name('tables.restore');
+Route::delete('tables/{id}/forceDelete', [TableController::class, 'forceDelete'])->name('tables.forceDelete');
 
 
 
