@@ -305,6 +305,7 @@
 
 
 <!-- delete model -->
+
 <!-- <div class="modal" id="modaldemo9">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content modal-content-demo">
@@ -328,6 +329,7 @@
 		@endif
 	</div>
 </div> -->
+
 <!-- end delete model -->
 
 
