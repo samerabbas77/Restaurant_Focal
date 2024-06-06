@@ -20,24 +20,12 @@ class TableController extends Controller
             $tables = Table::all();
             $trachedTables=Table::onlyTrashed()->get();
         return view('Admin.tables', compact('tables','trachedTables'));}
-        catch (Exception $e) {
+        catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }
 
     }
 
-   /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        try{
-            return view('tables.create');
-        }
-        catch(Exception $e) {
-            return redirect()->back()->with('error', 'An error created  ' . $e->getMessage());}
-
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -51,7 +39,7 @@ class TableController extends Controller
         session()->flash('Add','Add succsesfuly');
         return redirect()->route('tables.index');
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
         return redirect()->back()->with('error', 'Failed to create table: ' . $e->getMessage());
     }
 
@@ -68,7 +56,7 @@ class TableController extends Controller
             $table->update($request->validated());
             session()->flash('edit','edit succsesfuly');
             return redirect()->route('tables.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to update table: ' . $e->getMessage());
         }
 
@@ -83,7 +71,7 @@ class TableController extends Controller
             $table->delete();
             session()->flash('delete','delete succsesfuly');
             return redirect()->route('tables.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }
 
@@ -94,7 +82,7 @@ class TableController extends Controller
         $table->restore();
 
         return redirect()->route('tables.index')->with('edit', 'Table restored successfully.');}
-    catch (Exception $e) {
+    catch (\Exception $e) {
         return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
     }
     }
@@ -104,7 +92,7 @@ class TableController extends Controller
         $table->forceDelete();
 
         return redirect()->route('tables.index')->with('delete', 'Table permanently deleted.');}
-        catch (Exception $e) {
+        catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }
     }
