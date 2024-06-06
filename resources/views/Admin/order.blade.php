@@ -106,12 +106,14 @@
 								    <td>{{$order->status}}</td>
 								    <td>
                                        
-                                    <a class="modal-effect btn btn-sm btn-info" href="{{ route('order.edit', $order->id) }}" class="btn btn-primary" title="edit"><i class="las la-pen"></i></a>
+                                    <a  href="{{ route('order.edit', $order->id) }}" class="btn btn-primary" title="edit"><i class="las la-pen"></i></a>
 								
-                                    <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
-										   data-id="{{$order->id}}" 
-										   data-toggle="modal" href="#modaldemo9" title="delete"><i
-										   class="las la-trash"></i></a>
+                                  
+                                           <form action="{{route('order.destroy',$order->id)}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button>delete</button>
+                                        </form>
 
                                     <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
                                         data-id="{{$order->id}}"
