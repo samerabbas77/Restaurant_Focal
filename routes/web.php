@@ -52,8 +52,12 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
 
 
     Route::resource('/order', OrderController::class);
- 
+
     Route::resource('/reviews',ReviewController::class);
+
+
+    Route::post('reservations/{id}/restore', [ReservationController::class, 'restore'])->name('reservations.restore');
+Route::delete('reservations/{id}/forceDelete', [ReservationController::class, 'forceDelete'])->name('reservations.forceDelete');
 
 });
 

@@ -77,12 +77,12 @@
 				</div>
 			</div>
 			<div class="col-sm-4 col-md-4">
-		
+
 			<div class="card-body">
 				<a class="btn ripple btn-warning" data-target="#modaldemo6" data-toggle="modal" href="">إضافة طلب جديد</a>
 				</div>
 			</div>
-		
+
 			<div class="card-body">
 				<div class="table-responsive">
 					<table id="example1" class="table key-buttons text-md-nowrap">
@@ -93,7 +93,7 @@
 								<th class="border-bottom-0">رقم الطاولة</th>
 								<th class="border-bottom-0">الفاتورة</th>
 								<th class="border-bottom-0">حالة الطلب</th>
-								<th class="border-bottom-0">الأدوات</th>								
+								<th class="border-bottom-0">الأدوات</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -105,6 +105,7 @@
 								    <td>{{$order->total_price}}</td>
 								    <td>{{$order->status}}</td>
 								    <td>
+
                                        
                                     <a  href="{{ route('order.edit', $order->id) }}" class="btn btn-primary" title="edit"><i class="las la-pen"></i></a>
 								
@@ -115,19 +116,21 @@
                                             <button>delete</button>
                                         </form>
 
+
                                     <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
                                         data-id="{{$order->id}}"
                                         data-toggle="modal"
-                                        data-target="#detailsModal{{$order->id}}" 
+                                        data-target="#detailsModal{{$order->id}}"
                                         title="تفاصيل الطلبية">تفاصيل الطلبية</a>
 
-								    </td>									
+								    </td>
 							  </tr>
 				            @endforeach
 						</tbody>
 					</table>
 				</div>
 			</div>
+            
 		</div>
 		</div>
 		<!--/div-->
@@ -256,7 +259,7 @@
 
                     <div class="form-group">
                         <input type="hidden" id="updateOrderId" name="order_id" value="">
-                        
+
                         <label for="table_id">رقم الطاولة</label>
                         <select id="table_id" name="table_id" class="form-control">
                             <option value="" disabled selected></option>
@@ -387,7 +390,7 @@
         modal.find('.modal-body #table_id').val(table_id);
         modal.find('.modal-body #start_date').val(start_date);
         modal.find('.modal-body #end_date').val(end_date);
-       // modal.find('.modal-body #photo').val(photo);									
+       // modal.find('.modal-body #photo').val(photo);
 	})
 </script>
 
@@ -395,7 +398,7 @@
     $('#modaldemo9').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)
         var id = button.data('id')
-       
+
         var modal = $(this)
         modal.find('.modal-body #id').val(id);
     })

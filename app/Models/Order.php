@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-
+    
     protected $fillable =[
         'user_id',
         'table_id',
@@ -24,5 +24,5 @@ class Order extends Model
     {
         return $this->belongsToMany(Dish::class, 'dish_order')->withPivot('quantity');
     }
-    
+
 }

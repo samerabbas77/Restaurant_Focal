@@ -26,9 +26,9 @@ class OrderController extends Controller
 
             return view('Admin.order',compact( 'orders','tables','dishes','users'));
         }catch (\Exception $e) {
-            
+
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
-        }    
+        }
     }
 
 //========================================================================================================================
@@ -83,6 +83,7 @@ public function edit($id)
 //========================================================================================================================
 
 
+
 public function update(UpdateOrderRequest $request, Order $order)
 {
     try {
@@ -105,6 +106,8 @@ public function update(UpdateOrderRequest $request, Order $order)
         return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
     }
 }
+
+
 
 //========================================================================================================================
 
