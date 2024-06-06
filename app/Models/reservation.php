@@ -11,13 +11,15 @@ use function Laravel\Prompts\table;
 class reservation extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $dates = ['deleted_at'];
+
     protected $fillable =[
         'user_id',
         'table_id',
         'start_date',
         'end_date',
     ];
-    
+
     public function user(){
         return $this->belongsTo(User::class);
     }
