@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId("user_id")->constrained('users')->onDelete('cascade');
             $table->unsignedBigInteger("table_id");
             $table->integer("total_price");
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

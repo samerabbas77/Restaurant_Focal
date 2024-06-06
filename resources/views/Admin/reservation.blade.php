@@ -87,12 +87,12 @@
 				</div>
 			</div>
 			<div class="col-sm-4 col-md-4">
-		
+
 			<div class="card-body">
 				<a class="btn ripple btn-warning" data-target="#modaldemo6" data-toggle="modal" href="">إضافة حجز جديد</a>
 				</div>
 			</div>
-		
+
 			<div class="card-body">
 				<div class="table-responsive">
 					<table id="example1" class="table key-buttons text-md-nowrap">
@@ -103,7 +103,7 @@
 								<th class="border-bottom-0">رقم الطاولة</th>
 								<th class="border-bottom-0">تاريخ البداية</th>
 								<th class="border-bottom-0">تاريخ النهاية</th>
-								<th class="border-bottom-0">الأدوات</th>								
+								<th class="border-bottom-0">الأدوات</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -115,7 +115,7 @@
 								    <td>{{$reservation->start_date}}</td>
 								    <td>{{$reservation->end_date}}</td>
 								    <td>
-                                       
+
 									   <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
 										   data-id="{{$reservation->id}}"
 										   data-user_id="{{$reservation->user->id}}"
@@ -124,19 +124,58 @@
 										   data-end_date="{{$reservation->end_date}}"
 										   data-toggle="modal"
 										   href="#exampleModal2" title="edit"><i class="las la-pen"></i></a>
-								
+
 									    <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
-										   data-id="{{$reservation->id}}" 
+										   data-id="{{$reservation->id}}"
 										   data-toggle="modal" href="#modaldemo9" title="delete"><i
 											  class="las la-trash"></i></a>
-                                      
-								    </td>									
+
+								    </td>
 							  </tr>
 				            @endforeach
 						</tbody>
 					</table>
 				</div>
 			</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <h3>الحجوزات المحذوفة مؤقتا</h3>
+                    <table id="example2" class="table key-buttons text-md-nowrap">
+                        <thead>
+							<tr>
+								<th class="border-bottom-0">ID</th>
+								<th class="border-bottom-0">ايميل الزبون</th>
+								<th class="border-bottom-0">رقم الطاولة</th>
+								<th class="border-bottom-0">تاريخ البداية</th>
+								<th class="border-bottom-0">تاريخ النهاية</th>
+								<th class="border-bottom-0">الأدوات</th>
+							</tr>
+						</thead>
+                        <tbody>
+                            @foreach($trashedReservations as $reservation)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$reservation->user->name}}</td>
+                                <td>{{$reservation->table->Number}}</td>
+                                <td>{{$reservation->start_date}}</td>
+                                <td>{{$reservation->end_date}}</td>
+                                <td>
+                                    <form action="{{ route('reservations.restore', $reservation->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning">استعادة</button>
+                                    </form>
+                                    <form action="{{ route('reservations.forceDelete', $reservation->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">حذف نهائي</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 		</div>
 		</div>
 		<!--/div-->
@@ -153,7 +192,7 @@
 					<div class="modal-body">
 						<form action="{{route('reservation.store')}}" method="post">
 							@method('POST')
-							@csrf 
+							@csrf
 							<div class="form-group">
 							<label for="exampleInputEmail1">ايميل الزبون</label>
 								<select id="user_id" name="user_id" class="form-control">
@@ -163,7 +202,7 @@
 									@endforeach
 								</select>
 							</div>
-							
+
 							<div class="form-group">
 							<label for="exampleInputEmail1">رقم الطاولة</label>
 								<select id="table_id" name="table_id" class="form-control">
@@ -188,7 +227,7 @@
 								<button type="submit" class="btn btn-success" >إضافة</button>
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
 							</div>
-						</form>						
+						</form>
 					</div>
 				</div>
 			</div>
@@ -226,7 +265,7 @@
 									@endforeach
 								</select>
 							</div>
-							
+
 							<div class="form-group">
 								<label for="exampleInputEmail1">رقم الطاولة</label>
 								<select id="table_id" name="table_id" class="form-control">
@@ -328,7 +367,7 @@
         modal.find('.modal-body #table_id').val(table_id);
         modal.find('.modal-body #start_date').val(start_date);
         modal.find('.modal-body #end_date').val(end_date);
-       // modal.find('.modal-body #photo').val(photo);									
+       // modal.find('.modal-body #photo').val(photo);
 	})
 </script>
 
@@ -336,7 +375,7 @@
     $('#modaldemo9').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)
         var id = button.data('id')
-       
+
         var modal = $(this)
         modal.find('.modal-body #id').val(id);
     })
@@ -345,18 +384,18 @@
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
 		const modalLinks = document.querySelectorAll('.modal-effect');
-	
+
 		modalLinks.forEach(link => {
 			link.addEventListener('click', function (event) {
 				// Get the data-id value
 				const dataId = event.currentTarget.dataset.id;
-	
+
 				// Update Form
 				const updateForm = document.getElementById('updateReservationForm');
 				const updateHiddenInput = document.getElementById('updateReservationId');
 				updateHiddenInput.value = dataId;
 				updateForm.action = `{{ route('reservation.update', '') }}/${dataId}`;
-	
+
 				// Delete Form
 				const deleteForm = document.getElementById('deleteReservationForm');
 				const deleteHiddenInput = document.getElementById('deleteReservationId');

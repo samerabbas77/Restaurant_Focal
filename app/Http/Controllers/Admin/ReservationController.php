@@ -18,17 +18,19 @@ class ReservationController extends Controller
             //dd($reservations);
             $users = User::all();
             $tables = Table::all();
-            return view('Admin.reservation',compact('reservations' , 'users' , 'tables'));
+
+            $trashedReservations = reservation::onlyTrashed()->get();
+            return view('Admin.reservation',compact('reservations' , 'users' , 'tables','trashedReservations'));
         }catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
-        }    
+        }
     }
 
 //========================================================================================================================
 
     public function store(ReservationRequest $request)
     {
- 
+
         try{
            $request->validated();
 
@@ -43,7 +45,7 @@ class ReservationController extends Controller
            return redirect()->route('reservation.store');
         }catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
-        }  
+        }
     }
 
 //========================================================================================================================
@@ -64,7 +66,7 @@ class ReservationController extends Controller
            return redirect()->route('reservation.update');
         }catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
-        }  
+        }
     }
 
 //========================================================================================================================
@@ -78,8 +80,31 @@ class ReservationController extends Controller
            return redirect()->route('reservation.destroy') ;
         }catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
-        }  
+        }
     }
 //========================================================================================================================
-    
+
+    public function restore($id)
+    {
+        try {
+        $reservation = Reservation::withTrashed()->findOrFail($id);
+        $reservation->restore();
+
+        return redirect()->route('reservation.index')->with('edit', 'reservation restored successfully.');}
+        catch (Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
+        }
+    }
+
+    public function forceDelete($id)
+    {   try {
+        $reservation = Reservation::withTrashed()->findOrFail($id);
+        $reservation->forceDelete();
+
+        return redirect()->route('reservation.index')->with('delete', 'reservation permanently deleted.');}
+        catch (Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
+        }
+    }
+
 }

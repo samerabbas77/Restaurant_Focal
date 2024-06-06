@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Dish;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Table;
 use App\Models\DishOrder;
+use App\Models\reservation;
+use Illuminate\Http\Request;
 use App\Http\Requests\OrderRequest;
 use App\Http\Controllers\Controller;
-use App\Models\Dish;
-use App\Models\User;
+use App\Http\Requests\ReservationRequest;
+use App\Http\Requests\UpdateOrderRequest;
 
 class OrderController extends Controller
 {
@@ -22,13 +26,17 @@ class OrderController extends Controller
 
             return view('Admin.order',compact( 'orders','tables','dishes','users'));
         }catch (\Exception $e) {
-            
+
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
-        }    
+        }
     }
 
 //========================================================================================================================
 
+public function show()
+{
+
+}
 public function store(OrderRequest $request)
 {
     try {
@@ -75,30 +83,38 @@ public function edit($id)
 //========================================================================================================================
 
 
-    // public function update(ReservationRequest $request, reservation $reservation)
-    // {
 
-    //     try{
-    //        $request->validated();
+public function update(UpdateOrderRequest $request, Order $order)
+{
+    try {
+        
+        $order->table_id = $request->table_id;
+        $order->user_id = $request->user_id;
+        $order->dishes()->detach();
+        foreach ($request->dishes as $dishData) {
+            $dish = Dish::find($dishData['id']);
+            if (isset($dishData['name'])) {
+                $dish->name = $dishData['name'];
+                $dish->save();
+            }
+            $order->dishes()->attach($dishData['id'], ['quantity' => $dishData['quantity']]);
+        }
+        $order->save();
+        session()->flash('edit', 'Edit Successfully');
+        return redirect()->route('order.index');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+    }
+}
 
-    //        $reservation->user_id = $request->user_id;
-    //        $reservation->table_id = $request->table_id;
-    //        $reservation->start_date = $request->start_date;
-    //        $reservation->end_date = $request->end_date;
-    //        $reservation->save();
 
-    //        session()->flash('edit','ُEdit Susseccfully');
-    //        return redirect()->route('order.update');
-    //     }catch (\Exception $e) {
-    //         return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
-    //     }  
-    // }
 
 //========================================================================================================================
 
 public function destroy(Order $order)
 {
     try {
+        $order->dishes()->detach();
         $order->delete();
         session()->flash('delete', 'Delete successfully');
         return redirect()->route('order.index');
