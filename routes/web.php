@@ -47,17 +47,21 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
     Route::resource('/reservation',ReservationController::class);
     Route::resource('/client',ClientController::class);
 
-    Route::post('tables/{id}/restore', [TableController::class, 'restore'])->name('tables.restore');
-    Route::delete('tables/{id}/forceDelete', [TableController::class, 'forceDelete'])->name('tables.forceDelete');
-
-
     Route::resource('/order', OrderController::class);
 
     Route::resource('/reviews',ReviewController::class);
 
-
+    //....................Soft Delete............................
+    //Table
+    Route::post('tables/{id}/restore', [TableController::class, 'restore'])->name('tables.restore');
+    Route::delete('tables/{id}/forceDelete', [TableController::class, 'forceDelete'])->name('tables.forceDelete');
+    //Dish
+    Route::post('dishes/{id}/restore', [DishController::class, 'restore'])->name('dishes.restore');
+    Route::delete('dishes/{id}/forceDelete', [DishController::class, 'forceDelete'])->name('dishes.forceDelete');
+    //Reservation
     Route::post('reservations/{id}/restore', [ReservationController::class, 'restore'])->name('reservations.restore');
-Route::delete('reservations/{id}/forceDelete', [ReservationController::class, 'forceDelete'])->name('reservations.forceDelete');
+    Route::delete('reservations/{id}/forceDelete', [ReservationController::class, 'forceDelete'])->name('reservations.forceDelete');
+
 
 });
 

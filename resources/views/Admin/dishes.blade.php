@@ -42,6 +42,26 @@
         </ul>
     </div>
 @endif
+ <!-- Display session errors -->
+ @if (session('error'))
+ <div class="alert alert-danger alert-dismissible fade show" role="alert">
+	 <strong>{{ session('error') }}</strong>
+	 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		 <span aria-hidden="true">&times;</span>
+	 </button>
+ </div>
+@endif
+ 
+ <!-- Display Restore,ForceDelet  -->
+ @if (session('success'))
+ <div class="alert alert-danger alert-dismissible fade show" role="alert">
+	 <strong>{{ session('success') }}</strong>
+	 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		 <span aria-hidden="true">&times;</span>
+	 </button>
+ </div>
+@endif
+
 
 @if (session()->has('Add'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -95,7 +115,7 @@
 					<table id="example1" class="table key-buttons text-md-nowrap">
 						<thead>
 							<tr>
-								<th class="border-bottom-0">#N</th>
+								<th class="border-bottom-0">N.</th>
 								<th class="border-bottom-0">الأسم</th>
 								<th class="border-bottom-0">السعر</th>								
 								<th class="border-bottom-0">الوصف</th>								
@@ -139,12 +159,57 @@
 							@endforeach
 						</tbody>
 					</table>
-					
 				</div>
 			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+                    <h3>االصحون المحذوفة مؤقتا</h3>
+                    <table id="example2" class="table key-buttons text-md-nowrap">
+						<thead>
+							<tr>
+								<tr>
+									<th class="border-bottom-0">N.</th>
+									<th class="border-bottom-0">الأسم</th>
+									<th class="border-bottom-0">السعر</th>								
+									<th class="border-bottom-0">الوصف</th>								
+									<th class="border-bottom-0">الصنف</th>								
+									<th class="border-bottom-0">الصورة</th>								
+								</tr>
+							</tr>
+						</thead>
+                        <tbody>
+                        @foreach($deletedDishes as $dish)
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+							<td>{{$dish->name}}</td>
+							<td>{{$dish->price}}</td>
+							<td>{{$dish->descraption}}</td>
+							<td>{{ $dish->category ? $dish->category->name : 'No Category' }}</td>
+							<td>                
+								<img src="{{ asset('images/Deleted/' . $dish->photo) }}" alt="{{ $dish->name }}" width="100" height="50">
+							</td>	
+                            <td>
+                                    <form action="{{ route('dishes.restore', $dish->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning">استعادة</button>
+                                    </form>
+                                    <form action="{{ route('dishes.forceDelete', $dish->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">حذف نهائي </button>
+									</form>
+                            </td>
+                        </tr>
+                    @endforeach
+                	</tbody>
+					</table>
+
+            </div>
+            </div>
+
 		</div>
 		</div>
-		</div>
+		{{-- </div> --}}
 </div>
 <!-- /row -->
 
