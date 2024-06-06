@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,4 +18,8 @@ class Table extends Model
         'chair_number',
         'Is_available',
     ];
+    public function reservation(){
+        return $this->hasMany(reservation::class);
+    }
+    
 }
