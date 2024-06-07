@@ -16,6 +16,9 @@ class Order extends Model
         'total_price',
         'status',
     ];
+    protected $dates = ['deleted_at'];
+    
+    public static $searchable = ['user_id','table_id','total_price','status'];
     public function user()
     {
        return $this->belongsTo(User::class);

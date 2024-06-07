@@ -37,14 +37,18 @@ Auth::routes(['register' => false]); //إيقاف عمل راوت تسجيل ا�
 
 
 Route::group(['middleware' => ['auth', 'check.username']], function () {
+    //.......Home...................................................
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/search', [HomeController::class, 'search'])->name('search');
     Route::resource('/categories',CategoryController::class);
 
+    ///...............Admin Dashboard.......................
     Route::resource('/dishes',DishController::class);
 
     Route::resource('/tables',TableController::class);
 
     Route::resource('/reservation',ReservationController::class);
+
     Route::resource('/client',ClientController::class);
 
     Route::resource('/order', OrderController::class);

@@ -94,7 +94,6 @@
 
 <!-- row -->
 <div class="row">
-		<!--div-->
 		<div class="col-xl-12">
 		<div class="card mg-b-20">
 			<div class="card-header pb-0">
@@ -163,7 +162,8 @@
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
-                    <h3>االصحون المحذوفة مؤقتا</h3>
+                    <h3> الصحون المحذوفة مؤقتا:</h3>
+					<br>
                     <table id="example2" class="table key-buttons text-md-nowrap">
 						<thead>
 							<tr>
@@ -203,13 +203,10 @@
                     @endforeach
                 	</tbody>
 					</table>
-
+            	</div>
             </div>
-            </div>
-
 		</div>
 		</div>
-		{{-- </div> --}}
 </div>
 <!-- /row -->
 
