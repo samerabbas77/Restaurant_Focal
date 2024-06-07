@@ -136,7 +136,42 @@
 					</table>
 				</div>
 			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+                    <h3>التصنيفات المحذوفة مؤقتا</h3>
+                    <table id="example2" class="table key-buttons text-md-nowrap">
+						<thead>
+							<tr>
+								<th class="border-bottom-0">#N</th>
+								<th class="border-bottom-0">اسم التصنيف</th>
+								<th class="border-bottom-0">الادوات</th>
+							</tr>
+						</thead>
+                        <tbody>
+                        @foreach($trachedCategories as $category)
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{ $category->name }}</td>
+                            <td>
+                                    <form action="{{ route('categories.restore', $category->id) }}" method="POST" style="display:inline-block;">
+									    @method('POST')
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning">استعادة</button>
+                                    </form>
+                                    <form action="{{ route('categories.forceDelete', $category->id) }}" method="POST" style="display:inline-block;">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">حذف نهائي </button>
+									</form>
+                            </td>
+                        </tr>
+                    @endforeach
+                	</tbody>
+					</table>
+				</div>
+			</div>		
 		</div>
+
 		</div>
 		<!--/div-->
 </div>
@@ -152,7 +187,7 @@
 					</div>
 					<div class="modal-body">
 						<form action="{{route('categories.store')}}" method="post">
-							@method('POST')
+							
 							@csrf 
 							<div class="form-group">
 								<label for="exampleInputEmail1">اسم التصنيف</label>

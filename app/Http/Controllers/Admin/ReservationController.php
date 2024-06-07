@@ -92,7 +92,9 @@ class ReservationController extends Controller
         $reservation = Reservation::withTrashed()->findOrFail($id);
         $reservation->restore();
 
+
         return redirect()->route('reservation.index')->with('edit', 'reservation restored successfully');}
+
         catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }
@@ -103,7 +105,10 @@ class ReservationController extends Controller
         $reservation = Reservation::withTrashed()->findOrFail($id);
         $reservation->forceDelete();
 
+
         return redirect()->route('reservation.index')->with('delete', 'reservation permanently deleted');}
+
+
         catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }

@@ -125,10 +125,10 @@
 								    <td>{{$order->status}}</td>
 								    <td>
 
-                                       
+
                                     <a  href="{{ route('order.edit', $order->id) }}" class="btn btn-primary" title="edit"><i class="las la-pen"></i></a>
-								
-                                  
+
+
                                            <form action="{{route('order.destroy',$order->id)}}" method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -149,7 +149,45 @@
 					</table>
 				</div>
 			</div>
-            
+            <div class="card-body">
+                <div class="table-responsive">
+                    <h3>الطلبات المحذوفة مؤقتا</h3>
+                    <table id="example2" class="table key-buttons text-md-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="border-bottom-0">ID</th>
+                                <th class="border-bottom-0"> ايميل الزبون</th>
+                                <th class="border-bottom-0"> رقم الطاولة</th>
+                                <th class="border-bottom-0">الفاتورة</th>
+                                <th class="border-bottom-0">حالة الطلب </th>
+                                <th class="border-bottom-0">الأدوات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($trashedOrders as $order)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $order->user->email}}</td>
+                                    <td>{{ $order->table_id}}</td>
+                                    <td>{{ $order->total_price}}</td>
+                                    <td>{{ $order->status}}</td>
+                                    <td>
+                                        <form action="{{ route('orders.restore', $order->id) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-warning">استعادة</button>
+                                        </form>
+                                        <form action="{{ route('orders.forceDelete', $order->id) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">حذف نهائي</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 		</div>
 		</div>
 		<!--/div-->

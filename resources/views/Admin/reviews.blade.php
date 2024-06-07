@@ -107,6 +107,43 @@
 					</table>	
 				</div>
 			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+                    <h3>التقييمات المحذوفة مؤقتا</h3>
+                    <table id="example2" class="table key-buttons text-md-nowrap">
+						<thead>
+							<tr>
+								<th class="border-bottom-0">#N</th>
+								<th class="border-bottom-0">التقييم</th>
+								<th class="border-bottom-0">الزبون</th>
+								<th class="border-bottom-0">التعليق</th>
+								<th class="border-bottom-0">الادوات</th>
+							</tr>
+						</thead>
+                        <tbody>
+                        @foreach($trachedReviews as $review)
+                        <tr>
+                            <td>{{$loop->iteration}}</td> 
+                            <td>{{ $review->service_rating }}</td>
+                            <td>{{ $review->user_id }}</td>
+                            <td>{{ $review->comments }}</td>
+                            <td>
+                                    <form action="{{ route('reviews.restore', $review->id) }}" method="POST" style="display:inline-block;">
+									    @method('POST')
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning">استعادة</button>
+                                    </form>
+                                    <form action="{{ route('reviews.forceDelete', $review->id) }}" method="POST" style="display:inline-block;">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">حذف نهائي </button>
+									</form>
+                            </td>
+                        </tr>
+                    @endforeach
+                	</tbody>
+					</table>
+				</div>
 		</div>
 		</div>
 		</div>
@@ -173,6 +210,7 @@
 <!--Internal  Datatable js -->
 <script src="{{URL::asset('assets/js/table-data.js')}}"></script>
 <script src="{{URL::asset('assets/js/modal.js')}}"></script>
+
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
 		const modalLinks = document.querySelectorAll('.modal-effect');

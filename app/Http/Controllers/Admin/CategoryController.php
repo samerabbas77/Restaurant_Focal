@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 
@@ -17,10 +16,10 @@ class CategoryController extends Controller
     {
         try{
             $categories = Category::all();
-            return view('Admin.category',compact('categories'));
+            $trachedCategories=Category::onlyTrashed()->get();
+            return view('Admin.category',compact('categories','trachedCategories'));
         }catch (\Throwable $th) {
-            Log::error($th);
-            return redirect()->back()->with('error', 'An error occurred');
+            return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }    
     }
 
@@ -40,8 +39,7 @@ class CategoryController extends Controller
            session()->flash('Add','Add Susseccfully');
            return redirect()->route('categories.index');
         } catch (\Throwable $th) {
-            Log::error($th);
-            return redirect()->back()->with('error', 'An error occurred');
+            return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
 
@@ -63,8 +61,7 @@ class CategoryController extends Controller
            session()->flash('edit','ُEdit Susseccfully');
            return redirect()->route('categories.index');
         }catch (\Throwable $th) {
-            Log::error($th);
-            return redirect()->back()->with('error', 'An error occurred');
+            return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
 
@@ -78,8 +75,31 @@ class CategoryController extends Controller
            session()->flash('delete','Delete Susseccfully');
            return redirect()->route('categories.index') ;
         }catch (\Throwable $th) {
-            Log::error($th);
-            return redirect()->back()->with('error', 'An error occurred');
+            return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
+        }
+    }
+    public function restore($id)
+    {    
+        try {
+           $category = Category::withTrashed()->findOrFail($id);
+           $category->restore();
+
+           return redirect()->route('categories.index')->with('edit', 'Category restored successfully.');
+        }
+        catch (\Exception $th) {
+           return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
+        }
+    }
+    public function forceDelete($id)
+    {    
+        try {
+           $category = Category::withTrashed()->findOrFail($id);
+           $category->forceDelete();
+
+           return redirect()->route('categories.index')->with('delete', 'Category permanently deleted.');
+        }
+        catch (\Exception $th) {
+            return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
 }
