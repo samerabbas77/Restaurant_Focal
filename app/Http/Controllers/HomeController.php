@@ -35,41 +35,6 @@ class HomeController extends Controller
     }
 
 
-
-    public function search(SearchRequest $request)
-    {   
-        $query = $request->input('query');
-        $results = collect();
-        try{ 
-        if ($query) {
-            $results = $this->searchModels($query, [Table::class ,Category::class,Dish::class,Order::class,Reservation::class,Review::class,]);
-           
-            return view('Admin.search.results', compact('results', 'query'));
-        }
-        }catch(\Exception $e)
-        {
-         return redirect()->back()->with('error,"cant Search'.$e->getMessage());
-        }
-    }
-
-    private function searchModels($query, $models)
-    {
-        try{
-            $results = collect();
-            foreach ($models as $model) {
-                $searchableColumns = $model::$searchable;
-                $modelResults = $model::query();
-                foreach ($searchableColumns as $column) {
-                    $modelResults->orWhere($column, 'like', "%{$query}%");
-                }
-                $results = $results->merge($modelResults->get());
-               
-            }
-            return $results;
-        }catch(\Exception $e)
-        {
-            return redirect()->back()->with('error,"searchModel File:cant Search'.$e->getMessage());  
-        }
-    }
+ 
 }
 

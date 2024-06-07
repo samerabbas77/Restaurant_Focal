@@ -39,8 +39,6 @@ Auth::routes(['register' => false]); //إيقاف عمل راوت تسجيل ا�
 Route::group(['middleware' => ['auth', 'check.username']], function () {
     //.......Home...................................................
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/search', [HomeController::class, 'search'])->name('search');
-    Route::resource('/categories',CategoryController::class);
 
     ///...............Admin Dashboard.......................
     Route::resource('/dishes',DishController::class);
@@ -54,6 +52,8 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
     Route::resource('/order', OrderController::class);
 
     Route::resource('/reviews',ReviewController::class);
+
+    Route::resource('/categories',CategoryController::class);
 
     //....................Soft Delete............................
     //Table
