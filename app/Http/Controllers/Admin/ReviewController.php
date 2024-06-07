@@ -10,7 +10,8 @@ class ReviewController extends Controller
     public function index()
     {
         try{ $reviews = Review::all();
-        return view('Admin.reviews', compact('reviews'));}
+            $trachedReviews=Review::onlyTrashed()->get();
+        return view('Admin.reviews', compact('reviews','trachedReviews'));}
         catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }
@@ -30,5 +31,28 @@ class ReviewController extends Controller
     }
 
 //========================================================================================================================
+    public function restore($id)
+    {    
+        try {
+           $review = Review::withTrashed()->findOrFail($id);
+           $review->restore();
 
+           return redirect()->route('reviews.index')->with('edit', 'Review restored successfully.');
+        }
+        catch (\Exception $th) {
+           return redirect()->back()->with('error', 'Failed to delete Review: ' . $th->getMessage());
+        }
+    }
+    public function forceDelete($id)
+    {    
+        try {
+           $review = Review::withTrashed()->findOrFail($id);
+           $review->forceDelete();
+
+           return redirect()->route('reviews.index')->with('delete', 'Review permanently deleted.');
+        }
+        catch (\Exception $th) {
+            return redirect()->back()->with('error', 'Failed to delete Review: ' . $th->getMessage());
+        }
+    }
 }

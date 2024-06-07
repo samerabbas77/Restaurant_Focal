@@ -61,7 +61,12 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
     //Reservation
     Route::post('reservations/{id}/restore', [ReservationController::class, 'restore'])->name('reservations.restore');
     Route::delete('reservations/{id}/forceDelete', [ReservationController::class, 'forceDelete'])->name('reservations.forceDelete');
-
+    //Category
+    Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
+    Route::delete('categories/{id}/forceDelete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
+    //Review
+    Route::post('reviews/{id}/restore', [ReviewController::class, 'restore'])->name('reviews.restore');
+    Route::delete('reviews/{id}/forceDelete', [ReviewController::class, 'forceDelete'])->name('reviews.forceDelete');
 
 });
 
