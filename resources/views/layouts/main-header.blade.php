@@ -12,17 +12,12 @@
 				<a class="open-toggle" href="#"><i class="header-icon fe fe-align-left" ></i></a>
 				<a class="close-toggle" href="#"><i class="header-icons fe fe-x"></i></a>
 			</div>
-			<div class="main-header-center mr-3 d-sm-none d-md-none d-lg-block">
-				<form  action="{{ route('search') }}" method="GET" >
-					<input type="text" id="search" name="query" placeholder="Enter your search query">
-					<button class=" btn-primary btn-sm" type="submit">Search</button>
-				</form>	
-			</div>
+
 		</div>
 		<div class="main-header-right">
 			<div class="nav nav-item  navbar-nav-right ml-auto">
 				<div class="nav-link" id="bs-example-navbar-collapse-1">
-					<form class="navbar-form" action="{{ route('search') }}" method="GET" role="search">
+					<form class="navbar-form"  role="search">
 						<div class="input-group">
 							<input type="text" class="form-control" placeholder="Search" name="query">
 							<span class="input-group-btn">
