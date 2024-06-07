@@ -65,7 +65,9 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
     //Reservation
     Route::post('reservations/{id}/restore', [ReservationController::class, 'restore'])->name('reservations.restore');
     Route::delete('reservations/{id}/forceDelete', [ReservationController::class, 'forceDelete'])->name('reservations.forceDelete');
-
+    //Order
+    Route::post('orders/{id}/restore', [OrderController::class, 'restore'])->name('orders.restore');
+    Route::delete('orders/{id}/forceDelete', [OrderController::class, 'forceDelete'])->name('orders.forceDelete');
 
 });
 

@@ -23,8 +23,8 @@ class OrderController extends Controller
             $tables = Table::all();
             $dishes = Dish::all();
             $users = User::all();
-
-            return view('Admin.order',compact( 'orders','tables','dishes','users'));
+            $trashedOrders = Order::onlyTrashed()->get();
+            return view('Admin.order',compact( 'orders','tables','dishes','users','trashedOrders'));
         }catch (\Exception $e) {
 
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
@@ -87,7 +87,7 @@ public function edit($id)
 public function update(UpdateOrderRequest $request, Order $order)
 {
     try {
-        
+
         $order->table_id = $request->table_id;
         $order->user_id = $request->user_id;
         $order->dishes()->detach();
@@ -123,4 +123,24 @@ public function destroy(Order $order)
     }
 }
 //========================================================================================================================
+public function restore($id)
+{    try {
+    $order = Order::withTrashed()->findOrFail($id);
+    $order->restore();
+    return redirect()->route('order.index')->with('edit', 'Order restored successfully');}
+    catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Failed to delete Order: ' . $e->getMessage());
+    }
+}
+
+public function forceDelete($id)
+{
+    try {
+    $order = Order::withTrashed()->findOrFail($id);
+    $order->forceDelete();
+    return redirect()->route('order.index')->with('delete', 'Order permanently deleted successfully');}
+    catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Failed to delete Order: ' . $e->getMessage());
+    }
+}
 }
