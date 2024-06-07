@@ -59,15 +59,27 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
     //Table
     Route::post('tables/{id}/restore', [TableController::class, 'restore'])->name('tables.restore');
     Route::delete('tables/{id}/forceDelete', [TableController::class, 'forceDelete'])->name('tables.forceDelete');
+  
     //Dish
     Route::post('dishes/{id}/restore', [DishController::class, 'restore'])->name('dishes.restore');
     Route::delete('dishes/{id}/forceDelete', [DishController::class, 'forceDelete'])->name('dishes.forceDelete');
+  
     //Reservation
     Route::post('reservations/{id}/restore', [ReservationController::class, 'restore'])->name('reservations.restore');
     Route::delete('reservations/{id}/forceDelete', [ReservationController::class, 'forceDelete'])->name('reservations.forceDelete');
+  
+    //Category
+    Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
+    Route::delete('categories/{id}/forceDelete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
+  
+    //Review
+    Route::post('reviews/{id}/restore', [ReviewController::class, 'restore'])->name('reviews.restore');
+    Route::delete('reviews/{id}/forceDelete', [ReviewController::class, 'forceDelete'])->name('reviews.forceDelete');
+  
     //Order
     Route::post('orders/{id}/restore', [OrderController::class, 'restore'])->name('orders.restore');
     Route::delete('orders/{id}/forceDelete', [OrderController::class, 'forceDelete'])->name('orders.forceDelete');
+
 
 });
 
