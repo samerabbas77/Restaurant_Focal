@@ -76,12 +76,12 @@
 				</div>
 			</div>
 			<div class="col-sm-4 col-md-4">
-		
+
 			<div class="card-body">
 				<a class="btn ripple btn-warning" data-target="#modaldemo6" data-toggle="modal" href="">إضافة زبون جديد</a>
 				</div>
 			</div>
-		
+
 			<div class="card-body">
 				<div class="table-responsive">
 					<table id="example1" class="table key-buttons text-md-nowrap">
@@ -89,7 +89,7 @@
 							<tr>
 								<th class="border-bottom-0">ID</th>
 								<th class="border-bottom-0">اسم الزبون</th>
-								<th class="border-bottom-0">ايميل الزبون</th>								
+								<th class="border-bottom-0">ايميل الزبون</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -98,8 +98,8 @@
 								    <td>{{$loop->iteration}}</td>
 								    <td>{{$user->name}}</td>
 								    <td>{{$user->email}}</td>
-								    <td> 
-								    </td>									
+								    <td>
+								    </td>
 							  </tr>
 				            @endforeach
 						</tbody>
@@ -122,14 +122,14 @@
 					<div class="modal-body">
 						<form action="{{route('client.store')}}" method="post">
 							@method('POST')
-							@csrf 
+							@csrf
 							<div class="form-group">
 
 							<div class="form-group">
 								<label for="exampleInputEmail1">اسم الزبون</label>
 								<input type="text" class="form-control" id="name" name="name">
 							</div>
-							
+
 							<div class="form-group">
 								<label for="exampleInputEmail1">ايميل الزبون</label>
 								<input type="email" class="form-control" id="email" name="email">
@@ -144,7 +144,7 @@
 								<button type="submit" class="btn btn-success" >إضافة</button>
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
 							</div>
-						</form>						
+						</form>
 					</div>
 				</div>
 			</div>
