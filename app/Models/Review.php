@@ -14,7 +14,8 @@ class Review extends Model
         'user_id',
         'comments',
     ];
-    
+    public static $searchable = ['service_rating','user_id','comments'];
+
     public function user(){
         return $this->belongsTo(User::class);
     }

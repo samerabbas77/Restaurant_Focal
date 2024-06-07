@@ -258,7 +258,7 @@
 
 </div>
 <!-- edit modal -->
-<!-- <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -330,7 +330,7 @@
 
 <!-- delete model -->
 
-<!-- <div class="modal" id="modaldemo9">
+ <div class="modal" id="modaldemo9">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content modal-content-demo">
 			<div class="modal-header">

@@ -9,9 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'name',
     ];
+    public static $searchable = ['name'];
+
+
     public function dishes(){
         return $this->hasMany(Dish::class);
     }
