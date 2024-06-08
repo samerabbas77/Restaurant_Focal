@@ -13,8 +13,7 @@ class Category extends Model
     protected $fillable = [
         'name',
     ];
-    public static $searchable = ['name'];
-
+   
 
     public function dishes(){
         return $this->hasMany(Dish::class);

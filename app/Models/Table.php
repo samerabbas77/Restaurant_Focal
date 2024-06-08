@@ -20,7 +20,6 @@ class Table extends Model
         'Is_available',
     ];
 
-    public static $searchable = ['Number','chair_number','Is_available',];
 
     public function reservation(){
         return $this->hasMany(reservation::class);
