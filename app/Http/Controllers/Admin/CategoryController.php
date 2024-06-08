@@ -9,35 +9,44 @@ use App\Http\Requests\StoreCategoryRequest;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->middleware(['permission:إدارةالتصنيفات|التصنيفات'])->only('index');
+        $this->middleware(['permission:اضافة تصنيف'])->only('store');
+        $this->middleware(['permission:تعديل تصنيف'])->only('update');
+        $this->middleware(['permission:حذف تصنيف'])->only(['destroy', 'forceDelete']);
+        $this->middleware(['permission:استعادة تصنيف'])->only('restore');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        try{
+        try {
             $categories = Category::all();
-            $trachedCategories=Category::onlyTrashed()->get();
-            return view('Admin.category',compact('categories','trachedCategories'));
-        }catch (\Throwable $th) {
+            $trachedCategories = Category::onlyTrashed()->get();
+            return view('Admin.category', compact('categories', 'trachedCategories'));
+        } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
-        }    
+        }
     }
 
-    
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreCategoryRequest $request)
     {
- 
-        try{
-        $request->validated();
-           $category=new Category();
-           $category->name=$request->name;
-           $category->save();
-           session()->flash('Add','Add Susseccfully');
-           return redirect()->route('categories.index');
+
+        try {
+            $request->validated();
+            $category = new Category();
+            $category->name = $request->name;
+            $category->save();
+            session()->flash('Add', 'Add Susseccfully');
+            return redirect()->route('categories.index');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
@@ -47,20 +56,20 @@ class CategoryController extends Controller
      * Display the specified resource.
      */
 
-  
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(StoreCategoryRequest $request, Category $category)
     {
-        try{
-           $request->validated();
-           $category->name=$request->name;
-           $category->save();
-           session()->flash('edit','ُEdit Susseccfully');
-           return redirect()->route('categories.index');
-        }catch (\Throwable $th) {
+        try {
+            $request->validated();
+            $category->name = $request->name;
+            $category->save();
+            session()->flash('edit', 'ُEdit Susseccfully');
+            return redirect()->route('categories.index');
+        } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
@@ -70,35 +79,33 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        try{
-           $category->delete();
-           session()->flash('delete','Delete Susseccfully');
-           return redirect()->route('categories.index') ;
-        }catch (\Throwable $th) {
+        try {
+            $category->delete();
+            session()->flash('delete', 'Delete Susseccfully');
+            return redirect()->route('categories.index');
+        } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
     public function restore($id)
-    {    
+    {
         try {
-           $category = Category::withTrashed()->findOrFail($id);
-           $category->restore();
+            $category = Category::withTrashed()->findOrFail($id);
+            $category->restore();
 
-           return redirect()->route('categories.index')->with('edit', 'Category restored successfully.');
-        }
-        catch (\Exception $th) {
-           return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
+            return redirect()->route('categories.index')->with('edit', 'Category restored successfully.');
+        } catch (\Exception $th) {
+            return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
     public function forceDelete($id)
-    {    
+    {
         try {
-           $category = Category::withTrashed()->findOrFail($id);
-           $category->forceDelete();
+            $category = Category::withTrashed()->findOrFail($id);
+            $category->forceDelete();
 
-           return redirect()->route('categories.index')->with('delete', 'Category permanently deleted.');
-        }
-        catch (\Exception $th) {
+            return redirect()->route('categories.index')->with('delete', 'Category permanently deleted.');
+        } catch (\Exception $th) {
             return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }

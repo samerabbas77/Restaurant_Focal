@@ -98,7 +98,9 @@
 			<div class="col-sm-4 col-md-4">
 
 			<div class="card-body">
+                @can('اضافة طلب')
 				<a class="btn ripple btn-warning" data-target="#modaldemo6" data-toggle="modal" href="">إضافة طلب جديد</a>
+                @endcan
 				</div>
 			</div>
 
@@ -125,7 +127,7 @@
 								    <td>{{$order->status}}</td>
 								    <td>
 
-
+                                    @can('تعديل طلب')
                                     <a  href="{{ route('order.edit', $order->id) }}" class="btn btn-primary" title="edit"><i class="las la-pen"></i></a>
 
 
@@ -134,14 +136,14 @@
                                             @method('DELETE')
                                             <button>delete</button>
                                         </form>
-
-
+                                    @endcan
+                                    @can('حذف طلب')
                                     <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
                                         data-id="{{$order->id}}"
                                         data-toggle="modal"
                                         data-target="#detailsModal{{$order->id}}"
                                         title="تفاصيل الطلبية">تفاصيل الطلبية</a>
-
+                                    @endcan
 								    </td>
 							  </tr>
 				            @endforeach
@@ -174,12 +176,16 @@
                                     <td>
                                         <form action="{{ route('orders.restore', $order->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
+                                            @can('استعادة طلب')
                                             <button type="submit" class="btn btn-warning">استعادة</button>
+                                            @endcan
                                         </form>
                                         <form action="{{ route('orders.forceDelete', $order->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
+                                            @can('حذف طلب')
                                             <button type="submit" class="btn btn-danger">حذف نهائي</button>
+                                            @endcan
                                         </form>
                                     </td>
                                 </tr>
