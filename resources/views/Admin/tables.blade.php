@@ -95,7 +95,9 @@
 			<div class="col-sm-4 col-md-4">
 
 			<div class="card-body">
+				@can('اضافة طاولة')
 				<a class="btn ripple btn-warning" data-target="#modaldemo6" data-toggle="modal" href="{{ route('tables.create') }}">إضافة طاولة جديدة</a>
+				@endcan
 				</div>
 			</div>
 
@@ -119,7 +121,7 @@
 								<td> {{$table->chair_number}}</td>
 								<td> {{$table->Is_available}}</td>
 								<td>
-
+								@can('تعديل طاولة')
 								<a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
                                     data-id="{{ $table->id }}"
                                     data-number="{{ $table->Number }}"
@@ -127,12 +129,13 @@
                                     data-is_available="{{ $table->Is_available }}"
                                     data-toggle="modal"
                                     href="#exampleModal2" title="edit"><i class="las la-pen"></i></a>
-
+								@endcan
+								@can('حذف طاولة')
 									<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 										data-id="{{$table->id}}"
 										data-toggle="modal" href="#modaldemo9" title="delete"><i
 											class="las la-trash"></i></a>
-
+								@endcan
 								</td>
 							</tr>
                             @endforeach
@@ -163,12 +166,16 @@
                             <td>
                                     <form action="{{ route('tables.restore', $table->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
+										@can('استعادة طاولة')
                                         <button type="submit" class="btn btn-warning">استعادة</button>
+										@endcan
                                     </form>
                                     <form action="{{ route('tables.forceDelete', $table->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
+										@can('حذف طاولة')
                                         <button type="submit" class="btn btn-danger">حذف نهائي </button>
+										@endcan
 									</form>
                             </td>
                         </tr>

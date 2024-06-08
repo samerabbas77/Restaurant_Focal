@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -41,41 +43,46 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     ///...............Admin Dashboard.......................
-    Route::resource('/dishes',DishController::class);
+    Route::resource('/dishes', DishController::class);
 
-    Route::resource('/tables',TableController::class);
+    Route::resource('/tables', TableController::class);
 
-    Route::resource('/reservation',ReservationController::class);
+    Route::resource('/reservation', ReservationController::class);
 
-    Route::resource('/client',ClientController::class);
+    Route::resource('/client', ClientController::class);
 
     Route::resource('/order', OrderController::class);
 
-    Route::resource('/reviews',ReviewController::class);
+    Route::resource('/reviews', ReviewController::class);
 
-    Route::resource('/categories',CategoryController::class);
+    Route::resource('/categories', CategoryController::class);
+
+
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+
 
     //....................Soft Delete............................
     //Table
     Route::post('tables/{id}/restore', [TableController::class, 'restore'])->name('tables.restore');
     Route::delete('tables/{id}/forceDelete', [TableController::class, 'forceDelete'])->name('tables.forceDelete');
-  
+
     //Dish
     Route::post('dishes/{id}/restore', [DishController::class, 'restore'])->name('dishes.restore');
     Route::delete('dishes/{id}/forceDelete', [DishController::class, 'forceDelete'])->name('dishes.forceDelete');
-  
+
     //Reservation
     Route::post('reservations/{id}/restore', [ReservationController::class, 'restore'])->name('reservations.restore');
     Route::delete('reservations/{id}/forceDelete', [ReservationController::class, 'forceDelete'])->name('reservations.forceDelete');
-  
+
     //Category
     Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
     Route::delete('categories/{id}/forceDelete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
-  
+
     //Review
     Route::post('reviews/{id}/restore', [ReviewController::class, 'restore'])->name('reviews.restore');
     Route::delete('reviews/{id}/forceDelete', [ReviewController::class, 'forceDelete'])->name('reviews.forceDelete');
-  
+
     //Order
     Route::post('orders/{id}/restore', [OrderController::class, 'restore'])->name('orders.restore');
     Route::delete('orders/{id}/forceDelete', [OrderController::class, 'forceDelete'])->name('orders.forceDelete');

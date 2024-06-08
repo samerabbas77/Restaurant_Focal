@@ -92,14 +92,14 @@
 								<td>{{$review->user->name}}</td>
 								<td>{{$review->comments}}</td>
 								<td>
-                                    
+                                    @can('حذف تقييم')
 									<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 										data-id="{{$review->id}}" 
 										data-name="{{$review->service_rating}}" 
 										data-toggle="modal"
 										 href="#modaldemo9" title="Delete"><i
 											class="las la-trash"></i></a>
-                                      
+                                    @endcan
 								</td>									
 							</tr>
 							@endforeach
@@ -131,12 +131,16 @@
                                     <form action="{{ route('reviews.restore', $review->id) }}" method="POST" style="display:inline-block;">
 									    @method('POST')
                                         @csrf
+										@can('استعادة تقييم')
                                         <button type="submit" class="btn btn-warning">استعادة</button>
+										@endcan
                                     </form>
                                     <form action="{{ route('reviews.forceDelete', $review->id) }}" method="POST" style="display:inline-block;">
                                         @method('DELETE')
                                         @csrf
+										@can('حذف تقييم')
                                         <button type="submit" class="btn btn-danger">حذف نهائي </button>
+										@endcan
 									</form>
                             </td>
                         </tr>

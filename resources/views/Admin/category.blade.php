@@ -96,7 +96,9 @@
 			<div class="col-sm-4 col-md-4">
 		
 			<div class="card-body">
+				@can('اضافة تصنيف')
 				<a class="btn ripple btn-warning" data-target="#modaldemo6" data-toggle="modal" href="">إضافة تصنيف جديد</a>
+				@endcan
 				</div>
 			</div>
 		
@@ -116,19 +118,20 @@
 								    <td>{{$loop->iteration}}</td>
 								    <td>{{$category->name}}</td>
 								    <td>
-                                       
+                                       @can('تعديل تصنيف')
 									   <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
 										   data-id="{{ $category->id }}"
 										   data-name="{{ $category->name }}"
 										   data-toggle="modal"
 										   href="#exampleModal2" title="edit"><i class="las la-pen"></i></a>
-								
+										@endcan
+										@can('حذف تصنيف')
 									    <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 										   data-id="{{ $category->id }}" 
 										   data-name="{{ $category->name }}"
 										   data-toggle="modal" href="#modaldemo9" title="delete"><i
 											  class="las la-trash"></i></a>
-                                      
+										@endcan
 								    </td>									
 							  </tr>
 				            @endforeach
@@ -156,12 +159,16 @@
                                     <form action="{{ route('categories.restore', $category->id) }}" method="POST" style="display:inline-block;">
 									    @method('POST')
                                         @csrf
+										@can('استعادة تصنيف')
                                         <button type="submit" class="btn btn-warning">استعادة</button>
+										@endcan
                                     </form>
                                     <form action="{{ route('categories.forceDelete', $category->id) }}" method="POST" style="display:inline-block;">
                                         @method('DELETE')
                                         @csrf
+										@can('حذف تصنيف')
                                         <button type="submit" class="btn btn-danger">حذف نهائي </button>
+										@endcan
 									</form>
                             </td>
                         </tr>
