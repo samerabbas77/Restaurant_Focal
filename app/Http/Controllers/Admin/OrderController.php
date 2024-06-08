@@ -96,18 +96,22 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, Order $order)
     {
         try {
-
+            $validated = $request->validated();
             $order->table_id = $request->table_id;
             $order->user_id = $request->user_id;
-            $order->dishes()->detach();
-            foreach ($request->dishes as $dishData) {
-                $dish = Dish::find($dishData['id']);
-                if (isset($dishData['name'])) {
-                    $dish->name = $dishData['name'];
-                    $dish->save();
-                }
-                $order->dishes()->attach($dishData['id'], ['quantity' => $dishData['quantity']]);
+            $order->total_price = 0;
+            // $order->dishes()->detach();
+            $totalPrice = 0;
+            foreach ($validated['dishes'] as $dishData) {
+                $dish = Dish::findOrFail($dishData['id']);
+                $quantity = $dishData['quantity'];
+                $order->dishes()->attach($dish->id, ['quantity' => $quantity]);
+                $totalPrice += $dish->price * $quantity;
             }
+
+            $order->total_price = $totalPrice;
+           
+            $order->status = $request->status;
             $order->save();
             session()->flash('edit', 'Edit Successfully');
             return redirect()->route('order.index');

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use DB;
+use Log;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use DB;
-use illuminate\Support\Facades\Log;
 use App\Traits\RoleManagementTrait;
 use App\Traits\UserManagementTrait;
+use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
