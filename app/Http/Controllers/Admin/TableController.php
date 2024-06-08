@@ -11,16 +11,25 @@ use App\Http\Requests\UpdateTableRequest;
 
 class TableController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->middleware(['permission:ادارة الطاولات|الطاولات'])->only('index');
+        $this->middleware(['permission:اضافة طاولة'])->only('store');
+        $this->middleware(['permission:تعديل طاولة'])->only('update');
+        $this->middleware(['permission:حذف طاولة'])->only(['destroy', 'forceDelete']);
+        $this->middleware(['permission:استعادة طاولة'])->only('restore');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        try{
+        try {
             $tables = Table::all();
-            $trachedTables=Table::onlyTrashed()->get();
-        return view('Admin.tables', compact('tables','trachedTables'));}
-        catch (\Exception $e) {
+            $trachedTables = Table::onlyTrashed()->get();
+            return view('Admin.tables', compact('tables', 'trachedTables'));
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }
 
@@ -33,15 +42,13 @@ class TableController extends Controller
     public function store(TableRequest $request)
     {
 
-        try
-        {
-        Table::create($request->validated());
-        session()->flash('Add','Add succsesfuly');
-        return redirect()->route('tables.index');
+        try {
+            Table::create($request->validated());
+            session()->flash('Add', 'Add succsesfuly');
+            return redirect()->route('tables.index');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to create table: ' . $e->getMessage());
         }
-        catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Failed to create table: ' . $e->getMessage());
-    }
 
     }
 
@@ -54,7 +61,7 @@ class TableController extends Controller
 
         try {
             $table->update($request->validated());
-            session()->flash('edit','edit succsesfuly');
+            session()->flash('edit', 'edit succsesfuly');
             return redirect()->route('tables.index');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to update table: ' . $e->getMessage());
@@ -69,30 +76,32 @@ class TableController extends Controller
     {
         try {
             $table->delete();
-            session()->flash('delete','delete succsesfuly');
+            session()->flash('delete', 'delete succsesfuly');
             return redirect()->route('tables.index');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }
 
     }
-        public function restore($id)
-    {    try {
-        $table = Table::withTrashed()->findOrFail($id);
-        $table->restore();
+    public function restore($id)
+    {
+        try {
+            $table = Table::withTrashed()->findOrFail($id);
+            $table->restore();
 
-        return redirect()->route('tables.index')->with('edit', 'Table restored successfully.');}
-    catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
-    }
+            return redirect()->route('tables.index')->with('edit', 'Table restored successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
+        }
     }
     public function forceDelete($id)
-    {    try {
-        $table = Table::withTrashed()->findOrFail($id);
-        $table->forceDelete();
+    {
+        try {
+            $table = Table::withTrashed()->findOrFail($id);
+            $table->forceDelete();
 
-        return redirect()->route('tables.index')->with('delete', 'Table permanently deleted.');}
-        catch (\Exception $e) {
+            return redirect()->route('tables.index')->with('delete', 'Table permanently deleted.');
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }
     }

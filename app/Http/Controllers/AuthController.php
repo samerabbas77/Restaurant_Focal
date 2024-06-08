@@ -16,61 +16,56 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     use ApiTrait;
-    public function register(UserRequest $request){
-        try{
+    public function register(UserRequest $request)
+    {
+        try {
             $user = $request->validated();
-    
+
             $user = User::create([
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'password' => Hash::make($user['password']),
-                'role'=>'["user"]'
+                'role' => ["Customer"]
             ]);
-        
+            $user->assignRole(["Customer"]);
             $token = $user->createToken('authToken')->plainTextToken;
-        
-            return $this->apiResponse(new UserResource($user),$token,'register successfully',200);
-        } 
-        catch(\Throwable $th)
-        {
+
+            return $this->apiResponse(new UserResource($user), $token, 'register successfully', 200);
+        } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            return $this->customeResponse('something wrong with register',400);
+            return $this->customeResponse('something wrong with register', 400);
         }
-    
+
     }
-    public function login(LoginRequest $request){
-       
-        try
-        {
+    public function login(LoginRequest $request)
+    {
+
+        try {
             $user = User::where('email', $request['email'])->firstOrFail();
-    
+
             $token = $user->createToken('authToken')->plainTextToken;
-        
-           return $this->apiResponse(new LoginResource($user),$token,'login success',200);
-        }
-        catch(\Throwable $th)
-        {
+
+            return $this->apiResponse(new LoginResource($user), $token, 'login success', 200);
+        } catch (\Throwable $th) {
             Log::error($th);
-            return $this->customeResponse('something wrong with login',400);
+            return $this->customeResponse('something wrong with login', 400);
 
         }
     }
     public function logout(Request $request)
     {
-        try{
+        try {
             $request->user()->tokens()->delete();
-            return $this->customeResponse('logout success',200);
+            return $this->customeResponse('logout success', 200);
 
-        }
-        catch(\Throwable $th)
-        {
+        } catch (\Throwable $th) {
             Log::error($th);
-            return $this->customeResponse('something wrong with logout',204);
+            return $this->customeResponse('something wrong with logout', 204);
 
         }
-      
+
     }
-    
+
 }
 
 

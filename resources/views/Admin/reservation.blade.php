@@ -89,7 +89,9 @@
 			<div class="col-sm-4 col-md-4">
 
 			<div class="card-body">
+				@can('اضافة حجز')
 				<a class="btn ripple btn-warning" data-target="#modaldemo6" data-toggle="modal" href="">إضافة حجز جديد</a>
+				@endcan
 				</div>
 			</div>
 
@@ -115,7 +117,7 @@
 								    <td>{{$reservation->start_date}}</td>
 								    <td>{{$reservation->end_date}}</td>
 								    <td>
-
+										@can('تعديل حجز')
 									   <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
 										   data-id="{{$reservation->id}}"
 										   data-user_id="{{$reservation->user->id}}"
@@ -124,12 +126,13 @@
 										   data-end_date="{{$reservation->end_date}}"
 										   data-toggle="modal"
 										   href="#exampleModal2" title="edit"><i class="las la-pen"></i></a>
-
+										@endcan
+										@can('حذف حجز')
 									    <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 										   data-id="{{$reservation->id}}"
 										   data-toggle="modal" href="#modaldemo9" title="delete"><i
 											  class="las la-trash"></i></a>
-
+										@endcan
 								    </td>
 							  </tr>
 				            @endforeach
@@ -162,12 +165,16 @@
                                 <td>
                                     <form action="{{ route('reservations.restore', $reservation->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
+										@can('استعادة حجز')
                                         <button type="submit" class="btn btn-warning">استعادة</button>
+										@endcan
                                     </form>
                                     <form action="{{ route('reservations.forceDelete', $reservation->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
+										@can('حذف حجز')
                                         <button type="submit" class="btn btn-danger">حذف نهائي</button>
+										@endcan
                                     </form>
                                 </td>
                             </tr>
