@@ -17,8 +17,9 @@ class Order extends Model
         'status',
     ];
 
+ 
+ 
 
-    public static $searchable = ['user_id', 'table_id', 'total_price', 'status'];
     public function user()
     {
         return $this->belongsTo(User::class);
