@@ -16,6 +16,9 @@ class ClientController extends Controller
         $this->middleware(['permission:اضافة زبون']);
 
     }
+
+//========================================================================================================================
+
     public function index()
     {
         try {
@@ -26,7 +29,7 @@ class ClientController extends Controller
         }
     }
 
-    //========================================================================================================================
+//========================================================================================================================
 
     public function store(UserRequest $request)
     {
@@ -42,12 +45,12 @@ class ClientController extends Controller
             ]);
             $user->assignRole(["Customer"]);
             session()->flash('Add', 'Add Susseccfully');
-            return redirect()->route('client.store');
+            return redirect()->route('client.index');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }
     }
 
-    //========================================================================================================================
+//========================================================================================================================
 
 }
