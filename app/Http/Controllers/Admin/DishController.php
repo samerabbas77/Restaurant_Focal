@@ -26,9 +26,9 @@ class DishController extends Controller
         $this->middleware(['permission:حذف طبق'])->only(['destroy', 'forceDelete']);
         $this->middleware(['permission:استعادة طبق'])->only('restore');
     }
-    /**
-     * Display a listing of the resource.
-     */
+
+//========================================================================================================================
+
     public function index()
     {
         try {
@@ -42,9 +42,8 @@ class DishController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+//========================================================================================================================
+
     public function store(StoreDishRequest $request)
     {
         try {
@@ -69,9 +68,9 @@ class DishController extends Controller
             return redirect()->route('dishes.index')->with('error', 'Failed to create dish: ' . $e->getMessage());
         }
     }
-    /**
-     * Update the specified resource in storage.
-     */
+
+//========================================================================================================================
+
     public function update(UpdateDishRequest $request, Dish $dish)
     {
         try {
@@ -104,9 +103,8 @@ class DishController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+//========================================================================================================================
+
     public function destroy(Dish $dish)
     {
         try {
@@ -130,6 +128,8 @@ class DishController extends Controller
             return redirect()->route('dishes.index')->with('error', 'Failed to delete dish: ' . $e->getMessage());
         }
     }
+
+//========================================================================================================================
 
     //..........soft Delete........................
     public function restore($id)
@@ -157,6 +157,7 @@ class DishController extends Controller
 
     }
 
+//========================================================================================================================
 
     public function forceDelete($id)
     {
@@ -179,5 +180,6 @@ class DishController extends Controller
         }
     }
 
+//========================================================================================================================
 
 }
