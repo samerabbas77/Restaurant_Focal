@@ -129,7 +129,8 @@
 
                                     @can('تعديل طلب')
                                     <a  href="{{ route('order.edit', $order->id) }}" class="btn btn-primary" title="edit"><i class="las la-pen"></i></a>
-
+                                    @endcan
+                                    @can('حذف طلب')
 
                                            <form action="{{route('order.destroy',$order->id)}}" method="POST">
                                             @csrf
@@ -137,7 +138,7 @@
                                             <button>delete</button>
                                         </form>
                                     @endcan
-                                    @can('حذف طلب')
+                                    @can('تفاصيل الطلب')
                                     <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
                                         data-id="{{$order->id}}"
                                         data-toggle="modal"
