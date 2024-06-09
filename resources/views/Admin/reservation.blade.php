@@ -105,6 +105,7 @@
 								<th class="border-bottom-0">رقم الطاولة</th>
 								<th class="border-bottom-0">تاريخ البداية</th>
 								<th class="border-bottom-0">تاريخ النهاية</th>
+								<th class="border-bottom-0">حالة الحجز</th>
 								<th class="border-bottom-0">الأدوات</th>
 							</tr>
 						</thead>
@@ -116,6 +117,7 @@
 								    <td>{{$reservation->table->Number}}</td>
 								    <td>{{$reservation->start_date}}</td>
 								    <td>{{$reservation->end_date}}</td>
+								    <td>{{$reservation->status}}</td>
 								    <td>
 										@can('تعديل حجز')
 									   <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
@@ -124,9 +126,11 @@
 										   data-table_id="{{$reservation->table->Number}}"
 										   data-start_date="{{$reservation->start_date}}"
 										   data-end_date="{{$reservation->end_date}}"
+										   data-status="{{$reservation->status}}"
 										   data-toggle="modal"
 										   href="#exampleModal2" title="edit"><i class="las la-pen"></i></a>
 										@endcan
+
 										@can('حذف حجز')
 									    <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 										   data-id="{{$reservation->id}}"
@@ -140,6 +144,7 @@
 					</table>
 				</div>
 			</div>
+
             <div class="card-body">
                 <div class="table-responsive">
                     <h3>الحجوزات المحذوفة مؤقتا</h3>
@@ -292,6 +297,15 @@
 								<label for="exampleInputEmail1">تاريخ النهاية</label>
 								<input type="date" class="form-control" id="end_date" name="end_date">
 							</div>
+
+							<div class="form-group">
+								<label for="exampleInputEmail1">حالة الحجز</label>
+								<select id="status" name="status" class="form-control">
+									<option value="Chackout" {{ $reservation->status == 'Chackout' ? 'selected' : '' }}>Chackout</option>
+									<option value="Chackin" {{ $reservation->status == 'Chackin' ? 'selected' : '' }}>Chackin</option>
+									<option value="Done" {{ $reservation->status == 'Done' ? 'selected' : '' }}>Done</option>
+								</select>
+							</div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">تعديل</button>
@@ -367,6 +381,8 @@
         var table_id = button.data('table_id')
         var start_date = button.data('start_date')
         var end_date = button.data('end_date')
+        var status = button.data('status')
+
 
         var modal = $(this)
         modal.find('.modal-body #id').val(id);
@@ -374,7 +390,7 @@
         modal.find('.modal-body #table_id').val(table_id);
         modal.find('.modal-body #start_date').val(start_date);
         modal.find('.modal-body #end_date').val(end_date);
-       // modal.find('.modal-body #photo').val(photo);
+        modal.find('.modal-body #status').val(status);
 	})
 </script>
 

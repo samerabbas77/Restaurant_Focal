@@ -30,9 +30,9 @@ class UserController extends Controller
 
 
     }
-    /**
-     * Display a listing of the resource.
-     */
+
+//========================================================================================================================
+
     public function index()
     {
         try {
@@ -44,9 +44,8 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+//========================================================================================================================
+
     public function create()
     {
         try {
@@ -58,9 +57,8 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+//========================================================================================================================
+
     public function store(UserReq $request)
     {
         try {
@@ -74,9 +72,8 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+//========================================================================================================================
+
     public function edit(string $id)
     {
         try {
@@ -91,9 +88,8 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+//========================================================================================================================
+
     public function update(UserReq $request, string $id)
     {
         try {
@@ -107,9 +103,8 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+//========================================================================================================================
+
     public function destroy(string $id)
     {
         try {
@@ -120,4 +115,6 @@ class UserController extends Controller
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
+//========================================================================================================================
+
 }

@@ -18,6 +18,7 @@ class Reservation extends Model
         'table_id',
         'start_date',
         'end_date',
+        'status',
     ];
   
     public function user(){

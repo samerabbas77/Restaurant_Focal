@@ -71,6 +71,7 @@ class PermissionSeeder extends Seeder
             'استعادة تصنيف',
             'استعادة تقييم',
             'حذف تقييم',
+            'تفاصيل الطلب',
 
 
         ];
