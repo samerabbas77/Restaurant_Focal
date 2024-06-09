@@ -352,6 +352,14 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="status">حالة الطلب</label>
+                        <select id="status" name="status" class="form-control">
+                            <option value="accepted" {{ $order->status == 'accept' ? 'selected' : '' }}>Accepted</option>
+                            <option value="not_accepted" {{ $order->status == 'not_accepted' ? 'selected' : '' }}>Not Accepted</option>
+                        </select>
+                    </div>
+
 
                     <div id="edit-dishes"></div>
 

@@ -92,10 +92,11 @@ class OrderController extends Controller
 
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        try {
 
-            $order->table_id = $request->table_id;
-            $order->user_id = $request->user_id;
+        try {
+            $validated = $request->validated();
+            $order->table_id = $validated['table_id'];
+            $order->user_id =  $validated['user_id'];
 
             // $order->total_price = 0;
             // $order->dishes()->detach();
@@ -117,7 +118,7 @@ class OrderController extends Controller
 
           
             $order->total_price = $totalPrice;
-            $order->status = $request->status;
+            $order->status = $validated['status'];
             $order->save();
             $order->dishes()->syncWithoutDetaching($existingDishes);
             session()->flash('edit', 'Edit Successfully');
