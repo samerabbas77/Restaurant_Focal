@@ -4,6 +4,25 @@
 <link href="{{URL::asset('assets/plugins/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
 <!--Internal  treeview -->
 <link href="{{URL::asset('assets/plugins/treeview/treeview-rtl.css')}}" rel="stylesheet" type="text/css" />
+ <!-- Display session errors -->
+ @if (session('error'))
+ <div class="alert alert-danger alert-dismissible fade show" role="alert">
+     <strong>{{ session('error') }}</strong>
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+     </button>
+ </div>
+@endif
+
+<!-- Display Restore,ForceDelet  -->
+@if (session('success'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+   <strong>{{ session('success') }}</strong>
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+       <span aria-hidden="true">&times;</span>
+   </button>
+</div>
+@endif   
 @section('title')
 تعديل الصلاحيات 
 @stop

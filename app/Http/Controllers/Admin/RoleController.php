@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use DB;
-use illuminate\Support\Facades\Log;
 use App\Traits\RoleManagementTrait;
 use App\Traits\UserManagementTrait;
+use illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -79,7 +79,7 @@ class RoleController extends Controller
 
             return view('Admin.roles.show', compact('role', 'rolePermissions'));
         } catch (\Throwable $th) {
-            \Log::error($th);
+            Log::error($th);
             return redirect()->back()->with('error', 'Unable to retrieve role details at this time. Please try again later.');
         }
     }
