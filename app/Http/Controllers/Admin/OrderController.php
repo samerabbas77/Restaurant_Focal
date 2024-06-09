@@ -13,6 +13,7 @@ use App\Http\Requests\OrderRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use Illuminate\Validation\Rules\Exists;
 
 class OrderController extends Controller
 {
@@ -95,20 +96,30 @@ class OrderController extends Controller
             $validated = $request->validated();
             $order->table_id = $request->table_id;
             $order->user_id = $request->user_id;
-            $order->total_price = 0;
-            //$order->dishes()->detach();
+
+            // $order->total_price = 0;
+            // $order->dishes()->detach();
+
             $totalPrice = 0;
             foreach ($validated['dishes'] as $dishData) {
                 $dish = Dish::findOrFail($dishData['id']);
                 $quantity = $dishData['quantity'];
-                $order->dishes()->attach($dish->id, ['quantity' => $quantity]);
+                if($order->dishes->contains($dish->id)){
+                    $order->dishes()->updateExistingPivot($dish->id, ['quantity' => $quantity]);
+                }
+                else{
+
+                    $order->dishes()->attach($dish->id, ['quantity' => $quantity]);;
+                }
                 $totalPrice += $dish->price * $quantity;
+                $existingDishes[$dish->id] = ['quantity' => $quantity];
             }
 
+          
             $order->total_price = $totalPrice;
-           
             $order->status = $request->status;
             $order->save();
+            $order->dishes()->syncWithoutDetaching($existingDishes);
             session()->flash('edit', 'Edit Successfully');
             return redirect()->route('order.index');
         } catch (\Exception $e) {
