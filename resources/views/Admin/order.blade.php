@@ -127,26 +127,37 @@
 								    <td>{{$order->status}}</td>
 								    <td>
 
-                                    @can('تعديل طلب')
-                                    <a  href="{{ route('order.edit', $order->id) }}" class="btn btn-primary" title="edit"><i class="las la-pen"></i></a>
-                                    @endcan
-
-
+                                        @can('تعديل طلب')
+                                        <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
+                                           data-id="{{$order->id}}"
+                                           data-user_id="{{$order->user_id}}"
+                                           data-table_id="{{$order->table_id}}"
+                                           data-dishes="{{ json_encode($order->dishes->pluck('id')->toArray()) }}"
+                                           data-quantities="{{ json_encode($order->dishes->pluck('pivot.quantity')->toArray()) }}"
+                                           data-toggle="modal" 
+                                           data-target="#exampleModal2"
+                                           title="edit">
+                                           <i class="las la-pen"></i>
+                                        </a>
+                                        @endcan
+                                        
+                                        
                                     @can('حذف طلب')
-                                    <form action="{{route('order.destroy',$order->id)}}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button>delete</button>
-                                        </form>
-                                    @endcan
+                                    <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
+                                    data-id="{{$order->id}}"
+                                    data-user_id="{{$order->user_id}}"
+                                    data-toggle="modal"
+                                    href="#modaldemo4"
+                                    title="Delete"><i
+									class="las la-trash"></i></a>
+                                        @endcan
                                     
-                                    @can('تفاصيل الطلب')
                                     <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
                                         data-id="{{$order->id}}"
                                         data-toggle="modal"
                                         data-target="#detailsModal{{$order->id}}"
                                         title="تفاصيل الطلبية">تفاصيل الطلبية</a>
-                                        @endcan
+                                  
 								    </td>
 							  </tr>
 				            @endforeach
@@ -244,7 +255,7 @@
                                 @endforeach
                             </select>
 
-                            <label for="dish_quantity">Quantity</label>
+                            <label for="dish_quantity">الكمية</label>
                             <input type="number" class="form-control" name="dishes[0][quantity]" required>
                         </div>
                     </div>
@@ -303,29 +314,26 @@
 <!--end detils modal -->
 @endforeach
 
-</div>
-<!-- edit modal -->
- <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
+
+  <!-- edit modal -->
+<!-- Edit modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">تعديل الطلب</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Order</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                @if ($orders->isEmpty())
-                <p>No order data</p>
-                @else
-                <div class="modal-body">
                 <form id="updateOrderForm" method="post" autocomplete="off">
+                    @method('PUT')
                     @csrf
 
-                    <div class="form-group">
-                        <input type="hidden" id="updateOrderId" name="order_id" value="">
+                    <input type="hidden" id="updateOrderId" name="order_id" value="">
 
+                    <div class="form-group">
                         <label for="table_id">رقم الطاولة</label>
                         <select id="table_id" name="table_id" class="form-control">
                             <option value="" disabled selected></option>
@@ -345,61 +353,50 @@
                         </select>
                     </div>
 
-                    <div id="dishes">
-                        <div class="form-group dish">
-                            <label for="dish_id">اسم الطبق</label>
-                            <select id="dish_id" name="dishes[0][id]" class="form-control">
-                                <option value="" disabled selected></option>
-                                @foreach($dishes as $dish)
-                                    <option value="{{ $dish->id }}">{{ $dish->name }}</option>
-                                @endforeach
-                            </select>
-
-                            <label for="dish_quantity">Quantity</label>
-                            <input type="number" class="form-control" name="dishes[0][quantity]" required>
-                        </div>
-                    </div>
+                    <div id="edit-dishes"></div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="add-dish">+</button>
-                        <button type="submit" class="btn btn-success">إضافة</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                        <button type="button" class="btn btn-secondary" id="add-edit-dish">+</button>
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
             </div>
-            </form>
         </div>
     </div>
-</div> -->
-<!-- end edit model -->
+</div>
+
+
+
+
 
 
 
 <!-- delete model -->
-
- <div class="modal" id="modaldemo9">
+<div class="modal" id="modaldemo4">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content modal-content-demo">
 			<div class="modal-header">
-				<h6 class="modal-title">حذف الطلب</h6><button aria-label="Close" class="close" data-dismiss="modal"
+				<h6 class="modal-title"> حذف طبق</h6><button aria-label="Close" class="close" data-dismiss="modal"
 					type="button"><span aria-hidden="true">&times;</span></button>
 			</div>
-			<form id="deleteOrderForm" method="post" autocomplete="off" autocomplete="off">
+			<form id="deleteOrderForm" method="post" autocomplete="off">
 				@method('DELETE')
 				@csrf
 				<div class="modal-body">
 					<p>Are you sure you want to delete?</p><br>
-					<input type="hidden" id="deleteOrderId" name="Order_id" value="">
+					<input type="hidden" id="deleteOrderId" name="order_id" value="">				
+					<input class="form-control" name="user_id" id="user_id" value="{{$order->user->name}}" type="text" readonly>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
-					<button type="submit" class="btn btn-danger">حذف</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
+					<button type="submit" class="btn btn-danger">Delete</button>
 				</div>
 		</div>
 		</form>
-		@endif
+		
 	</div>
-</div> -->
+</div>
 
 <!-- end delete model -->
 
@@ -447,21 +444,89 @@
         var id = button.data('id')
         var user_id = button.data('user_id')
         var table_id = button.data('table_id')
-        var start_date = button.data('start_date')
-        var end_date = button.data('end_date')
+        var dishes = button.data('dishes')
+        var quantities = button.data('quantities')
 
         var modal = $(this)
-        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #updateOrderId').val(id);
         modal.find('.modal-body #user_id').val(user_id);
         modal.find('.modal-body #table_id').val(table_id);
-        modal.find('.modal-body #start_date').val(start_date);
-        modal.find('.modal-body #end_date').val(end_date);
-       // modal.find('.modal-body #photo').val(photo);
-	})
-</script>
 
+        // Clear existing dish fields
+        $('#edit-dishes').empty();
+
+        // Add dish fields with existing values
+        for (var i = 0; i < dishes.length; i++) {
+            var dishId = dishes[i];
+            var quantity = quantities[i];
+
+            var newDishDiv = `
+                <div class="form-group dish">
+                    <label for="dish_id">اسم الطبق</label>
+                    <select name="dishes[${i}][id]" class="form-control">
+                        <option value="" disabled></option>
+                        @foreach($dishes as $dish)
+                            <option value="{{ $dish->id }}" ${dishId == {{ $dish->id }} ? 'selected' : ''}>{{ $dish->name }}</option>
+                        @endforeach
+                    </select>
+                    <label for="dish_quantity">الكمية</label>
+                    <input type="number" class="form-control" name="dishes[${i}][quantity]" value="${quantity}" required>
+                    <button type="button" class="btn btn-danger remove-dish">إزالة</button>
+                </div>
+            `;
+
+            $('#edit-dishes').append(newDishDiv);
+        }
+
+        // Add event listener for the remove buttons
+        document.querySelectorAll('.remove-dish').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const dishDiv = button.closest('.dish');
+                dishDiv.parentNode.removeChild(dishDiv);
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let dishIndex = 1;
+
+        document.getElementById('add-edit-dish').addEventListener('click', function() {
+            const dishesDiv = document.getElementById('edit-dishes');
+            const newDishDiv = document.createElement('div');
+            newDishDiv.classList.add('form-group', 'dish');
+
+            newDishDiv.innerHTML = `
+                <label for="dish_id">اسم الطبق</label>
+                <select name="dishes[${dishIndex}][id]" class="form-control">
+                    <option value="" disabled selected></option>
+                    @foreach($dishes as $dish)
+                        <option value="{{ $dish->id }}">{{ $dish->name }}</option>
+                    @endforeach
+                </select>
+                <label for="dish_quantity">الكمية</label>
+                <input type="number" class="form-control" name="dishes[${dishIndex}][quantity]" required>
+                <button type="button" class="btn btn-danger remove-dish">إزالة</button>
+            `;
+
+            dishesDiv.appendChild(newDishDiv);
+
+            newDishDiv.querySelector('.remove-dish').addEventListener('click', function() {
+                dishesDiv.removeChild(newDishDiv);
+            });
+
+            dishIndex++;
+        });
+
+        document.querySelectorAll('.remove-dish').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const dishDiv = button.closest('.dish');
+                dishDiv.parentNode.removeChild(dishDiv);
+            });
+        });
+    });
+</script>
 <script>
-    $('#modaldemo9').on('show.bs.modal', function(event) {
+    $('#modaldemo4').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)
         var id = button.data('id')
 
@@ -495,50 +560,5 @@
     });
 </script>
 
-
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    let dishIndex = 1;
-
-    document.getElementById('add-dish').addEventListener('click', function() {
-        const dishesDiv = document.getElementById('dishes');
-        const newDishDiv = document.createElement('div');
-        newDishDiv.classList.add('form-group', 'dish');
-
-        newDishDiv.innerHTML = `
-            <label for="dish_id">اسم الطبق</label>
-            <select name="dishes[${dishIndex}][id]" class="form-control">
-                <option value="" disabled selected></option>
-                @foreach($dishes as $dish)
-                    <option value="{{ $dish->id }}">{{ $dish->name }}</option>
-                @endforeach
-            </select>
-
-            <label for="dish_quantity">Quantity</label>
-            <input type="number" class="form-control" name="dishes[${dishIndex}][quantity]" required>
-
-            <button type="button" class="btn btn-danger remove-dish">إزالة</button>
-        `;
-
-        dishesDiv.appendChild(newDishDiv);
-
-        newDishDiv.querySelector('.remove-dish').addEventListener('click', function() {
-            dishesDiv.removeChild(newDishDiv);
-        });
-
-        dishIndex++;
-    });
-
-    document.querySelectorAll('.remove-dish').forEach(function(button) {
-        button.addEventListener('click', function() {
-            const dishDiv = button.closest('.dish');
-            dishDiv.parentNode.removeChild(dishDiv);
-        });
-    });
-});
-</script>
 
 @endsection

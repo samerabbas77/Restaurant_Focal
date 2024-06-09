@@ -332,7 +332,7 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content modal-content-demo">
 			<div class="modal-header">
-				<h6 class="modal-title">Delete Company</h6><button aria-label="Close" class="close" data-dismiss="modal"
+				<h6 class="modal-title"> حذف طبق</h6><button aria-label="Close" class="close" data-dismiss="modal"
 					type="button"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<form id="deleteDishForm" method="post" autocomplete="off">

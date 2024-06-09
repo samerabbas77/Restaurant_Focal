@@ -93,7 +93,7 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, Order $order)
     {
         try {
-            $validated = $request->validated();
+
             $order->table_id = $request->table_id;
             $order->user_id = $request->user_id;
 

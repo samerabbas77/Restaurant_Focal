@@ -22,7 +22,7 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>['required','regex:/^[a-zA-Z]+$/','max:40']
+            'name' => ['required', 'regex:/^[a-zA-Z\s]+$/', 'max:40']
         ];
     }
     public function messages(): array
