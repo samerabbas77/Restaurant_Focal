@@ -29,7 +29,7 @@
         </div>
 
         <div class="form-group">
-            <label for="user_id">Customer Email</label>
+            <label for="user_id">ايميل الزبون</label>
             <select id="user_id" name="user_id" class="form-control">
                 @foreach($users as $user)
                     <option value="{{ $user->id }}" {{ $user->id == $order->user_id ? 'selected' : '' }}>
@@ -39,9 +39,9 @@
             </select>
         </div>
 
-        <div id="dishes">
+        <div id="orders">
             @foreach($order->dishes as $index => $dish)
-                <div class="form-group dish">
+                <div class="form-group dish"> <!-- Adding class 'dish' here -->
                     <label for="dish_id_{{ $index }}">اسم الطبق</label>
                     <select id="dish_id_{{ $index }}" name="dishes[{{ $index }}][id]" class="form-control">
                         @foreach($dishes as $dishOption)
@@ -51,14 +51,23 @@
                         @endforeach
                     </select>
 
-                    
-
-                    <label for="dish_quantity_{{ $index }}">Quantity</label>
+                    <label for="dish_quantity_{{ $index }}">الكمية</label>
                     <input type="number" id="dish_quantity_{{ $index }}" name="dishes[{{ $index }}][quantity]" class="form-control" value="{{ $dish->pivot->quantity }}" required>
                 </div>
             @endforeach
         </div>
-
+        
+        <div class="form-group">
+            <label for="status">حالة الطلب</label>
+            <select id="status" name="status" class="form-control">
+                <option value="In Queue" {{ $order->status == 'In Queue' ? 'selected' : '' }}>In Queue</option>
+                <option value="Order Received" {{ $order->status == 'Order Received' ? 'selected' : '' }}>Order Received</option>
+                <option value="Completed" {{ $order->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" id="addOrder">Add New Order</button>
+        </div>
         <div class="form-group">
             <button type="submit" class="btn btn-success">حفظ التعديلات</button>
             <a href="{{ route('order.index') }}" class="btn btn-secondary">إلغاء</a>
@@ -67,10 +76,28 @@
 </div>
 @endsection
 
+
 @section('js')
+<script>
+    $(document).ready(function(){
+        var orderIndex = {{ count($order->dishes) }};
+        
+        $('#addOrder').click(function(){
+            var newOrder = $('.dish:first').clone();
+            newOrder.find('select').each(function(){
+                var newIndex = orderIndex++;
+             
+            });
+            newOrder.find('input[type="number"]').each(function(){
+                var newIndex = orderIndex++;
+             
+            });
+            $('#orders').append(newOrder);
+        });
+        $('#addOrder').on('click', function() {
+            orderIndex++;
+        });
+    });
+</script>
 
 @endsection
-
-@php
-    $noSidebar = true;
-@endphp

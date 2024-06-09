@@ -121,7 +121,8 @@
 								<th class="border-bottom-0">السعر</th>								
 								<th class="border-bottom-0">الوصف</th>								
 								<th class="border-bottom-0">الصنف</th>								
-								<th class="border-bottom-0">الصورة</th>								
+								<th class="border-bottom-0">الصورة</th>															
+								<th class="border-bottom-0">الأدوات</th>								
 							</tr>
 						</thead>
 						<tbody>

@@ -18,9 +18,9 @@ class CategoryController extends Controller
         $this->middleware(['permission:حذف تصنيف'])->only(['destroy', 'forceDelete']);
         $this->middleware(['permission:استعادة تصنيف'])->only('restore');
     }
-    /**
-     * Display a listing of the resource.
-     */
+
+//========================================================================================================================
+
     public function index()
     {
         try {
@@ -32,11 +32,8 @@ class CategoryController extends Controller
         }
     }
 
+//========================================================================================================================
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCategoryRequest $request)
     {
 
@@ -52,15 +49,8 @@ class CategoryController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+//========================================================================================================================
 
-
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(StoreCategoryRequest $request, Category $category)
     {
         try {
@@ -74,9 +64,8 @@ class CategoryController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+//========================================================================================================================
+
     public function destroy(Category $category)
     {
         try {
@@ -87,6 +76,9 @@ class CategoryController extends Controller
             return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
+
+//========================================================================================================================
+
     public function restore($id)
     {
         try {
@@ -98,6 +90,9 @@ class CategoryController extends Controller
             return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
+
+//========================================================================================================================
+
     public function forceDelete($id)
     {
         try {
@@ -109,4 +104,7 @@ class CategoryController extends Controller
             return redirect()->back()->with('error', 'Failed to delete category: ' . $th->getMessage());
         }
     }
+    
+//========================================================================================================================
+
 }

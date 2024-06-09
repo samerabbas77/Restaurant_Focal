@@ -15,13 +15,11 @@ class Dish extends Model
        'price',
        'descraption',
        'photo',
-       'cat_id',
-      
+       'cat_id',      
     ];
 
     protected $dates = ['deleted_at']; 
 
-    public static $searchable = ['name','price','descraption','photo','cat_id',];
     
     //This fuction to find path of the photo store in project to delete it when i delete its row
     public function getPhotoPathAttribute()

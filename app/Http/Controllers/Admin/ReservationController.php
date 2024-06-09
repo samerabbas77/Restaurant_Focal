@@ -22,6 +22,9 @@ class ReservationController extends Controller
         $this->middleware(['permission:حذف حجز'])->only(['destroy', 'forceDelete']);
         $this->middleware(['permission:استعادة حجز'])->only('restore');
     }
+
+//========================================================================================================================
+
     public function index()
     {
         try {
@@ -37,7 +40,7 @@ class ReservationController extends Controller
         }
     }
 
-    //========================================================================================================================
+//========================================================================================================================
 
     public function store(ReservationRequest $request)
     {
@@ -50,16 +53,17 @@ class ReservationController extends Controller
             $reservation->table_id = $request->table_id;
             $reservation->start_date = $request->start_date;
             $reservation->end_date = $request->end_date;
+            $reservation->status = 'Chackout';
             $reservation->save();
 
             session()->flash('Add', 'Add Susseccfully');
-            return redirect()->route('reservation.store');
+            return redirect()->route('reservation.index');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }
     }
 
-    //========================================================================================================================
+//========================================================================================================================
 
     public function update(Reservation_updateRequest $request, Reservation $reservation)
     {
@@ -71,6 +75,7 @@ class ReservationController extends Controller
             $reservation->table_id = $request->table_id;
             $reservation->start_date = $request->start_date;
             $reservation->end_date = $request->end_date;
+            $reservation->status = $request->status;
             $reservation->save();
 
             session()->flash('edit', 'ُEdit Susseccfully');
@@ -80,7 +85,7 @@ class ReservationController extends Controller
         }
     }
 
-    //========================================================================================================================
+//========================================================================================================================
 
     public function destroy(Reservation $reservation)
     {
@@ -94,7 +99,8 @@ class ReservationController extends Controller
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }
     }
-    //========================================================================================================================
+
+//========================================================================================================================
 
     public function restore($id)
     {
@@ -109,6 +115,8 @@ class ReservationController extends Controller
         }
     }
 
+//========================================================================================================================
+
     public function forceDelete($id)
     {
         try {
@@ -121,5 +129,7 @@ class ReservationController extends Controller
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }
     }
+    
+//========================================================================================================================
 
 }

@@ -25,6 +25,9 @@ class OrderController extends Controller
         $this->middleware(['permission:حذف طلب'])->only(['destroy', 'forceDelete']);
         $this->middleware(['permission:استعادة طلب'])->only('restore');
     }
+
+//========================================================================================================================
+
     public function index()
     {
         try {
@@ -40,12 +43,7 @@ class OrderController extends Controller
         }
     }
 
-    //========================================================================================================================
-
-    public function show()
-    {
-
-    }
+//========================================================================================================================
     public function store(OrderRequest $request)
     {
         try {
@@ -55,7 +53,7 @@ class OrderController extends Controller
             $order->user_id = $validated['user_id'];
             $order->table_id = $validated['table_id'];
             $order->total_price = 0;
-            $order->status = 'accept';
+            $order->status = 'In Queue';
             $order->save();
 
             $totalPrice = 0;
@@ -78,7 +76,7 @@ class OrderController extends Controller
         }
     }
 
-    //========================================================================================================================
+//========================================================================================================================
 
     public function edit($id)
     {
@@ -89,25 +87,27 @@ class OrderController extends Controller
         return view('Admin.orders_edit', compact('order', 'tables', 'users', 'dishes'));
     }
 
-    //========================================================================================================================
-
-
+//========================================================================================================================
 
     public function update(UpdateOrderRequest $request, Order $order)
     {
         try {
-
+            $validated = $request->validated();
             $order->table_id = $request->table_id;
             $order->user_id = $request->user_id;
-            $order->dishes()->detach();
-            foreach ($request->dishes as $dishData) {
-                $dish = Dish::find($dishData['id']);
-                if (isset($dishData['name'])) {
-                    $dish->name = $dishData['name'];
-                    $dish->save();
-                }
-                $order->dishes()->attach($dishData['id'], ['quantity' => $dishData['quantity']]);
+            $order->total_price = 0;
+            //$order->dishes()->detach();
+            $totalPrice = 0;
+            foreach ($validated['dishes'] as $dishData) {
+                $dish = Dish::findOrFail($dishData['id']);
+                $quantity = $dishData['quantity'];
+                $order->dishes()->attach($dish->id, ['quantity' => $quantity]);
+                $totalPrice += $dish->price * $quantity;
             }
+
+            $order->total_price = $totalPrice;
+           
+            $order->status = $request->status;
             $order->save();
             session()->flash('edit', 'Edit Successfully');
             return redirect()->route('order.index');
@@ -116,9 +116,7 @@ class OrderController extends Controller
         }
     }
 
-
-
-    //========================================================================================================================
+//========================================================================================================================
 
     public function destroy(Order $order)
     {
@@ -131,7 +129,8 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
-    //========================================================================================================================
+
+//========================================================================================================================
     public function restore($id)
     {
         try {
@@ -143,6 +142,8 @@ class OrderController extends Controller
         }
     }
 
+//========================================================================================================================
+
     public function forceDelete($id)
     {
         try {
@@ -153,4 +154,7 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Failed to delete Order: ' . $e->getMessage());
         }
     }
+    
+//========================================================================================================================
+
 }

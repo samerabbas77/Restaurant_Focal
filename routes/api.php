@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApiController\DishController;
+use App\Http\Controllers\ApiController\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -16,9 +18,17 @@ use App\Http\Controllers\AuthController;
 */
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/all_dishes' , [DishController::class,'all_dishes']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::post('/add_order',[OrderController::class,'add_order']);
+    Route::get('/all_order',[OrderController::class,'all_order']);
+    Route::get('/details_order/{id}',[OrderController::class,'details_order']);
+
 });
