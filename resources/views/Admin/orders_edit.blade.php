@@ -60,8 +60,9 @@
         <div class="form-group">
             <label for="status">حالة الطلب</label>
             <select id="status" name="status" class="form-control">
-                <option value="accepted" {{ $order->status == 'accept' ? 'selected' : '' }}>Accepted</option>
-                <option value="not_accepted" {{ $order->status == 'not_accepted' ? 'selected' : '' }}>Not Accepted</option>
+                <option value="In Queue" {{ $order->status == 'In Queue' ? 'selected' : '' }}>In Queue</option>
+                <option value="Order Received" {{ $order->status == 'Order Received' ? 'selected' : '' }}>Order Received</option>
+                <option value="Completed" {{ $order->status == 'Completed' ? 'selected' : '' }}>Completed</option>
             </select>
         </div>
         <div class="form-group">

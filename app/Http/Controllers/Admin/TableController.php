@@ -20,9 +20,9 @@ class TableController extends Controller
         $this->middleware(['permission:حذف طاولة'])->only(['destroy', 'forceDelete']);
         $this->middleware(['permission:استعادة طاولة'])->only('restore');
     }
-    /**
-     * Display a listing of the resource.
-     */
+
+//========================================================================================================================
+
     public function index()
     {
         try {
@@ -35,10 +35,8 @@ class TableController extends Controller
 
     }
 
+//========================================================================================================================
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(TableRequest $request)
     {
 
@@ -52,10 +50,8 @@ class TableController extends Controller
 
     }
 
+//========================================================================================================================
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateTableRequest $request, Table $table)
     {
 
@@ -69,9 +65,8 @@ class TableController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+//========================================================================================================================
+
     public function destroy(Table $table)
     {
         try {
@@ -83,6 +78,9 @@ class TableController extends Controller
         }
 
     }
+
+//========================================================================================================================
+
     public function restore($id)
     {
         try {
@@ -94,6 +92,9 @@ class TableController extends Controller
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }
     }
+
+//========================================================================================================================
+
     public function forceDelete($id)
     {
         try {
@@ -105,5 +106,7 @@ class TableController extends Controller
             return redirect()->back()->with('error', 'Failed to delete table: ' . $e->getMessage());
         }
     }
+
+//========================================================================================================================
 
 }

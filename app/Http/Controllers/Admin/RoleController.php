@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use DB;
-use Log;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Traits\RoleManagementTrait;
 use App\Traits\UserManagementTrait;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
 
@@ -24,9 +24,9 @@ class RoleController extends Controller
         $this->middleware(['role:Admin', 'permission:تعديل صلاحية'])->only(['edit', 'update']);
         $this->middleware(['role:Admin', 'permission:حذف صلاحية'])->only('destroy');
     }
-    /**
-     * Display a listing of the resource.
-     */
+    
+//========================================================================================================================
+
     public function index(Request $request)
     {
         try {
@@ -38,9 +38,8 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+//========================================================================================================================
+
     public function create()
     {
         try {
@@ -52,9 +51,8 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+//========================================================================================================================
+
     public function store(RoleRequest $request)
     {
         try {
@@ -67,9 +65,8 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+//========================================================================================================================
+
     public function show(string $id)
     {
         try {
@@ -79,14 +76,13 @@ class RoleController extends Controller
 
             return view('Admin.roles.show', compact('role', 'rolePermissions'));
         } catch (\Throwable $th) {
-            \Log::error($th);
+            Log::error($th);
             return redirect()->back()->with('error', 'Unable to retrieve role details at this time. Please try again later.');
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+//========================================================================================================================
+
     public function edit(string $id)
     {
         $role = Role::find($id);
@@ -97,9 +93,8 @@ class RoleController extends Controller
         return view('Admin.roles.edit', compact('role', 'permission', 'rolePermissions'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+//========================================================================================================================
+
     public function update(RoleRequest $request, string $id)
     {
         try {
@@ -115,9 +110,8 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+//========================================================================================================================
+
     public function destroy(string $id)
     {
         try {
@@ -129,4 +123,7 @@ class RoleController extends Controller
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
+
+//========================================================================================================================
+
 }

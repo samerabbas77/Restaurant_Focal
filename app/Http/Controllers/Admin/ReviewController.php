@@ -15,6 +15,9 @@ class ReviewController extends Controller
         $this->middleware(['permission:حذف تقييم'])->only(['destroy', 'forceDelete']);
         $this->middleware(['permission:استعادة تقييم'])->only('restore');
     }
+
+//========================================================================================================================
+
     public function index()
     {
         try {
@@ -27,7 +30,7 @@ class ReviewController extends Controller
 
     }
 
-    //========================================================================================================================
+//========================================================================================================================
     public function destroy(Review $review)
     {
         try {
@@ -39,7 +42,7 @@ class ReviewController extends Controller
         }
     }
 
-    //========================================================================================================================
+//========================================================================================================================
     public function restore($id)
     {
         try {
@@ -51,6 +54,9 @@ class ReviewController extends Controller
             return redirect()->back()->with('error', 'Failed to delete Review: ' . $th->getMessage());
         }
     }
+
+//========================================================================================================================
+
     public function forceDelete($id)
     {
         try {
@@ -62,4 +68,7 @@ class ReviewController extends Controller
             return redirect()->back()->with('error', 'Failed to delete Review: ' . $th->getMessage());
         }
     }
+    
+//========================================================================================================================
+
 }
