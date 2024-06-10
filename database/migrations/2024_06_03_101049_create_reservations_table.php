@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('table_id')->constrained('tables');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->enum('status',['Chackout','Chackin','Done']);
             $table->softDeletes();
             $table->timestamps();

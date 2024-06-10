@@ -3,11 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Order;
+use App\Models\Table;
+use App\Models\Review;
+use App\Models\reservation;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -53,12 +57,15 @@ class User extends Authenticatable
 
     public function reservations()
     {
-        return $this->hasMany(Reservation::class);
+        return $this->hasMany(reservation::class);
     }
 
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
-
+    public function tables()
+    {
+        return $this->hasMany(Table::class);
+    }
 }
