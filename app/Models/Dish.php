@@ -18,8 +18,7 @@ class Dish extends Model
        'cat_id',      
     ];
 
-    protected $dates = ['deleted_at']; 
-
+ 
     
     //This fuction to find path of the photo store in project to delete it when i delete its row
     public function getPhotoPathAttribute()
@@ -29,7 +28,7 @@ class Dish extends Model
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'dish_order')->withPivot('quantity');
+        return $this->belongsToMany(Order::class)->using(DishOrder::class)->withPivot('quantity','deleted_at')->withTimestamps();
     }
  
     public function category()

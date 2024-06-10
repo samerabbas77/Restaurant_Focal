@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\ApiRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateOrderRequest extends FormRequest
+class ApiUpdateOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,11 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'exists:users,id',
-            'table_id' => 'exists:tables,id',
-            'status' => 'required',
-            'dishes' => 'array',
-            'dishes.*.id' => 'exists:dishes,id',
-            'dishes.*.quantity' => 'integer|min:1',
+            'table_id' => 'required|exists:tables,id',
+            'dishes' => 'required|array',
+            'dishes.*.id' => 'required|exists:dishes,id',
+            'dishes.*.quantity' => 'required|integer|min:1',
         ];
     }
+    
 }

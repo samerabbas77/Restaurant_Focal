@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $dates = ['deleted_at'];
     protected $fillable = [
         'user_id',
         'table_id',
@@ -25,7 +24,7 @@ class Order extends Model
 
     public function dishes()
     {
-        return $this->belongsToMany(Dish::class, 'dish_order')->withPivot('quantity');
+        return $this->belongsToMany(Dish::class)->using(DishOrder::class)->withPivot('quantity','deleted_at')->withTimestamps();
     }
 
 }

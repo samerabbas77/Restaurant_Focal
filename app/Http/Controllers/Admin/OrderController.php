@@ -48,30 +48,35 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         try {
-            $validated = $request->validated();
+            $check_reservation = Reservation::where('status','Chackin')
+                                             ->exists();
+            
+            if($check_reservation){ 
 
-            $order = new Order();
-            $order->user_id = $validated['user_id'];
-            $order->table_id = $validated['table_id'];
-            $order->total_price = 0;
-            $order->status = 'In Queue';
-            $order->save();
+                $validated = $request->validated();
 
-            $totalPrice = 0;
+                $order = new Order();
+                $order->user_id = $validated['user_id'];
+                $order->table_id = $validated['table_id'];
+                $order->total_price = 0;
+                $order->status = 'In Queue';
+                $order->save();
 
-            foreach ($validated['dishes'] as $dishData) {
-                $dish = Dish::findOrFail($dishData['id']);
-                $quantity = $dishData['quantity'];
-                $order->dishes()->attach($dish->id, ['quantity' => $quantity]);
-                $totalPrice += $dish->price * $quantity;
-            }
+                $totalPrice = 0;
 
-            $order->total_price = $totalPrice;
-            $order->save();
+                foreach ($validated['dishes'] as $dishData) {
+                    $dish = Dish::findOrFail($dishData['id']);
+                    $quantity = $dishData['quantity'];
+                    $order->dishes()->attach($dish->id, ['quantity' => $quantity]);
+                    $totalPrice += $dish->price * $quantity;
+                }
 
-            session()->flash('Add', 'Add created successfully');
+                $order->total_price = $totalPrice;
+                $order->save();
+
+                session()->flash('Add', 'Add created successfully');
+            } 
             return redirect()->route('order.index');
-
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'حدث خطأ: ' . $e->getMessage());
         }
@@ -90,50 +95,59 @@ class OrderController extends Controller
 
 //========================================================================================================================
 
-    public function update(UpdateOrderRequest $request, Order $order)
-    {
+public function update(UpdateOrderRequest $request, Order $order)
+{
+    try {
+        $check_order = Order::where('status','In Queue')
+                                             ->exists();
+            
+        if($check_order){
 
-        try {
             $validated = $request->validated();
-            $order->table_id = $validated['table_id'];
-            $order->user_id =  $validated['user_id'];
 
-            // $order->total_price = 0;
-            // $order->dishes()->detach();
+            $order->table_id = $validated['table_id'];
+            $order->user_id = $validated['user_id'];
+            $order->status = $validated['status'];
 
             $totalPrice = 0;
+            $existingDishes = [];
             foreach ($validated['dishes'] as $dishData) {
                 $dish = Dish::findOrFail($dishData['id']);
                 $quantity = $dishData['quantity'];
-                if($order->dishes->contains($dish->id)){
-                    $order->dishes()->updateExistingPivot($dish->id, ['quantity' => $quantity]);
-                }
-                else{
 
-                    $order->dishes()->attach($dish->id, ['quantity' => $quantity]);;
+                if ($order->dishes->contains($dish->id)) {
+                    $order->dishes()->updateExistingPivot($dish->id, ['quantity' => $quantity]);
+                } else {
+                    $order->dishes()->attach($dish->id, ['quantity' => $quantity]);
                 }
+
                 $totalPrice += $dish->price * $quantity;
                 $existingDishes[$dish->id] = ['quantity' => $quantity];
             }
 
-          
+            $order->dishes()->sync($existingDishes);
+
             $order->total_price = $totalPrice;
-            $order->status = $validated['status'];
             $order->save();
-            $order->dishes()->syncWithoutDetaching($existingDishes);
+
             session()->flash('edit', 'Edit Successfully');
-            return redirect()->route('order.index');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
+        return redirect()->route('order.index');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
     }
+}
+
 
 //========================================================================================================================
 
     public function destroy(Order $order)
     {
         try {
-            $order->dishes()->detach();
+            foreach ($order->dishes as $dish) {
+                $order->dishes()->updateExistingPivot($dish->id, ['deleted_at' => now()]);
+            }
+
             $order->delete();
             session()->flash('delete', 'Delete successfully');
             return redirect()->route('order.index');
@@ -146,8 +160,12 @@ class OrderController extends Controller
     public function restore($id)
     {
         try {
+            
             $order = Order::withTrashed()->findOrFail($id);
             $order->restore();
+
+            DishOrder::restoreDisheOrders($order->id);
+
             return redirect()->route('order.index')->with('edit', 'Order restored successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete Order: ' . $e->getMessage());
