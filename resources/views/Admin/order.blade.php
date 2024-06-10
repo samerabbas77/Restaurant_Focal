@@ -134,6 +134,7 @@
                                            data-table_id="{{$order->table_id}}"
                                            data-dishes="{{ json_encode($order->dishes->pluck('id')->toArray()) }}"
                                            data-quantities="{{ json_encode($order->dishes->pluck('pivot.quantity')->toArray()) }}"
+                                           data-status="{{$order->status}}"
                                            data-toggle="modal" 
                                            data-target="#exampleModal2"
                                            title="edit">
@@ -150,7 +151,7 @@
                                     href="#modaldemo4"
                                     title="Delete"><i
 									class="las la-trash"></i></a>
-                                        @endcan
+                                    @endcan
                                     
                                     <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
                                         data-id="{{$order->id}}"
@@ -355,11 +356,12 @@
                     <div class="form-group">
                         <label for="status">حالة الطلب</label>
                         <select id="status" name="status" class="form-control">
-                            <option value="accepted" {{ $order->status == 'accept' ? 'selected' : '' }}>Accepted</option>
-                            <option value="not_accepted" {{ $order->status == 'not_accepted' ? 'selected' : '' }}>Not Accepted</option>
+                            <option value="In Queue" {{ $order->status == 'In Queue' ? 'selected' : '' }}>In Queue</option>
+                            <option value="Order Received" {{ $order->status == 'Order Received' ? 'selected' : '' }}>Order Received</option>
+                            <option value="Completed" {{ $order->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+
                         </select>
                     </div>
-
 
                     <div id="edit-dishes"></div>
 
@@ -393,8 +395,10 @@
 				@csrf
 				<div class="modal-body">
 					<p>Are you sure you want to delete?</p><br>
+                    @foreach($orders as $order)
 					<input type="hidden" id="deleteOrderId" name="order_id" value="">				
 					<input class="form-control" name="user_id" id="user_id" value="{{$order->user->name}}" type="text" readonly>
+                    @endforeach
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
@@ -454,11 +458,13 @@
         var table_id = button.data('table_id')
         var dishes = button.data('dishes')
         var quantities = button.data('quantities')
+        var status = button.data('status')
 
         var modal = $(this)
         modal.find('.modal-body #updateOrderId').val(id);
         modal.find('.modal-body #user_id').val(user_id);
         modal.find('.modal-body #table_id').val(table_id);
+        modal.find('.modal-body #status').val(status);
 
         // Clear existing dish fields
         $('#edit-dishes').empty();
@@ -533,6 +539,8 @@
         });
     });
 </script>
+
+
 <script>
     $('#modaldemo4').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)

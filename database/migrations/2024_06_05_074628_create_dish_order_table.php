@@ -18,6 +18,7 @@ return new class extends Migration
         $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         $table->foreign('dish_id')->references('id')->on('dishes')->onDelete('cascade');
         $table->integer('quantity');
+        $table->softDeletes();
         $table->timestamps();
     });
 }

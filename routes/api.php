@@ -27,8 +27,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::post('/add_order',[OrderController::class,'add_order']);
+    //order============================================================================
     Route::get('/all_order',[OrderController::class,'all_order']);
+    Route::post('/add_order',[OrderController::class,'add_order']);
     Route::get('/details_order/{id}',[OrderController::class,'details_order']);
+    Route::post('/update_order/{id}',[OrderController::class,'update_order']);
+    Route::post('/delete_order/{id}',[OrderController::class,'delete_order']);
 
 });
