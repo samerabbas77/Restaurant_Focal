@@ -24,9 +24,10 @@ class Reservation_updateRequest extends FormRequest
         return [
             'user_id' => 'exists:users,id',
             'table_id' => 'exists:tables,id',
-            'start_date' => 'date',
-            'end_date' => 'date',
+            'start_date' => 'date_format:Y-m-d\TH:i',
+            'end_date' => 'date_format:Y-m-d\TH:i',
+            
         ];
     }
-    
+
 }
