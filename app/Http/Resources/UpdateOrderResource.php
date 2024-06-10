@@ -19,7 +19,7 @@ class UpdateOrderResource extends JsonResource
             'table number' => $this->table_id,
             'total price' => $this->total_price,
             'status' => $this->status,
-            'dishes' => $this->dishes->map(function ($dish) {
+            'dishes' =>$this->dishes->map(function ($dish) {
                 return [
                     'name' => $dish->name,
                     'price' => $dish->price,

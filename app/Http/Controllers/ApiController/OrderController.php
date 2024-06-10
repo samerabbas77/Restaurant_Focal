@@ -107,51 +107,40 @@ public function details_order($id)
 public function update_order(ApiUpdateOrderRequest $request, $id)
 {
     try {
+        $check_order = Order::where('user_id', Auth::user()->id)
+                            ->where('status', 'In Queue')
+                            ->exists();
 
-        $check_order = Order::where('user_id',Auth::user()->id)
-                                             ->where('status','In Queue')
-                                             ->exists();
-            
-        if($check_order){
-
+        if ($check_order) {
             $dishes = $request->input('dishes');
-
-            $order = order::findOrFail($id);
+            $order = Order::findOrFail($id);
 
             $order->table_id = $request->table_id;
 
             $totalPrice = 0;
-            $existingDishes = [];
+            $syncData = [];
             foreach ($dishes as $dishData) {
                 $dish = Dish::findOrFail($dishData['id']);
                 $quantity = $dishData['quantity'];
-
-                if ($order->dishes->contains($dish->id)) {
-                    $order->dishes()->updateExistingPivot($dish->id, ['quantity' => $quantity]);
-                } else {
-                    $order->dishes()->attach($dish->id, ['quantity' => $quantity]);
-                }
-
+                
+                $syncData[$dish->id] = ['quantity' => $quantity];
                 $totalPrice += $dish->price * $quantity;
-                $existingDishes[$dish->id] = ['quantity' => $quantity];
             }
-
-            $order->dishes()->sync($existingDishes);
 
             $order->total_price = $totalPrice;
             $order->save();
-            $order->dishes()->syncWithoutDetaching($existingDishes);
+            $order->dishes()->sync($syncData);
 
-            return $this->Response(new UpdateOrderResource($order),"order update successfully",201);
-        }else{
-            return $this->customeResponse("your status order is 'Order Received' or 'Completed' ,you cant not update this order",201);
-        } 
-
+            return $this->Response(new UpdateOrderResource($order), "Order updated successfully", 201);
+        } else {
+            return $this->customeResponse("Your status order is 'Order Received' or 'Completed', you cannot update this order", 201);
+        }
     } catch (\Throwable $th) {
         Log::error($th->getMessage());
-        return $this->customeResponse('Something went wrong with updating order ', 400);
+        return $this->customeResponse('Something went wrong with updating the order', 400);
     }
 }
+
 
 //========================================================================================================================
 

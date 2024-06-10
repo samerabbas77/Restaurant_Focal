@@ -27,9 +27,10 @@ class Dish extends Model
     }
 
     public function orders()
-    {
-        return $this->belongsToMany(Order::class)->using(DishOrder::class)->withPivot('quantity','deleted_at')->withTimestamps();
-    }
+{
+    return $this->belongsToMany(Order::class)->withPivot('quantity');
+}
+
  
     public function category()
     {

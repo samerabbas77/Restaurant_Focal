@@ -21,10 +21,11 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    
     public function dishes()
-    {
-        return $this->belongsToMany(Dish::class)->using(DishOrder::class)->withPivot('quantity','deleted_at')->withTimestamps();
-    }
+{
+    return $this->belongsToMany(Dish::class)->withPivot('quantity');
+}
+
 
 }

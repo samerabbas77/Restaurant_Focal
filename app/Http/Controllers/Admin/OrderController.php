@@ -98,37 +98,29 @@ class OrderController extends Controller
 public function update(UpdateOrderRequest $request, Order $order)
 {
     try {
-        $check_order = Order::where('status','In Queue')
-                                             ->exists();
-            
-        if($check_order){
+        
+        $check_order = Order::where('status', 'In Queue')->exists();
 
-            $validated = $request->validated();
+        if ($check_order) {
+            $dishes = $request->input('dishes');
 
-            $order->table_id = $validated['table_id'];
-            $order->user_id = $validated['user_id'];
-            $order->status = $validated['status'];
+            $order->table_id = $request->table_id;
+            $order->user_id = $request->user_id;
+            $order->status = $request->status;
 
             $totalPrice = 0;
-            $existingDishes = [];
-            foreach ($validated['dishes'] as $dishData) {
+            $syncData = [];
+            foreach ($dishes as $dishData) {
                 $dish = Dish::findOrFail($dishData['id']);
                 $quantity = $dishData['quantity'];
-
-                if ($order->dishes->contains($dish->id)) {
-                    $order->dishes()->updateExistingPivot($dish->id, ['quantity' => $quantity]);
-                } else {
-                    $order->dishes()->attach($dish->id, ['quantity' => $quantity]);
-                }
-
+                
+                $syncData[$dish->id] = ['quantity' => $quantity];
                 $totalPrice += $dish->price * $quantity;
-                $existingDishes[$dish->id] = ['quantity' => $quantity];
             }
-
-            $order->dishes()->sync($existingDishes);
 
             $order->total_price = $totalPrice;
             $order->save();
+            $order->dishes()->sync($syncData);
 
             session()->flash('edit', 'Edit Successfully');
         }
@@ -144,10 +136,7 @@ public function update(UpdateOrderRequest $request, Order $order)
     public function destroy(Order $order)
     {
         try {
-            foreach ($order->dishes as $dish) {
-                $order->dishes()->updateExistingPivot($dish->id, ['deleted_at' => now()]);
-            }
-
+            $order->dishes()->updateExistingPivot($order->dishes->pluck('id'), ['deleted_at' => now()]);    
             $order->delete();
             session()->flash('delete', 'Delete successfully');
             return redirect()->route('order.index');
@@ -164,7 +153,7 @@ public function update(UpdateOrderRequest $request, Order $order)
             $order = Order::withTrashed()->findOrFail($id);
             $order->restore();
 
-            DishOrder::restoreDisheOrders($order->id);
+            $order->dishes()->withTrashed()->updateExistingPivot($order->dishes->pluck('id'), ['deleted_at' => null]);
 
             return redirect()->route('order.index')->with('edit', 'Order restored successfully');
         } catch (\Exception $e) {
