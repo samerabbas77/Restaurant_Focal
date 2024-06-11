@@ -43,7 +43,7 @@ class AdminSeeder extends Seeder
 
 
         $permissions = Permission::pluck('id', 'id')->all();
-        $permissionswaiter = Permission::whereBetween('id', [13, 23])->pluck('id')->all();
+        $permissionswaiter = Permission::whereBetween('id', [13, 29])->pluck('id')->all();
 
         $role->syncPermissions($permissions);
         $roleWaiter->syncPermissions($permissionswaiter);
