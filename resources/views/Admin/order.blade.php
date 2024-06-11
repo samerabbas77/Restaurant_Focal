@@ -355,12 +355,23 @@
                     </div>
                     <div class="form-group">
                         <label for="status">حالة الطلب</label>
+                        @if (!empty($orders))
+                        @foreach ($orders as $order)
                         <select id="status" name="status" class="form-control">
+                                
                             <option value="In Queue" {{ $order->status == 'In Queue' ? 'selected' : '' }}>In Queue</option>
                             <option value="Order Received" {{ $order->status == 'Order Received' ? 'selected' : '' }}>Order Received</option>
                             <option value="Completed" {{ $order->status == 'Completed' ? 'selected' : '' }}>Completed</option>
-
-                        </select>
+                            
+                            </select>
+                            @endforeach
+                        @else
+                        <div>
+                            <p>no data</p>
+                        </div>
+                            @endif
+                       
+                       
                     </div>
 
                     <div id="edit-dishes"></div>
