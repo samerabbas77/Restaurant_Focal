@@ -24,7 +24,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/all_dishes' , [DishController::class,'all_dishes']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-
+   //     
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
         ///logout==========================================================
         Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -43,9 +46,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/details_order/{id}','details_order');
             Route::post('/update_order/{id}','update_order');
             Route::post('/delete_order/{id}','delete_order');
-        });
-        Route::get('/user', function (Request $request) {
-            return $request->user();
         });
 
 });
