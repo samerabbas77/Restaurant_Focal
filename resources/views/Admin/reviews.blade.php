@@ -125,7 +125,7 @@
                         <tr>
                             <td>{{$loop->iteration}}</td> 
                             <td>{{ $review->service_rating }}</td>
-                            <td>{{ $review->user_id }}</td>
+                            <td>{{ $review->user->name}}</td>
                             <td>{{ $review->comments }}</td>
                             <td>
                                     <form action="{{ route('reviews.restore', $review->id) }}" method="POST" style="display:inline-block;">
