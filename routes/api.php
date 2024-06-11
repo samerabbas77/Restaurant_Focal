@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -21,4 +22,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    //Review
+    Route::controller(ReviewController::class)->group(function () {
+        Route::get('reviews', 'index');
+        Route::post('review', 'store');
+        Route::put('review/{review}', 'update');
+        Route::delete('review/{review}', 'destroy');
+    }); 
 });

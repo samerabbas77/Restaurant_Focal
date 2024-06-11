@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->integer('service_rating');
+            $table->integer('service_rating')->min(1)->max(10);
             $table->foreignId('user_id')->constrained('users');
             $table->text('comments');
             $table->softDeletes();
