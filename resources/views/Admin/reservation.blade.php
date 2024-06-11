@@ -225,16 +225,6 @@
 								</select>
 							</div>
 
-							<!-- <div class="form-group">
-								<label for="exampleInputEmail1">تاريخ البداية</label>
-								<input type="date" class="form-control" id="start_date" name="start_date">
-							</div>
-
-							<div class="form-group">
-								<label for="exampleInputEmail1">تاريخ النهاية</label>
-								<input type="date" class="form-control" id="end_date" name="end_date">
-							</div> -->
-
                             <div class="form-group">
                                 <label for="exampleInputEmail1">تاريخ البداية</label>
                                 <input type="datetime-local" class="form-control" id="start_date" name="start_date">
@@ -244,6 +234,7 @@
                                 <label for="exampleInputEmail1">تاريخ النهاية</label>
                                 <input type="datetime-local" class="form-control" id="end_date" name="end_date">
                             </div>
+
 
 							<div class="modal-footer">
 								<button type="submit" class="btn btn-success" >إضافة</button>

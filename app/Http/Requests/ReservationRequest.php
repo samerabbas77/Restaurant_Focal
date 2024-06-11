@@ -26,8 +26,7 @@ class ReservationRequest extends FormRequest
             'table_id' => 'required|exists:tables,id',
             'start_date' => 'required|date_format:Y-m-d\TH:i',
             'end_date' => 'required|date_format:Y-m-d\TH:i',
-            // 'start_date' => 'required|date',
-            // 'end_date' => 'required|date',
+
         ];
     }
 
