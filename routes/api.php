@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ApiController\DishController;
-use App\Http\Controllers\ApiController\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ApiController\DishController;
+use App\Http\Controllers\ApiController\OrderController;
+use App\Http\Controllers\ApiController\TableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/delete_order/{id}',[OrderController::class,'delete_order']);
 
 });
+
+Route::get('/tables', [TableController::class, 'index']);
+Route::get('/tables/available', [TableController::class, 'available']);
+Route::get('/tables/chairs/{number}', [TableController::class, 'filterByChairs']);
+Route::get('/tables/chairs/available/{number}', [TableController::class, 'filteravailableByChairs']);

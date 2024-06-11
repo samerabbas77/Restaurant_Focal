@@ -13,7 +13,7 @@ class Table extends Model
 
     protected $dates = ['deleted_at'];
 
-  
+
     protected $fillable = [
         'Number',
         'chair_number',
@@ -24,6 +24,9 @@ class Table extends Model
     public function reservation(){
         return $this->hasMany(reservation::class);
     }
-    
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 
 }

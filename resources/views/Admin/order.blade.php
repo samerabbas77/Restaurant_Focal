@@ -152,13 +152,13 @@
                                     title="Delete"><i
 									class="las la-trash"></i></a>
                                     @endcan
-                                    
+                                    @can('تفاصيل الطلب')
                                     <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
                                         data-id="{{$order->id}}"
                                         data-toggle="modal"
                                         data-target="#detailsModal{{$order->id}}"
                                         title="تفاصيل الطلبية">تفاصيل الطلبية</a>
-                                  
+                                    @endcan
 								    </td>
 							  </tr>
 				            @endforeach
