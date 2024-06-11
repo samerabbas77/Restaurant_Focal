@@ -21,21 +21,7 @@ class Reservation extends Model
         'status',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        // Register a creating event to change table availability
-        static::creating(function ($reservation) {
-            // Find the table by ID
-            $table = Table::find($reservation->table_id);
-            if ($table) {
-                // Update the table's availability
-                $table->Is_available = 'unavailable';
-                $table->save();
-            }
-        });
-    }
+    
     public function user(){
         return $this->belongsTo(User::class);
     }
