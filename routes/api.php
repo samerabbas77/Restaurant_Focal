@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\ReviewController;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use Illuminate\Routing\Route as RoutingRoute;
+use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ApiController\DishController;
 use App\Http\Controllers\ApiController\OrderController;
 use App\Http\Controllers\ApiController\TableController;
@@ -48,10 +51,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/delete_order/{id}','delete_order');
         });
 
+        //Table===============================================================================
+        Route::controller(TableController::class)->group(function () {
+            Route::get('/tables', 'index');
+            Route::get('/tables/available', 'available');
+            Route::get('/tables/chairs/{number}', 'filterByChairs');
+            Route::get('/tables/chairs/available/{number}', 'filteravailableByChairs');
+        });
+        //ٌReservation==========================================================================
+        Route::controller(ReservationController::class)->group(function(){
+            Route::get('/tables/user','userReservation');
+          
+
+
+        });
+
 });
-Route::controller(TableController::class)->group(function () {
-    Route::get('/tables', 'index');
-    Route::get('/tables/available', 'available');
-    Route::get('/tables/chairs/{number}', 'filterByChairs');
-    Route::get('/tables/chairs/available/{number}', 'filteravailableByChairs');
-});
+
