@@ -15,11 +15,12 @@ class ReservationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'user name'  => $this->user->name,
-            'Tabel'      => $this->table->number,
-            'Start Date' => $this->start_date,
-            'End Date'   =>$this->end_date,
+            'user Email' => $this->user->email,
+            'Table Number' => $this->table->number,
+            'start Date' => $this->start_date->format('Y-m-d H:i'),
+            'End date' => $this->end_date->format('Y-m-d H:i'),
+            'status' => $this->status,
+        ];
 
-        ];;
     }
 }
