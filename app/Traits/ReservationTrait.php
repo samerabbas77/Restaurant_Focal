@@ -1,0 +1,211 @@
+<?php
+
+namespace App\Traits;
+
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use App\Models\Reservation;
+use App\Http\Requests\StoreReservationRequest;
+use App\Http\Resources\ReservationResource;
+use App\Http\Resources\TableResource;
+use App\Http\Requests\RenewReservationRequest;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+
+use App\Models\Table;
+use Illuminate\Support\Facades\Validator;
+
+
+
+trait ReservationTrait
+{
+
+    public function showReservations($id)
+    {
+
+        $user = User::findOrFail($id);
+        $userId = $user->id;
+        $reservations = Reservation::where('user_id', $userId)->get();
+        return response()->json(ReservationResource::collection($reservations));
+
+    }
+    
+    public function storeReservation(StoreReservationRequest $request)
+    {
+        Log::info('Incoming request', ['request' => $request->all()]);
+
+        $startDate = Carbon::parse($request->input('start_date'));
+        $endDate = Carbon::parse($request->input('end_date'));
+
+        $openingTime = $startDate->copy()->setTime(8, 0, 0);
+        $closingTime = $startDate->copy()->setTime(23, 59, 59);
+
+        if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) {
+            Log::info('Reservation time is outside of operating hours', [
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'openingTime' => $openingTime,
+                'closingTime' => $closingTime
+            ]);
+            return response()->json(['message' => 'Reservation time must be within operating hours (8 AM to 12 AM)'], 422);
+        }
+
+        $tableId = $request->input('table_id');
+
+        $existingReservation = $this->checkExistingReservation($startDate, $endDate, $tableId);
+
+        if ($existingReservation) {
+            Log::info('Table already reserved for the given time period', ['table_id' => $tableId, 'start_date' => $startDate, 'end_date' => $endDate]);
+            return response()->json([
+                'message' => 'Table is already reserved for the given time period',
+                'conflicting_reservation' => [
+                    'start_date' => $existingReservation->start_date,
+                    'end_date' => $existingReservation->end_date
+                ]
+            ], 409);
+        }
+
+        $reservationData = $request->all();
+        $reservationData['status'] = 'Chackout';
+
+        $reservation = Reservation::create($reservationData);
+        Log::info('Reservation created successfully', ['reservation' => $reservation]);
+        return response()->json(new ReservationResource($reservation), 201);
+    }
+
+    protected function checkExistingReservation($startDate, $endDate, $tableId)
+    {
+        return Reservation::where('table_id', $tableId)
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('start_date', [$startDate, $endDate])
+                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                    ->orWhere(function ($query) use ($startDate, $endDate) {
+                        $query->where('start_date', '<', $startDate)
+                            ->where('end_date', '>', $endDate);
+                    });
+            })
+            ->first();
+    }
+
+
+    public function updateReservation($request, $id)
+    {
+        $reservation = Reservation::find($id);
+        if (!$reservation) {
+            return response()->json(['message' => 'Reservation not found'], 404);
+        }
+
+        if ($reservation->status !== 'Chackout') {
+            return response()->json(['message' => 'Reservation can only be updated if status is checked_out'], 403);
+        }
+
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        if ($startDate && $endDate) {
+            $startDate = Carbon::parse($startDate);
+            $endDate = Carbon::parse($endDate);
+
+            $openingTime = $startDate->copy()->setTime(8, 0, 0);
+            $closingTime = $startDate->copy()->setTime(23, 59, 59);
+
+            if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) {
+                return response()->json(['message' => 'Reservation time must be within operating hours (8 AM to 12 AM)'], 422);
+            }
+
+            $existingReservation = $this->checkExistingReservationForUpdate($startDate, $endDate, $id, $reservation->table_id);
+
+            if ($existingReservation) {
+                return response()->json([
+                    'message' => 'Table is already reserved for the given time period',
+                    'conflicting_reservation' => [
+                        'start_date' => $existingReservation->start_date,
+                        'end_date' => $existingReservation->end_date
+                    ]
+                ], 409);
+            }
+        }
+
+        $reservation->update($request->all());
+        return response()->json(new ReservationResource($reservation));
+    }
+
+    protected function checkExistingReservationForUpdate($startDate, $endDate, $id, $tableId)
+    {
+        return Reservation::where('table_id', $tableId)
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('start_date', [$startDate, $endDate])
+                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                    ->orWhere(function ($query) use ($startDate, $endDate) {
+                        $query->where('start_date', '<', $startDate)
+                            ->where('end_date', '>', $endDate);
+                    });
+            })
+            ->where('id', '!=', $id)
+            ->first();
+    }
+
+
+    public function deleteReservation($id)
+    {
+        $reservation = Reservation::find($id);
+        if (!$reservation) {
+            return response()->json(['message' => 'Reservation not found'], 404);
+        }
+
+        if ($reservation->status !== 'Chackout') {
+            return response()->json(['message' => 'Reservation can only be deleted if status is checked_out'], 403);
+        }
+
+        $reservation->delete();
+        return response()->json(['message' => 'Reservation deleted successfully'], 200);
+    }
+
+    public function renewReservation($request, $id)
+    {
+        $reservation = Reservation::find($id);
+        if (!$reservation) {
+            return response()->json(['message' => 'Reservation not found'], 404);
+        }
+
+        if ($reservation->status !== 'Chackin') {
+            return response()->json(['message' => 'Reservation can only be renewed if status is checked_out'], 403);
+        }
+
+        $newStartDate = Carbon::parse($request->input('new_start_date'));
+        $newEndDate = Carbon::parse($request->input('new_end_date'));
+
+        $openingTime = $newStartDate->copy()->setTime(8, 0, 0);
+        $closingTime = $newStartDate->copy()->setTime(23, 59, 59);
+
+        if ($newStartDate->lt($openingTime) || $newEndDate->gt($closingTime)) {
+            return response()->json(['message' => 'Reservation time must be within operating hours (8 AM to 12 AM)'], 422);
+        }
+
+        $existingReservation = $this->checkExistingReservationForUpdate($newStartDate, $newEndDate, $id, $reservation->table_id);
+
+        if ($existingReservation) {
+            $alternativeTables = Table::where('chair_number', '>=', $reservation->table->chair_number)
+                ->whereDoesntHave('reservation', function ($query) use ($newStartDate, $newEndDate) {
+                    $query->whereBetween('start_date', [$newStartDate, $newEndDate])
+                        ->orWhereBetween('end_date', [$newStartDate, $newEndDate])
+                        ->orWhere(function ($query) use ($newStartDate, $newEndDate) {
+                            $query->where('start_date', '<', $newStartDate)
+                                ->where('end_date', '>', $newEndDate);
+                        });
+                })
+                ->get();
+
+            return response()->json([
+                'message' => 'The requested table is already reserved at the new time. Here are alternative tables.',
+                'alternative_tables' => TableResource::collection($alternativeTables)
+            ], 409);
+        }
+
+        $reservation->end_date = $newEndDate;
+        $reservation->status = 'Chackin';
+        $reservation->save();
+
+        return response()->json(['message' => 'Reservation renewed successfully', new ReservationResource($reservation)], 200);
+    }
+}
