@@ -331,7 +331,7 @@
 				@method('DELETE')
 				@csrf
 				<div class="modal-body">
-					<p>Are you sure you want to delete?</p><br>
+					<p>هل أنت متأكد أنك تريد الحذف؟</p><br>
 					<input type="hidden" id="deleteReservationId" name="reservation_id" value="">
 				</div>
 				<div class="modal-footer">
