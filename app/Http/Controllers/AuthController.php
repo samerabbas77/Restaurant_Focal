@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\trait\ApiTrait;
+use App\Http\Traits\ApiTraits\ApiTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\LoginRequest;

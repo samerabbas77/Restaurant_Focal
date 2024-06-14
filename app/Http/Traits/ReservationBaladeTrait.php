@@ -1,0 +1,111 @@
+<?php
+namespace App\Http\Traits;
+
+use Carbon\Carbon;
+use App\Models\Reservation;
+use Illuminate\Support\Facades\Log;
+use App\Http\Resources\ReservationResource;
+use App\Http\Requests\StoreReservationRequest;
+use App\Http\Requests\UpdateReservationRequest;
+
+trait ReservationBaladeTrait
+{
+    public function storeReservation(StoreReservationRequest $request)
+    {
+        Log::info('Incoming request', ['request' => $request->all()]);
+
+        $startDate = Carbon::parse($request->input('start_date'));
+        $endDate = Carbon::parse($request->input('end_date'));
+
+        $openingTime = $startDate->copy()->setTime(8, 0, 0);
+        $closingTime = $startDate->copy()->setTime(23, 59, 59);
+
+        if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) {
+            Log::info('Reservation time is outside of operating hours', [
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'openingTime' => $openingTime,
+                'closingTime' => $closingTime
+            ]);
+         return redirect()->route('reservation.index')->with('error',  ':Reservation time must be within operating hours (8 AM to 12 AM)');       
+         }
+           
+            $tableId = $request->input('table_id');
+
+            $this->checkExistingReservation($startDate, $endDate, $tableId);
+
+            $reservationData = $request->all();
+            $reservationData['status'] = 'checkedout';
+
+            $reservation = Reservation::create($reservationData);
+            Log::info('Reservation created successfully', ['reservation' => $reservation]);
+            return true;
+     
+    
+    }
+
+    protected function checkExistingReservation($startDate, $endDate, $tableId)
+    {
+        return Reservation::where('table_id', $tableId)
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('start_date', [$startDate, $endDate])
+                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                    ->orWhere(function ($query) use ($startDate, $endDate) {
+                        $query->where('start_date', '<', $startDate)
+                            ->where('end_date', '>', $endDate);
+                    });
+            })
+            ->first();
+    }
+
+
+    public function updateReservation(UpdateReservationRequest $request, $id)
+    {
+        $reservation = Reservation::find($id);
+        if (!$reservation) {
+            return redirect()->route('reservation.index')->with('error','Reservation not found');
+        }
+
+        if ($reservation->status !== 'checkedout') {
+            return redirect()->route('reservation.index')->with('error','Reservation can only be updated if status is checked_out');
+        }
+
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        if ($startDate && $endDate) {
+            $startDate = Carbon::parse($startDate);
+            $endDate = Carbon::parse($endDate);
+
+            $openingTime = $startDate->copy()->setTime(8, 0, 0);
+            $closingTime = $startDate->copy()->setTime(23, 59, 59);
+
+            if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) {
+                return redirect()->route('reservation.index')->with('error','Reservation time must be within operating hours (8 AM to 12 AM)');
+            }
+
+           $this->checkExistingReservationForUpdate($startDate, $endDate, $id, $reservation->table_id);
+
+        }
+
+        $reservation->update($request->all());
+        
+        return true;
+
+    }
+
+    protected function checkExistingReservationForUpdate($startDate, $endDate, $id, $tableId)
+    {
+        return Reservation::where('table_id', $tableId)
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('start_date', [$startDate, $endDate])
+                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                    ->orWhere(function ($query) use ($startDate, $endDate) {
+                        $query->where('start_date', '<', $startDate)
+                            ->where('end_date', '>', $endDate);
+                    });
+            })
+            ->where('id', '!=', $id)
+            ->first();
+    }
+
+}

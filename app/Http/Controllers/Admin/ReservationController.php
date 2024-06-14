@@ -7,12 +7,15 @@ use App\Models\User;
 use App\Models\Table;
 use App\Models\Reservation;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ReservationRequest;
+use App\Http\Traits\ReservationBaladeTrait;
+use App\Http\Requests\StoreReservationRequest;
+use App\Http\Requests\UpdateReservationRequest;
 use App\Http\Requests\Reservation_updateRequest;
-
 
 class ReservationController extends Controller
 {
+    use ReservationBaladeTrait;
+
     public function __construct()
     {
 
@@ -29,10 +32,9 @@ class ReservationController extends Controller
     {
         try {
             $reservations = Reservation::all();
-            //dd($reservations);
             $users = User::all();
             $tables = Table::all();
-
+           
             $trashedReservations = Reservation::onlyTrashed()->get();
             return view('Admin.reservation', compact('reservations', 'users', 'tables', 'trashedReservations'));
         } catch (\Exception $e) {
@@ -42,22 +44,14 @@ class ReservationController extends Controller
 
 //========================================================================================================================
 
-    public function store(ReservationRequest $request)
+    public function store(StoreReservationRequest $request)
     {
-
-        try {
-            $request->validated();
-
-            $reservation = new Reservation();
-            $reservation->user_id = $request->user_id;
-            $reservation->table_id = $request->table_id;
-            $reservation->start_date = $request->start_date;
-            $reservation->end_date = $request->end_date;
-            $reservation->status = 'Chackout';
-            $reservation->save();
-
-            session()->flash('Add', 'Add Susseccfully');
-            return redirect()->route('reservation.index');
+    try {      
+        $result = $this->storeReservation($request); 
+            if ($result instanceof \Illuminate\Http\RedirectResponse) {
+                return redirect()->route('reservation.index'); // Handle the redirect
+            }        
+             return redirect()->route('reservation.index')->with('Add', 'Add Susseccfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }
@@ -65,21 +59,16 @@ class ReservationController extends Controller
 
 //========================================================================================================================
 
-    public function update(Reservation_updateRequest $request, Reservation $reservation)
+    public function update( UpdateReservationRequest $request, Reservation $reservation)
     {
 
         try {
-            $request->validated();
-
-            $reservation->user_id = $request->user_id;
-            $reservation->table_id = $request->table_id;
-            $reservation->start_date = $request->start_date;
-            $reservation->end_date = $request->end_date;
-            $reservation->status = $request->status;
-            $reservation->save();
-
-            session()->flash('edit', 'ُEdit Susseccfully');
-            return redirect()->route('reservation.index');
+            $result = $this->updateReservation($request, $reservation->id);
+            if ($result instanceof \Illuminate\Http\RedirectResponse) 
+            {
+                return redirect()->route('reservation.index'); // Handle the redirect
+            } 
+            return redirect()->route('reservation.index')->with('edit', 'ُEdit Susseccfully');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());
         }

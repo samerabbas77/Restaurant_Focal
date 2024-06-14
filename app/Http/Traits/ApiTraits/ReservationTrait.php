@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Traits;
+namespace App\Traits\ApiTraits;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
-use App\Models\Reservation;
-use App\Http\Requests\StoreReservationRequest;
-use App\Http\Resources\ReservationResource;
-use App\Http\Resources\TableResource;
-use App\Http\Requests\RenewReservationRequest;
-
 use App\Models\User;
-use Illuminate\Http\Request;
-
 use App\Models\Table;
+use App\Models\Reservation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Resources\TableResource;
+
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\ReservationResource;
+
+use App\Http\Requests\RenewReservationRequest;
+use App\Http\Requests\StoreReservationRequest;
+use App\Http\Requests\UpdateReservationRequest;
 
 
 
@@ -89,7 +90,7 @@ trait ReservationTrait
     }
 
 
-    public function updateReservation($request, $id)
+    public function updateReservation(UpdateReservationRequest $request, $id)
     {
         $reservation = Reservation::find($id);
         if (!$reservation) {
@@ -161,7 +162,7 @@ trait ReservationTrait
         return response()->json(['message' => 'Reservation deleted successfully'], 200);
     }
 
-    public function renewReservation($request, $id)
+    public function renewReservation(RenewReservationRequest $request, $id)
     {
         $reservation = Reservation::find($id);
         if (!$reservation) {

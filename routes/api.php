@@ -5,10 +5,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Routing\Route as RoutingRoute;
-use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\ApiController\DishController;
 use App\Http\Controllers\ApiController\OrderController;
 use App\Http\Controllers\ApiController\TableController;
+use App\Http\Controllers\ApiController\ReviewController;
 use App\Http\Controllers\ApiController\ReservationController;
 
 /*
