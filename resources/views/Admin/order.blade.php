@@ -355,13 +355,24 @@
                     </div>
                     <div class="form-group">
                         <label for="status">حالة الطلب</label>
+                        @if (!empty($orders))
+                        @foreach ($orders as $order)
                         <select id="status" name="status" class="form-control">
+
                             @foreach($orders as $order)
                             <option value="In Queue" {{ $order->status == 'In Queue' ? 'selected' : '' }}>In Queue</option>
                             <option value="Order Received" {{ $order->status == 'Order Received' ? 'selected' : '' }}>Order Received</option>
                             <option value="Completed" {{ $order->status == 'Completed' ? 'selected' : '' }}>Completed</option>
                             @endforeach
                         </select>
+
+                            @endforeach
+                        @else
+                        <div>
+                            <p>no data</p>
+                        </div>
+                            @endif
+                      
                     </div>
 
                     <div id="edit-dishes"></div>
@@ -395,15 +406,15 @@
 				@method('DELETE')
 				@csrf
 				<div class="modal-body">
-					<p>Are you sure you want to delete?</p><br>
+					<p>هل أنت متأكد أنك تريد الحذف؟</p><br>
                     @foreach($orders as $order)
 					<input type="hidden" id="deleteOrderId" name="order_id" value="">				
 					<input class="form-control" name="user_id" id="user_id" value="{{$order->user->name}}" type="text" readonly>
                     @endforeach
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
-					<button type="submit" class="btn btn-danger">Delete</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+					<button type="submit" class="btn btn-danger">حذف</button>
 				</div>
 		</div>
 		</form>

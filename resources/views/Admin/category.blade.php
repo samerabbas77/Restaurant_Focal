@@ -261,7 +261,7 @@
 				@method('DELETE')
 				@csrf
 				<div class="modal-body">
-					<p>Are you sure you want to delete?</p><br>
+					<p>هل أنت متأكد أنك تريد الحذف؟</p><br>
 					<input type="hidden" id="deleteCategoryId" name="cat_id" value="">
 					<input class="form-control" name="name" id="name" type="text" readonly>
 				</div>

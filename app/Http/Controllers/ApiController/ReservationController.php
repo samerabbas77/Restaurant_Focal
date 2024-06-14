@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Table;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-use App\Traits\ApiTraits\ReservationTrait;
+use App\Http\Traits\ApiTraits\ReservationTrait;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
