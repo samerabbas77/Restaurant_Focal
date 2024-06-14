@@ -13,7 +13,7 @@ use Illuminate\Support\Arr;
 use DB;
 use illuminate\Support\Facades\Log;
 use App\Http\Requests\UserRequest;
-use App\Traits\UserManagementTrait;
+use App\Http\Traits\UserManagementTrait;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
