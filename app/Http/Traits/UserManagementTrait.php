@@ -1,12 +1,12 @@
 <?php
-namespace App\Traits;
+namespace App\Http\Traits;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 trait UserManagementTrait
 {
@@ -33,7 +33,7 @@ trait UserManagementTrait
     public function createUser(array $data)
     {
         try {
-            $data['password'] = Hash::make($data['password']);
+            $data['password'] =Hash::make($data['password']);
             $user = User::create($data);
             $user->assignRole($data['role']);
 

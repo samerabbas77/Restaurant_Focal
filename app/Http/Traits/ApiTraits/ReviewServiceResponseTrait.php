@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Traits\ApiTraits;
+namespace App\Http\Traits\ApiTraits;
 
 trait ReviewServiceResponseTrait 
 {
