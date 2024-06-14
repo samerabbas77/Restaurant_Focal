@@ -48,7 +48,7 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         try {
-            $check_reservation = Reservation::where('status','Chackin')
+            $check_reservation = Reservation::where('status','Chackout')
                                              ->exists();
             
             if($check_reservation){ 
@@ -123,8 +123,11 @@ public function update(UpdateOrderRequest $request, Order $order)
             $order->dishes()->sync($syncData);
 
             session()->flash('edit', 'Edit Successfully');
+            return redirect()->route('order.index');
+        }else{
+            session()->flash('error', 'cannot edit on this order');
+            return redirect()->route('order.index');
         }
-        return redirect()->route('order.index');
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
     }
