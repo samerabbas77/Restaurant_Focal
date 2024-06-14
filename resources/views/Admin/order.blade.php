@@ -356,10 +356,11 @@
                     <div class="form-group">
                         <label for="status">حالة الطلب</label>
                         <select id="status" name="status" class="form-control">
+                            @foreach($orders as $order)
                             <option value="In Queue" {{ $order->status == 'In Queue' ? 'selected' : '' }}>In Queue</option>
                             <option value="Order Received" {{ $order->status == 'Order Received' ? 'selected' : '' }}>Order Received</option>
                             <option value="Completed" {{ $order->status == 'Completed' ? 'selected' : '' }}>Completed</option>
-
+                            @endforeach
                         </select>
                     </div>
 

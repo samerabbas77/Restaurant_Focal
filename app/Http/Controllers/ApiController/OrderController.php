@@ -7,12 +7,12 @@ use App\Models\Dish;
 use App\Models\Order;
 use App\Models\Reservation;
 
-use App\Http\trait\ApiTrait;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-
 use App\Http\Resources\OrderResource;
+
+use App\Http\Traits\ApiTraits\ApiTrait;
 use App\Http\Resources\UpdateOrderResource;
 use App\Http\Resources\DetailsOrderResource;
 
