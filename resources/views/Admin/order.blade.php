@@ -405,15 +405,15 @@
 				@method('DELETE')
 				@csrf
 				<div class="modal-body">
-					<p>Are you sure you want to delete?</p><br>
+					<p>هل أنت متأكد أنك تريد الحذف؟</p><br>
                     @foreach($orders as $order)
 					<input type="hidden" id="deleteOrderId" name="order_id" value="">				
 					<input class="form-control" name="user_id" id="user_id" value="{{$order->user->name}}" type="text" readonly>
                     @endforeach
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
-					<button type="submit" class="btn btn-danger">Delete</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+					<button type="submit" class="btn btn-danger">حذف</button>
 				</div>
 		</div>
 		</form>

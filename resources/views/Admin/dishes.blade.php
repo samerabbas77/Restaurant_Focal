@@ -22,7 +22,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">Dishes</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Dishes Managment</span>
+							<h4 class="content-title mb-0 my-auto">الأطباق</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ إدارة الأطباق</span>
 						</div>
 					</div>
 				</div>
@@ -98,7 +98,7 @@
 		<div class="card mg-b-20">
 			<div class="card-header pb-0">
 				<div class="d-flex justify-content-between">
-					<h4 class="card-title mg-b-0"> Dishes Table </h4>
+					<h4 class="card-title mg-b-0"> جدول الأطباق </h4>
 					<i class="mdi mdi-dots-horizontal text-gray"></i>
 				</div>
 			</div>
@@ -178,6 +178,7 @@
 									<th class="border-bottom-0">الوصف</th>								
 									<th class="border-bottom-0">الصنف</th>								
 									<th class="border-bottom-0">الصورة</th>								
+									<th class="border-bottom-0">الادوات</th>								
 								</tr>
 							</tr>
 						</thead>
@@ -315,8 +316,8 @@
 					</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
+                    <button type="submit" class="btn btn-primary">تعديل</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
                 </div>
                 </form>
 				
@@ -339,13 +340,13 @@
 				@method('DELETE')
 				@csrf
 				<div class="modal-body">
-					<p>Are you sure you want to delete?</p><br>
+					<p>هل أنت متأكد أنك تريد الحذف؟</p><br>
 					<input type="hidden" id="deleteDishId" name="dish_id" value="">				
 					<input class="form-control" name="name" id="name" type="text" readonly>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
-					<button type="submit" class="btn btn-danger">Delete</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+					<button type="submit" class="btn btn-danger">حذف</button>
 				</div>
 		</div>
 		</form>
