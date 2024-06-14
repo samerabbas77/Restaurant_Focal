@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Table;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-use App\Traits\ReservationTrait;
+use App\Traits\ApiTraits\ReservationTrait;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -71,14 +71,5 @@ class ReservationController extends Controller
         }
     }
 
-//Show user Reservation History ========================================================================
-   public function userReservation()
-   {
-       $userReservation = reservation::where('user_id',Auth::id())
-                                       ->whereNotNull('deleted_at')
-                                       ->get();
-       return $this->successResponse(ReservationResource::collection( $userReservation),"User Reservation History send successfully");
-
-   }
    
 }

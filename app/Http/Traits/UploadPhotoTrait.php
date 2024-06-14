@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\trait;
+namespace App\Http\Traits;
 
 use Illuminate\Support\Str;
 use League\Flysystem\Visibility;

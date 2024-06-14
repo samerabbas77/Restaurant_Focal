@@ -4,7 +4,7 @@ namespace App\Http\Controllers\ApiController;
 
 use App\Models\Table;
 use Illuminate\Http\Request;
-use App\Http\trait\ApiResponse;
+use App\Http\Traits\ApiTraits\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TableResource;
 

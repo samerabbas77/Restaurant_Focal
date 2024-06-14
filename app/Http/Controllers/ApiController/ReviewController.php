@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\ApiController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
 use App\Http\Resources\ReviewServiceResource;
 use App\Models\Review;
-use App\Traits\ReviewServiceResponseTrait;
+use App\Traits\ApiTraits\ReviewServiceResponseTrait;
 use Illuminate\Support\Facades\Log;
 
 class ReviewController extends Controller

@@ -291,20 +291,20 @@
 
 							<div class="form-group">
 								<label for="exampleInputEmail1">تاريخ البداية</label>
-								<input type="date" class="form-control" id="start_date" name="start_date">
+								<input type="datetime-local" class="form-control" id="start_date" name="start_date">
 							</div>
 
 							<div class="form-group">
 								<label for="exampleInputEmail1">تاريخ النهاية</label>
-								<input type="date" class="form-control" id="end_date" name="end_date">
+								<input type="datetime-local" class="form-control" id="end_date" name="end_date">
 							</div>
 
 							<div class="form-group">
 								<label for="exampleInputEmail1">حالة الحجز</label>
 								<select id="status" name="status" class="form-control">
-									<option value="Chackout" {{ $reservation->status == 'Chackout' ? 'selected' : '' }}>Chackout</option>
-									<option value="Chackin" {{ $reservation->status == 'Chackin' ? 'selected' : '' }}>Chackin</option>
-									<option value="Done" {{ $reservation->status == 'Done' ? 'selected' : '' }}>Done</option>
+									<option value="checkedout" {{ $reservation->status == 'checkedout' ? 'selected' : '' }}>checkedout</option>
+									<option value="checkedin" {{ $reservation->status == 'checkedin' ? 'selected' : '' }}>checkedin</option>
+									<option value="done" {{ $reservation->status == 'done' ? 'selected' : '' }}>done</option>
 								</select>
 							</div>
                 </div>

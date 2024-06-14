@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\trait;
+namespace App\Http\Traits\ApiTraits;
 
-use App\Models\Reservation;
-use Illuminate\Support\Facades\Auth;
+
 
 trait ApiTrait
 {

@@ -7,7 +7,7 @@ use App\Models\Dish;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\trait\UploadPhotoTrait;
+use App\Http\Traits\UploadPhotoTrait;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\StoreDishRequest;
 use Illuminate\Support\Facades\Storage;

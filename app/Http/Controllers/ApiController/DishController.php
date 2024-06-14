@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\ApiController;
 
 use App\Models\Dish;
-use App\Http\trait\ApiTrait;
-use Illuminate\Http\Request;
+use App\Http\Traits\ApiTraits;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DishResource;
+use App\Http\Traits\ApiTraits\ApiTrait;
 
 class DishController extends Controller
 {
