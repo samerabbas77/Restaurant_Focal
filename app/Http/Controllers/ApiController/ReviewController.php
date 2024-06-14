@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\ApiController;
 
+use App\Models\Review;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
+
 use App\Http\Resources\ReviewServiceResource;
-use App\Models\Review;
-use App\Traits\ApiTraits\ReviewServiceResponseTrait;
-use Illuminate\Support\Facades\Log;
+use App\Http\Traits\ApiTraits\ReviewServiceResponseTrait;
 
 class ReviewController extends Controller
 {
