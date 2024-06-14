@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use DB;
+use Hash;
+use app\Models\User;
+use App\Models\Table;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserReq;
-use App\Models\Table;
-use app\Models\User;
-use Spatie\Permission\Models\Role;
-use Hash;
-use Illuminate\Support\Arr;
-use DB;
-use illuminate\Support\Facades\Log;
 use App\Http\Requests\UserRequest;
-use App\Traits\UserManagementTrait;
+use Spatie\Permission\Models\Role;
+use illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\UserManagementTrait;
 
 class UserController extends Controller
 {

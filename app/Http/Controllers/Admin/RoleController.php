@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-use App\Traits\RoleManagementTrait;
-use App\Traits\UserManagementTrait;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\RoleManagementTrait;
+use App\Http\Traits\UserManagementTrait;
 use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
