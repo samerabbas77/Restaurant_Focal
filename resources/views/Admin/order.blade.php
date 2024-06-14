@@ -362,8 +362,9 @@
                             <option value="In Queue" {{ $order->status == 'In Queue' ? 'selected' : '' }}>In Queue</option>
                             <option value="Order Received" {{ $order->status == 'Order Received' ? 'selected' : '' }}>Order Received</option>
                             <option value="Completed" {{ $order->status == 'Completed' ? 'selected' : '' }}>Completed</option>
-                            
-                            </select>
+                            @endforeach
+                        </select>
+
                             @endforeach
                         @else
                         <div>

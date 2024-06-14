@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits\ApiTraits;
 
+
 trait ReviewServiceResponseTrait 
 {
     public function reviewResponse($data,$message,$status){
