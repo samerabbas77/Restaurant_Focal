@@ -13,7 +13,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\OrderResource;
 
-use App\Http\Traits\ApiTraits\ApiTrait;
 use App\Http\Resources\UpdateOrderResource;
 use App\Http\Resources\DetailsOrderResource;
 
