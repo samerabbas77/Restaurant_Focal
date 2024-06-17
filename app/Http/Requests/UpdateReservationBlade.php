@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateReservationRequest extends FormRequest
+class UpdateReservationBlade extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,8 +26,8 @@ class UpdateReservationRequest extends FormRequest
         return [
             'user_id'    => 'nullable|exists:users,id',
             'table_id'   => 'nullable|exists:tables,id',
-            'start_date' => 'nullable| date_format:Y-m-d H:i|after_or_equal:' . $currentDateTime, 
-            'end_date'   => 'nullable| date_format:Y-m-d H:i|after:start_date',
+            'start_date' => 'nullable|date_format:Y-m-d\TH:i|after_or_equal:' . $currentDateTime,
+            'end_date'   => 'nullable|date_format:Y-m-d\TH:i|after:start_date',
             'status'     => 'nullable|in:checkedin,checkedout,done',
         ];
     }

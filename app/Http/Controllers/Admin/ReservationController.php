@@ -8,9 +8,10 @@ use App\Models\Table;
 use App\Models\Reservation;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ReservationBaladeTrait;
-use App\Http\Requests\StoreReservationRequest;
-use App\Http\Requests\UpdateReservationRequest;
-use App\Http\Requests\Reservation_updateRequest;
+use App\Http\Requests\StoreReservationBlade;
+use App\Http\Requests\UpdateReservationBlade;
+
+
 
 class ReservationController extends Controller
 {
@@ -44,7 +45,7 @@ class ReservationController extends Controller
 
 //========================================================================================================================
 
-    public function store(StoreReservationRequest $request)
+    public function store(StoreReservationBlade $request)
     {
     try {      
         $result = $this->storeReservation($request); 
@@ -59,7 +60,7 @@ class ReservationController extends Controller
 
 //========================================================================================================================
 
-    public function update( UpdateReservationRequest $request, Reservation $reservation)
+    public function update( UpdateReservationBlade $request, Reservation $reservation)
     {
 
         try {
