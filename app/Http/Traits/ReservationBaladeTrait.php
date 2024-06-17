@@ -33,7 +33,12 @@ trait ReservationBaladeTrait
            
             $tableId = $request->input('table_id');
 
-            $this->checkExistingReservation($startDate, $endDate, $tableId);
+            $existingReservation = $this->checkExistingReservation($startDate, $endDate, $tableId);
+
+            if ($existingReservation)
+            {  
+                return redirect()->route('reservation.index')->with('error','Table is already reserved for the given time period');      
+            }
 
             $reservationData = $request->all();
             $reservationData['status'] = 'checkedout';
@@ -80,12 +85,15 @@ trait ReservationBaladeTrait
             $openingTime = $startDate->copy()->setTime(8, 0, 0);
             $closingTime = $startDate->copy()->setTime(23, 59, 59);
 
-            if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) {
+            if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) 
+            {
                 return redirect()->route('reservation.index')->with('error','Reservation time must be within operating hours (8 AM to 12 AM)');
             }
-
-           $this->checkExistingReservationForUpdate($startDate, $endDate, $id, $reservation->table_id);
-
+            $existingReservation = $this->checkExistingReservationForUpdate($startDate, $endDate, $id, $reservation->table_id);     
+            if ($existingReservation)
+            {  
+                return redirect()->route('reservation.index')->with('error','Table is already reserved for the given time period');      
+            }
         }
 
         $reservation->update($request->all());
@@ -96,6 +104,7 @@ trait ReservationBaladeTrait
 
     protected function checkExistingReservationForUpdate($startDate, $endDate, $id, $tableId)
     {
+       
         return Reservation::where('table_id', $tableId)
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('start_date', [$startDate, $endDate])
