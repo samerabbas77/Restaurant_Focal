@@ -40,7 +40,7 @@ class ReservationController extends Controller
         try {
             return $this->storeReservation($request);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'An error occurred while storing the reservation'], 500);
+            return response()->json(['message' => 'An error occurred while storing the reservation'.$e], 500);
         }
     }
 //update The reservation========================================================================

@@ -68,7 +68,7 @@ trait ReservationTrait
         }
 
         $reservationData = $request->all();
-        $reservationData['status'] = 'Chackout';
+        $reservationData['status'] = 'checkedout';
 
         $reservation = Reservation::create($reservationData);
         Log::info('Reservation created successfully', ['reservation' => $reservation]);
@@ -97,7 +97,7 @@ trait ReservationTrait
             return response()->json(['message' => 'Reservation not found'], 404);
         }
 
-        if ($reservation->status !== 'Chackout') {
+        if ($reservation->status !== 'checkedout') {
             return response()->json(['message' => 'Reservation can only be updated if status is checked_out'], 403);
         }
 
@@ -154,7 +154,7 @@ trait ReservationTrait
             return response()->json(['message' => 'Reservation not found'], 404);
         }
 
-        if ($reservation->status !== 'Chackout') {
+        if ($reservation->status !== 'checkedout') {
             return response()->json(['message' => 'Reservation can only be deleted if status is checked_out'], 403);
         }
 
@@ -169,7 +169,7 @@ trait ReservationTrait
             return response()->json(['message' => 'Reservation not found'], 404);
         }
 
-        if ($reservation->status !== 'Chackin') {
+        if ($reservation->status !== 'checkedin') {
             return response()->json(['message' => 'Reservation can only be renewed if status is checked_out'], 403);
         }
 
@@ -204,7 +204,7 @@ trait ReservationTrait
         }
 
         $reservation->end_date = $newEndDate;
-        $reservation->status = 'Chackin';
+        $reservation->status = 'checkedin';
         $reservation->save();
 
         return response()->json(['message' => 'Reservation renewed successfully', new ReservationResource($reservation)], 200);
