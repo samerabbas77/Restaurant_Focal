@@ -48,7 +48,7 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         try {
-            $check_reservation = Reservation::where('status','Chackout')
+            $check_reservation = Reservation::where('status','checkedout')
                                              ->exists();
             
             if($check_reservation){ 
@@ -75,7 +75,9 @@ class OrderController extends Controller
                 $order->save();
 
                 session()->flash('Add', 'Add created successfully');
-            } 
+            }else{
+                    return redirect()->route('order.index')->with('error','There is No checked out Resevation');
+                 } 
             return redirect()->route('order.index');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'حدث خطأ: ' . $e->getMessage());

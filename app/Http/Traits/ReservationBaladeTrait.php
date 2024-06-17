@@ -5,12 +5,13 @@ use Carbon\Carbon;
 use App\Models\Reservation;
 use Illuminate\Support\Facades\Log;
 use App\Http\Resources\ReservationResource;
-use App\Http\Requests\StoreReservationRequest;
-use App\Http\Requests\UpdateReservationRequest;
+use App\Http\Requests\StoreReservationBlade;
+use App\Http\Requests\UpdateReservationBlade;
+
 
 trait ReservationBaladeTrait
 {
-    public function storeReservation(StoreReservationRequest $request)
+    public function storeReservation(StoreReservationBlade $request)
     {
         Log::info('Incoming request', ['request' => $request->all()]);
 
@@ -59,7 +60,7 @@ trait ReservationBaladeTrait
     }
 
 
-    public function updateReservation(UpdateReservationRequest $request, $id)
+    public function updateReservation(UpdateReservationBlade $request, $id)
     {
         $reservation = Reservation::find($id);
         if (!$reservation) {
