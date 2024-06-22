@@ -355,7 +355,7 @@
                     </div>
                     <div class="form-group">
                         <label for="status">حالة الطلب</label>
-                        @if (!empty($orders)) 
+                        @if (!empty($order)) 
                         <select id="status" name="status" class="form-control">
                                
                             <option value="In Queue" {{$order->status == 'In Queue' ? 'selected' : ''}}  >In Queue</option>
