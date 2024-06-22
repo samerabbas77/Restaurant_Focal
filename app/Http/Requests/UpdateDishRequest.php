@@ -21,7 +21,6 @@ class UpdateDishRequest extends FormRequest
      */
     public function rules(): array
     {
-      
         return [
             'name' => 'required|string',
             'price' => 'required|numeric',

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\ReservationResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TableResource extends JsonResource
@@ -21,6 +22,7 @@ class TableResource extends JsonResource
             'Is_available' => $this->Is_available,
             // 'created_at' => $this->created_at,
             // 'updated_at' => $this->updated_at,
+            'reservations' => ReservationResource::collection($this->whenLoaded('reservations')),
         ];;
     }
 }
