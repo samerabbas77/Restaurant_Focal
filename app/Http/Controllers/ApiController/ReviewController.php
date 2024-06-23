@@ -5,10 +5,12 @@ namespace App\Http\Controllers\ApiController;
 use App\Models\Review;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreReviewRequest;
-use App\Http\Requests\UpdateReviewRequest;
 
+use App\Http\Requests\UpdateReviewRequest;
 use App\Http\Resources\ReviewServiceResource;
+use App\Http\Resources\ReviewShowResource;
 use App\Http\Traits\ApiTraits\ReviewServiceResponseTrait;
 
 class ReviewController extends Controller
@@ -50,6 +52,18 @@ class ReviewController extends Controller
             Log::error($th->getMessage());
             return $this->apiResponse('something went wrong when you add review,sorry',400);
         }       
+    }
+    public function show()
+    {
+        try{
+             $user = Auth::user();
+             $review = Review::where('user_id', $user->id)->get();
+             $reviewResourse=ReviewShowResource::collection($review);
+             return  $this->reviewResponse($reviewResourse,'this is your request',200);
+        }catch(\Exception $th){
+            Log::error($th->getMessage());
+            return $this->apiResponse('something went wrong when you show review,sorry',400);
+        }   
     }
 
 

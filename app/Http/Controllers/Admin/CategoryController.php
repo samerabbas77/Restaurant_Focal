@@ -39,6 +39,9 @@ class CategoryController extends Controller
 
         try {
             $request->validated();
+            if (Category::where('name', $request->input('name'))->exists()) {
+            return redirect()->back()->withErrors(['name' => 'This Category already exists.']);
+        }
             $category = new Category();
             $category->name = $request->name;
             $category->save();
