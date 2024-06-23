@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(ReviewController::class)->group(function () {
         Route::get('reviews', 'index');
         Route::post('review', 'store');
+        Route::get('review', 'show');
         Route::put('review/{review}', 'update');
         Route::delete('review/{review}', 'destroy');
     });
