@@ -2,56 +2,55 @@
 
 namespace App\Http\Controllers\ApiController;
 
-use App\Models\Table;
 use Illuminate\Http\Request;
-use App\Http\Traits\ApiTraits\ApiResponse;
+use App\Http\Services\TableService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TableResource;
 
 class TableController extends Controller
 {
-    use ApiResponse;
-    public function index()
-    {   try {
-        $tables = Table::whereNull('deleted_at')->get();
-        return $this->successResponse(TableResource::collection($tables), 'Tables show successfully.');
-    } catch (\Exception $e) {
-        return $this->errorResponse('An error occurred while fetching the tables.', ['error' => $e->getMessage()]);
-    }
-    }
-   // ==================================================================================================================
-    public function available()
-    {    try {
-        $tables = Table::where('Is_available', 'available')->whereNull('deleted_at')->get();
-        return $this->successResponse(TableResource::collection($tables), 'Available tables show successfully.');
-    } catch (\Exception $e) {
-        return $this->errorResponse('An error occurred while fetching the available tables.', ['error' => $e->getMessage()]);
-    }
-    }
-    // ==================================================================================================================
-    public function filterByChairs($number)
-    {     try {
-        $tables = Table::where('chair_number', $number)->whereNull('deleted_at')->get();
-        return $this->successResponse(TableResource::collection($tables), 'Tables filtered by chair number show successfully.');
-    } catch (\Exception $e) {
-        return $this->errorResponse('An error occurred while filtering tables by chair number.', ['error' => $e->getMessage()]);
-    }
-    }
-    // ==================================================================================================================
-    public function filteravailableByChairs($number)
-    {     try {
-        $tables = Table::where('Is_available', 'available')
-                    ->where('chair_number', $number)
-                    ->whereNull('deleted_at')
-                    ->get();
-        return $this->successResponse(TableResource::collection($tables), 'Available tables filtered by chair number show successfully.');
-    } catch (\Exception $e) {
-        return $this->errorResponse('An error occurred while filtering available tables by chair number.', ['error' => $e->getMessage()]);
-    }
-    }
 
+    protected $tableService;
 
+    public function __construct(TableService $tableService)
+    {
+        $this->tableService = $tableService;
+    }
+// ======================================================================================================================
+    public function index(Request $request)
+    {
+        try {
+            return $this->tableService->getTables($request);
 
-
-
+        } catch (\Exception $e) {
+            return $this->tableService->errorResponse('An error occurred while fetching the tables.', ['error' => $e->getMessage()]);
+        }
+    }
+// ======================================================================================================================
+    public function available(Request $request)
+    {
+        try {
+            return $this->tableService->getAvailableTables($request);
+        } catch (\Exception $e) {
+            return $this->tableService->errorResponse('An error occurred while fetching the available tables.', ['error' => $e->getMessage()]);
+        }
+    }
+// ======================================================================================================================
+    public function filterByChairs(Request $request, $number)
+    {
+        try {
+            return $this->tableService->filterTablesByChairs($request, $number);
+        } catch (\Exception $e) {
+            return $this->tableService->errorResponse('An error occurred while filtering tables by chair number.', ['error' => $e->getMessage()]);
+        }
+    }
+// ======================================================================================================================
+    public function filterAvailableByChairs(Request $request, $number)
+    {
+        try {
+            return $this->tableService->filterAvailableTablesByChairs($request, $number);
+        } catch (\Exception $e) {
+            return $this->tableService->errorResponse('An error occurred while filtering available tables by chair number.', ['error' => $e->getMessage()]);
+        }
+    }
 }

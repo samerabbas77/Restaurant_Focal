@@ -22,7 +22,6 @@ class UpdateDishRequest extends FormRequest
      */
     public function rules(): array
     {
-      
         return [
             'name' => ['required','string',Rule::unique('dishes')->ignore($this->route('dish'))],
             'price' => 'required|numeric',
