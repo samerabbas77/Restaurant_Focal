@@ -16,7 +16,7 @@ class ReservationResource extends JsonResource
     {
         return [
             'user Email' => $this->user->email,
-            'Table Number' => $this->table->number,
+            'Table Number' => $this->table_id,
             'start Date' => $this->start_date->format('Y-m-d H:i'),
             'End date' => $this->end_date->format('Y-m-d H:i'),
             'status' => $this->status,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateDishRequest extends FormRequest
@@ -23,7 +24,7 @@ class UpdateDishRequest extends FormRequest
     {
       
         return [
-            'name' => 'required|string',
+            'name' => ['required','string',Rule::unique('dishes')->ignore($this->route('dish'))],
             'price' => 'required|numeric',
             'descraption' => 'required|string',
             'photo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
