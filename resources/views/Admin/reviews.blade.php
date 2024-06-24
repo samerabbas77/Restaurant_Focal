@@ -79,7 +79,8 @@
 							<tr>
 								<th class="border-bottom-0">#N</th>
 								<th class="border-bottom-0">التقييم</th>
-								<th class="border-bottom-0">الزبون</th>								
+								<th class="border-bottom-0">اسم الزبون</th>								
+								<th class="border-bottom-0">ايميل الزبون</th>								
 								<th class="border-bottom-0">التعليق</th>															
 								<th class="border-bottom-0">الأدوات</th>								
 							</tr>
@@ -90,6 +91,7 @@
 								<td>{{$loop->iteration}}</td>
 								<td>{{$review->service_rating}}</td>
 								<td>{{$review->user->name}}</td>
+								<td>{{$review->user->email}}</td>
 								<td>{{$review->comments}}</td>
 								<td>
                                     @can('حذف تقييم')
@@ -115,7 +117,8 @@
 							<tr>
 								<th class="border-bottom-0">#N</th>
 								<th class="border-bottom-0">التقييم</th>
-								<th class="border-bottom-0">الزبون</th>
+								<th class="border-bottom-0">اسم الزبون</th>
+								<th class="border-bottom-0">ايميل الزبون</th>
 								<th class="border-bottom-0">التعليق</th>
 								<th class="border-bottom-0">الادوات</th>
 							</tr>
@@ -126,6 +129,7 @@
                             <td>{{$loop->iteration}}</td> 
                             <td>{{ $review->service_rating }}</td>
                             <td>{{ $review->user->name}}</td>
+                            <td>{{ $review->user->email}}</td>
                             <td>{{ $review->comments }}</td>
                             <td>
                                     <form action="{{ route('reviews.restore', $review->id) }}" method="POST" style="display:inline-block;">

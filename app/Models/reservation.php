@@ -30,12 +30,6 @@ class Reservation extends Model
         'end_date',
         'status',
     ];
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
 
     protected static function boot()
     {
