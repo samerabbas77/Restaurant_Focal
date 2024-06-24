@@ -25,11 +25,10 @@ class UpdateReservationRequest extends FormRequest
     {
         $currentDateTime = Carbon::now()->toDateTimeString();
         return [
-            'user_id'    => 'nullable|exists:users,id',
-            'table_id'   => 'nullable|exists:tables,id',
-            'start_date' => 'nullable| date_format:Y-m-d H:i|after_or_equal:' . $currentDateTime, 
-            'end_date'   => 'nullable| date_format:Y-m-d H:i|after:start_date',
-            'status'     => 'nullable|in:checkedin,checkedout,done',
+            'table_id' => 'nullable|exists:tables,id',
+            'start_date' => 'nullable| date_format:Y-m-d H:i|after_or_equal:' . $currentDateTime,
+            'end_date' => 'nullable| date_format:Y-m-d H:i|after:start_date',
+            'status' => 'nullable|in:checkedin,checkedout,done',
         ];
     }
 }

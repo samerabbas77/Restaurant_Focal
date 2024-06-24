@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Support\Facades\Auth;
 use function Laravel\Prompts\table;
 
 class Reservation extends Model
@@ -26,6 +26,14 @@ class Reservation extends Model
         'status',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($reservation) {
+            $reservation->user_id = Auth::user()->id;
+        });
+    }
 
     public function user()
     {

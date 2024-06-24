@@ -26,10 +26,9 @@ class StoreReservationRequest extends FormRequest
         $currentDateTime = Carbon::now()->toDateTimeString();
 
         return [
-            'user_id'    => 'required|exists:users,id',
-            'table_id'   => 'required|exists:tables,id',
+            'table_id' => 'required|exists:tables,id',
             'start_date' => 'required|date_format:Y-m-d H:i|after_or_equal:' . $currentDateTime,
-            'end_date'   => 'required|date_format:Y-m-d H:i|after:start_date',
+            'end_date' => 'required|date_format:Y-m-d H:i|after:start_date',
         ];
     }
 }
