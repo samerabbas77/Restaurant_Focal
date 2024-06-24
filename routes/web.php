@@ -37,10 +37,12 @@ Route::get('/', function () {
 Auth::routes(['register' => false]); //إيقاف عمل راوت تسجيل الدخول
 
 
+Route::group(['middleware' => ['auth', 'role:Admin|Waiter']], function () {
+    ///................Home.................................
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
 
 Route::group(['middleware' => ['auth', 'check.username']], function () {
-    //.......Home...................................................
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     ///...............Admin Dashboard.......................
     Route::resource('/dishes', DishController::class);

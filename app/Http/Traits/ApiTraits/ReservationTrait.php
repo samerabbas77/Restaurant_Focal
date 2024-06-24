@@ -22,16 +22,16 @@ use App\Http\Requests\UpdateReservationRequest;
 trait ReservationTrait
 {
 
-    public function showReservations($id)
+    public function showReservations()
     {
-
+        $id = auth()->user()->id;
         $user = User::findOrFail($id);
         $userId = $user->id;
         $reservations = Reservation::where('user_id', $userId)->get();
         return response()->json(ReservationResource::collection($reservations));
 
     }
-    
+
     public function storeReservation(StoreReservationRequest $request)
     {
         Log::info('Incoming request', ['request' => $request->all()]);
