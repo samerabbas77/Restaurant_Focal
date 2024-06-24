@@ -49,7 +49,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/add_order', 'add_order');
         Route::get('/details_order/{id}', 'details_order');
         Route::post('/update_order/{id}', 'update_order');
-        Route::post('/delete_order/{id}', 'delete_order');
+        Route::delete('/delete_order/{id}', 'delete_order');
     });
 
         //Table===============================================================================
