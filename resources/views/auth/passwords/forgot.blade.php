@@ -56,7 +56,7 @@
                                         <br>
                                     </div>
                                     <div class="main-signup-footer mg-t-20">
-                                        <p>Changed your mind? <a href="{{ route('login') }}">Return to the sign-in screen</a>.</p>
+                                        {{-- <p>Changed your mind? <a href="{{ route('login') }}">Return to the sign-in screen</a>.</p> --}}
                                     </div>
                                 </div>
                             </div>
