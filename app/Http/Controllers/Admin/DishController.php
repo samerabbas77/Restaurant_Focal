@@ -75,7 +75,7 @@ class DishController extends Controller
         try {
             return $this->softDeleteTrait($id);
         } catch (\Exception $e) {
-            return redirect()->route('dishes.index')->with('error', 'Dish restored successfully');
+            return redirect()->route('dishes.index')->with('error', 'Failed to restored Dish'  );
         }
 
     }

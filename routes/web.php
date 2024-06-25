@@ -90,6 +90,18 @@ Route::group(['middleware' => ['auth', 'check.username']], function () {
 
 });
 
+//Forget password..........................................................................................
+Route::get('forgot-password', function () {
+    return view('auth.passwords.forgot');
+})->name('password.request');
+
+Route::post('forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+Route::get('reset-password/{token}', function ($token) {
+    return view('auth.reset', ['token' => $token]);
+})->name('auth.password.reset');
+
+Route::post('reset-password', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
 
 
 
