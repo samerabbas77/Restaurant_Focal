@@ -18,7 +18,7 @@
 						</div>
 					</div>
 					<div class="d-flex my-xl-auto right-content">
-						<div class="pr-1 mb-3 mb-xl-0">
+						{{-- <div class="pr-1 mb-3 mb-xl-0">
 							<button type="button" class="btn btn-info btn-icon ml-2"><i class="mdi mdi-filter-variant"></i></button>
 						</div>
 						<div class="pr-1 mb-3 mb-xl-0">
@@ -26,7 +26,7 @@
 						</div>
 						<div class="pr-1 mb-3 mb-xl-0">
 							<button type="button" class="btn btn-warning  btn-icon ml-2"><i class="mdi mdi-refresh"></i></button>
-						</div>
+						</div> --}}
 					</div>
 				</div>
 				<!-- breadcrumb -->
