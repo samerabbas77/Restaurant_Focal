@@ -30,7 +30,7 @@ class Reservation extends Model
         'end_date',
         'status',
     ];
-   
+
 
     protected static function boot()
     {
