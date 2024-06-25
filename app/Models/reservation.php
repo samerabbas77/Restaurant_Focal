@@ -31,6 +31,7 @@ class Reservation extends Model
         'status',
     ];
 
+
     protected static function boot()
     {
         parent::boot();
