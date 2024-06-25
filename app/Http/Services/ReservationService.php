@@ -1,27 +1,20 @@
 <?php
 
-namespace App\Http\Traits\ApiTraits;
+namespace App\Http\Services;
 
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Table;
 use App\Models\Reservation;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Resources\TableResource;
-
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\ReservationResource;
-
 use App\Http\Requests\RenewReservationRequest;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
 
-
-
-trait ReservationTrait
+class ReservationService
 {
-
     public function showReservations()
     {
         $id = auth()->user()->id;
@@ -29,7 +22,6 @@ trait ReservationTrait
         $userId = $user->id;
         $reservations = Reservation::where('user_id', $userId)->get();
         return response()->json(ReservationResource::collection($reservations));
-
     }
 
     public function storeReservation(StoreReservationRequest $request)
@@ -89,7 +81,6 @@ trait ReservationTrait
             ->first();
     }
 
-
     public function updateReservation(UpdateReservationRequest $request, $id)
     {
         $reservation = Reservation::find($id);
@@ -145,7 +136,6 @@ trait ReservationTrait
             ->where('id', '!=', $id)
             ->first();
     }
-
 
     public function deleteReservation($id)
     {
