@@ -177,7 +177,7 @@ class ReservationService
 
         if ($existingReservation) {
             $alternativeTables = Table::where('chair_number', '>=', $reservation->table->chair_number)
-                ->whereDoesntHave('reservation', function ($query) use ($newStartDate, $newEndDate) {
+                ->whereDoesntHave('reservations', function ($query) use ($newStartDate, $newEndDate) {
                     $query->whereBetween('start_date', [$newStartDate, $newEndDate])
                         ->orWhereBetween('end_date', [$newStartDate, $newEndDate])
                         ->orWhere(function ($query) use ($newStartDate, $newEndDate) {
