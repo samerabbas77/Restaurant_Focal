@@ -73,6 +73,7 @@ class ReservationController extends Controller
     // Renew the reservation
     public function renew(RenewReservationRequest $request, $id): JsonResponse
     {
+
         try {
             return $this->reservationService->renewReservation($request, $id);
         } catch (\Exception $e) {

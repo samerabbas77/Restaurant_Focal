@@ -28,26 +28,25 @@ trait ReservationBaladeTrait
                 'openingTime' => $openingTime,
                 'closingTime' => $closingTime
             ]);
-         return redirect()->route('reservation.index')->with('error',  ':Reservation time must be within operating hours (8 AM to 12 AM)');       
-         }
-           
-            $tableId = $request->input('table_id');
+            return redirect()->route('reservation.index')->with('error', ':Reservation time must be within operating hours (8 AM to 12 AM)');
+        }
 
-            $existingReservation = $this->checkExistingReservation($startDate, $endDate, $tableId);
+        $tableId = $request->input('table_id');
 
-            if ($existingReservation)
-            {  
-                return redirect()->route('reservation.index')->with('error','Table is already reserved for the given time period');      
-            }
+        $existingReservation = $this->checkExistingReservation($startDate, $endDate, $tableId);
 
-            $reservationData = $request->all();
-            $reservationData['status'] = 'checkedout';
+        if ($existingReservation) {
+            return redirect()->route('reservation.index')->with('error', 'Table is already reserved for the given time period');
+        }
 
-            $reservation = Reservation::create($reservationData);
-            Log::info('Reservation created successfully', ['reservation' => $reservation]);
-            return true;
-     
-    
+        $reservationData = $request->all();
+        $reservationData['status'] = 'checkedout';
+
+        $reservation = Reservation::create($reservationData);
+        Log::info('Reservation created successfully', ['reservation' => $reservation]);
+        return true;
+
+
     }
 
     protected function checkExistingReservation($startDate, $endDate, $tableId)
@@ -69,12 +68,10 @@ trait ReservationBaladeTrait
     {
         $reservation = Reservation::find($id);
         if (!$reservation) {
-            return redirect()->route('reservation.index')->with('error','Reservation not found');
+            return redirect()->route('reservation.index')->with('error', 'Reservation not found');
         }
 
-        if ($reservation->status !== 'checkedout') {
-            return redirect()->route('reservation.index')->with('error','Reservation can only be updated if status is checked_out');
-        }
+
 
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
@@ -85,26 +82,24 @@ trait ReservationBaladeTrait
             $openingTime = $startDate->copy()->setTime(8, 0, 0);
             $closingTime = $startDate->copy()->setTime(23, 59, 59);
 
-            if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) 
-            {
-                return redirect()->route('reservation.index')->with('error','Reservation time must be within operating hours (8 AM to 12 AM)');
+            if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) {
+                return redirect()->route('reservation.index')->with('error', 'Reservation time must be within operating hours (8 AM to 12 AM)');
             }
-            $existingReservation = $this->checkExistingReservationForUpdate($startDate, $endDate, $id, $reservation->table_id);     
-            if ($existingReservation)
-            {  
-                return redirect()->route('reservation.index')->with('error','Table is already reserved for the given time period');      
+            $existingReservation = $this->checkExistingReservationForUpdate($startDate, $endDate, $id, $reservation->table_id);
+            if ($existingReservation) {
+                return redirect()->route('reservation.index')->with('error', 'Table is already reserved for the given time period');
             }
         }
 
         $reservation->update($request->all());
-        
+
         return true;
 
     }
 
     protected function checkExistingReservationForUpdate($startDate, $endDate, $id, $tableId)
     {
-       
+
         return Reservation::where('table_id', $tableId)
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('start_date', [$startDate, $endDate])
