@@ -12,12 +12,13 @@ use App\Http\Resources\ReservationResource;
 use App\Http\Requests\RenewReservationRequest;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationService
 {
     public function showReservations()
     {
-        $id = auth()->user()->id;
+        $id = Auth::user()->id;
         $user = User::findOrFail($id);
         $userId = $user->id;
         $reservations = Reservation::where('user_id', $userId)->get();
@@ -26,7 +27,7 @@ class ReservationService
 
     public function storeReservation(StoreReservationRequest $request)
     {
-        Log::info('Incoming request', ['request' => $request->all()]);
+
 
         $startDate = Carbon::parse($request->input('start_date'));
         $endDate = Carbon::parse($request->input('end_date'));
@@ -35,13 +36,7 @@ class ReservationService
         $closingTime = $startDate->copy()->setTime(23, 59, 59);
 
         if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) {
-            Log::info('Reservation time is outside of operating hours', [
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-                'openingTime' => $openingTime,
-                'closingTime' => $closingTime
-            ]);
-            return response()->json(['message' => 'Reservation time must be within operating hours (8 AM to 12 AM)'], 422);
+            return response()->json(['message' => 'Reservation time must be within operating hours (8 AM to 12 AM)'], 400);
         }
 
         $tableId = $request->input('table_id');
@@ -49,7 +44,6 @@ class ReservationService
         $existingReservation = $this->checkExistingReservation($startDate, $endDate, $tableId);
 
         if ($existingReservation) {
-            Log::info('Table already reserved for the given time period', ['table_id' => $tableId, 'start_date' => $startDate, 'end_date' => $endDate]);
             return response()->json([
                 'message' => 'Table is already reserved for the given time period',
                 'conflicting_reservation' => [
@@ -63,7 +57,6 @@ class ReservationService
         $reservationData['status'] = 'checkedout';
 
         $reservation = Reservation::create($reservationData);
-        Log::info('Reservation created successfully', ['reservation' => $reservation]);
         return response()->json(new ReservationResource($reservation), 201);
     }
 
@@ -88,8 +81,12 @@ class ReservationService
             return response()->json(['message' => 'Reservation not found'], 404);
         }
 
+        if ($reservation->user_id !== Auth::user()->id) {
+            return response()->json(['message' => 'this reservation does not belong to you'], 400);
+        }
+
         if ($reservation->status !== 'checkedout') {
-            return response()->json(['message' => 'Reservation can only be updated if status is checked_out'], 403);
+            return response()->json(['message' => 'Reservation can only be updated if status is checked_out'], 400);
         }
 
         $startDate = $request->input('start_date');
@@ -102,7 +99,7 @@ class ReservationService
             $closingTime = $startDate->copy()->setTime(23, 59, 59);
 
             if ($startDate->lt($openingTime) || $endDate->gt($closingTime)) {
-                return response()->json(['message' => 'Reservation time must be within operating hours (8 AM to 12 AM)'], 422);
+                return response()->json(['message' => 'Reservation time must be within operating hours (8 AM to 12 AM)'], 400);
             }
 
             $existingReservation = $this->checkExistingReservationForUpdate($startDate, $endDate, $id, $reservation->table_id);
@@ -144,8 +141,12 @@ class ReservationService
             return response()->json(['message' => 'Reservation not found'], 404);
         }
 
+        if ($reservation->user_id !== Auth::user()->id) {
+            return response()->json(['message' => 'this reservation does not belong to you'], 400);
+        }
+
         if ($reservation->status !== 'checkedout') {
-            return response()->json(['message' => 'Reservation can only be deleted if status is checked_out'], 403);
+            return response()->json(['message' => 'Reservation can only be deleted if status is checked_out'], 400);
         }
 
         $reservation->delete();
@@ -159,8 +160,12 @@ class ReservationService
             return response()->json(['message' => 'Reservation not found'], 404);
         }
 
+        if ($reservation->user_id !== Auth::user()->id) {
+            return response()->json(['message' => 'this reservation does not belong to you'], 400);
+        }
+
         if ($reservation->status !== 'checkedin') {
-            return response()->json(['message' => 'Reservation can only be renewed if status is checked_out'], 403);
+            return response()->json(['message' => 'Reservation can only be renewed if status is checked_out'], 400);
         }
 
         $newStartDate = Carbon::parse($request->input('new_start_date'));
@@ -170,7 +175,7 @@ class ReservationService
         $closingTime = $newStartDate->copy()->setTime(23, 59, 59);
 
         if ($newStartDate->lt($openingTime) || $newEndDate->gt($closingTime)) {
-            return response()->json(['message' => 'Reservation time must be within operating hours (8 AM to 12 AM)'], 422);
+            return response()->json(['message' => 'Reservation time must be within operating hours (8 AM to 12 AM)'], 400);
         }
 
         $existingReservation = $this->checkExistingReservationForUpdate($newStartDate, $newEndDate, $id, $reservation->table_id);
