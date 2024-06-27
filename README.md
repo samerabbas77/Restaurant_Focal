@@ -15,7 +15,7 @@
 
 ## Project Overview
 
-The Restaurant Management System is a comprehensive solution for managing restaurant operations efficiently. It allows for table reservations, order management, menu customization, billing, review management, and provides an admin dashboard to streamline the workflow of restaurant staff and improve customer satisfaction.
+The Restaurant Management System is a comprehensive solution for managing restaurant operations efficiently. It allows for table management, reservations management, order management, , review management, and provides an admin dashboard to streamline the workflow of restaurant staff and improve customer satisfaction.
 
 ## Features
 
@@ -28,9 +28,9 @@ The Restaurant Management System is a comprehensive solution for managing restau
 
 ## Technologies Used
 
-- **Frontend**: HTML, CSS, JavaScript, [React.js/Angular/Vue.js/etc.]
-- **Backend**: [Node.js/Express/Django/Rails/etc.]
-- **Database**: [MySQL/PostgreSQL/MongoDB/etc.]
+- **Frontend**: HTML, CSS, JavaScript.
+- **Backend**: [php/SQL]
+- **Database**: [MySQL]
 - **Framework**: Laravel
 - **Version Control**: Git
 
