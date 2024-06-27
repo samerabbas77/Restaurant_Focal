@@ -1,66 +1,121 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+![image](https://github.com/samerabbas77/Restaurant_Focal/assets/166222783/948c342d-bf6d-47df-b232-30f71b6eff68)Sure, here’s the updated README file with the new contributor and the revised Technologies Used section:
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+# Restaurant Management System
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Table of Contents
+1. [Project Overview](#project-overview)
+2. [Features](#features)
+3. [Technologies Used](#technologies-used)
+4. [Installation](#installation)
+5. [Usage](#usage)
+6. [Postman Documentation](#postman-documentation)
+7. [Screenshots](#screenshots)
+8. [Contributing](#contributing)
+9. [Contributors](#contributors)
+10. [License](#license)
+11. [Contact](#contact)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Project Overview
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The Restaurant Management System is a comprehensive solution for managing restaurant operations efficiently. It allows for table reservations, order management, menu customization, billing, review management, and provides an admin dashboard to streamline the workflow of restaurant staff and improve customer satisfaction.
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Table Reservation**: Book tables in advance.
+- **Order Management**: Take and track orders easily.
+- **Menu Management**: Customize the menu with ease.
+- **Billing**: Generate and manage bills.
+- **Review Management**: Give reviews to the service of the restaurant.
+- **Admin Dashboard**: Access detailed views and controls for managing the restaurant.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Technologies Used
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Frontend**: HTML, CSS, JavaScript, [React.js/Angular/Vue.js/etc.]
+- **Backend**: [Node.js/Express/Django/Rails/etc.]
+- **Database**: [MySQL/PostgreSQL/MongoDB/etc.]
+- **Framework**: Laravel
+- **Version Control**: Git
 
-## Laravel Sponsors
+## Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/restaurant-management-system.git
+    ```
+2. Install needed packages:
+    ```bash
+    composer install
+    ```
+3. Copy the .env file:
+    ```bash
+    cp .env.example .env
+    ```
+4. Generate the application key:
+    ```bash
+    php artisan key:generate
+    ```
+5. Set up the database and the seeder:
+    ```bash
+    php artisan migrate --seed
+    ```
+6. Install the Spatie package. Follow the steps on the [official site](https://spatie.be/docs/laravel-permission/v6/introduction).
+7. Install dependencies:
+    ```bash
+    npm install  # or yarn install
+    ```
+8. Run the application:
+    ```bash
+    php artisan serve
+    npm run dev
+    ```
 
-### Premium Partners
+## Usage
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+1. **Login**: Use the provided admin credentials to log in.
+2. **Dashboard**: Access the admin dashboard to view the summary of operations.
+3. **Manage Tables**: View and manage table reservations.
+4. **Order Processing**: Create and track orders.
+5. **Menu Customization**: Update the menu as needed.
+6. **Billing**: Generate and manage bills.
+7. **Review Management**: Manage customer reviews.
+
+## Postman Documentation
+
+- [Postman Documentation](https://documenter.getpostman.com/view/34501481/2sA3XPEP5E#e5758aa8-82a4-4a31-9f74-70f1c1356d3a)
+
+## Screenshots
+
+Include some screenshots of your application here to give users a visual understanding of what to expect.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Open a pull request.
 
-## Code of Conduct
+## Contributors
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- samerabbas77
+- HussainQursh77
+- SafaaNahhas
+- FaezaAldarweesh
+- ayaalaji
+- hamza123
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+- **Author**: [samer Abbas]
+- **Email**: [samer23abbas@gmail.com]
+- **GitHub**: [(https://github.com/samerabbas77)]
+
+---
+
+This version of the README includes the new contributor and updates the Technologies Used section to include Laravel.
