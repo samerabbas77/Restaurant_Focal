@@ -165,7 +165,7 @@ class ReservationService
         }
 
         if ($reservation->status !== 'checkedin') {
-            return response()->json(['message' => 'Reservation can only be renewed if status is checked_out'], 400);
+            return response()->json(['message' => 'Reservation can only be renewed if status is checked_In'], 400);
         }
 
         $newStartDate = Carbon::parse($request->input('new_start_date'));
