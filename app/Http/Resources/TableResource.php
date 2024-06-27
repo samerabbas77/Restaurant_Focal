@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\ReservationResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\OnlyDateReservationResource;
 
 class TableResource extends JsonResource
 {
@@ -19,8 +19,7 @@ class TableResource extends JsonResource
             'Number' => $this->Number,
             'chair_number' => $this->chair_number,
             'Is_available' => $this->Is_available,
-            'reservations' => $this->reservations->isEmpty() ? 'No reservations yet' : ReservationResource::collection($this->reservations),
-
-        ];;
+            'reservations' => $this->reservations->isEmpty() ? 'No reservations yet' : OnlyDateReservationResource::collection($this->reservations),
+        ];
     }
 }
