@@ -21,8 +21,6 @@ The Restaurant Management System is a comprehensive solution for managing restau
 
 - **Table Reservation**: Book tables in advance.
 - **Order Management**: Take and track orders easily.
-- **Menu Management**: Customize the menu with ease.
-- **Billing**: Generate and manage bills.
 - **Review Management**: Give reviews to the service of the restaurant.
 - **Admin Dashboard**: Access detailed views and controls for managing the restaurant.
 
