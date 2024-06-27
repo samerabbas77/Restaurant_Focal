@@ -105,7 +105,7 @@ The Restaurant Management System is a comprehensive solution for managing restau
 - SafaaNahhas     [https://github.com/SafaaNahhas]
 - FaezaAldarweesh [https://github.com/FaezaAldarweesh]
 - ayaalaji        [https://github.com/ayaalaji]
-- hamza123        
+- hamza123        [hamzaissa022000@gmail.com] 
 
 ## License
 
