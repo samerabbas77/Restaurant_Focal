@@ -1,7 +1,3 @@
-![image](https://github.com/samerabbas77/Restaurant_Focal/assets/166222783/948c342d-bf6d-47df-b232-30f71b6eff68)Sure, here’s the updated README file with the new contributor and the revised Technologies Used section:
-
----
-
 # Restaurant Management System
 
 ## Table of Contents
@@ -87,7 +83,14 @@ The Restaurant Management System is a comprehensive solution for managing restau
 
 ## Screenshots
 
-Include some screenshots of your application here to give users a visual understanding of what to expect.
+![image](https://github.com/samerabbas77/Restaurant_Focal/assets/166222783/24c6ff62-7abc-4ab8-b6c1-40a408cd5c8c)
+![image](https://github.com/samerabbas77/Restaurant_Focal/assets/166222783/4f43a294-5666-485e-9048-e3f1025dc82b)
+![image](https://github.com/samerabbas77/Restaurant_Focal/assets/166222783/8f55e21a-8b85-442d-8e04-f174eb3d9754)
+![image](https://github.com/samerabbas77/Restaurant_Focal/assets/166222783/dbdef951-fe7e-4d0a-bf38-ad7b817215ad)
+![image](https://github.com/samerabbas77/Restaurant_Focal/assets/166222783/1d1494db-6fe5-4912-a023-fabe30e7dbc4)
+
+
+
 
 ## Contributing
 
@@ -99,12 +102,12 @@ Include some screenshots of your application here to give users a visual underst
 
 ## Contributors
 
-- samerabbas77
-- HussainQursh77
-- SafaaNahhas
-- FaezaAldarweesh
-- ayaalaji
-- hamza123
+- samerabbas77    [https://github.com/samerabbas77]
+- HussainQursh77  [https://github.com/HussainQursh77]
+- SafaaNahhas     [https://github.com/SafaaNahhas]
+- FaezaAldarweesh [https://github.com/FaezaAldarweesh]
+- ayaalaji        [https://github.com/ayaalaji]
+- hamza123        
 
 ## License
 
