@@ -30,7 +30,7 @@ class ReservationController extends Controller
         $this->reservationService = $reservationService;
     }
 
-    // Show Reservations
+
     public function show(): JsonResponse
     {
         try {
@@ -40,7 +40,7 @@ class ReservationController extends Controller
         }
     }
 
-    // Store the reservation
+
     public function store(StoreReservationRequest $request): JsonResponse
     {
         try {
@@ -50,7 +50,7 @@ class ReservationController extends Controller
         }
     }
 
-    // Update the reservation
+
     public function update(UpdateReservationRequest $request, $id): JsonResponse
     {
         try {
@@ -60,7 +60,7 @@ class ReservationController extends Controller
         }
     }
 
-    // Delete Reservation
+
     public function destroy($id): JsonResponse
     {
         try {
@@ -70,7 +70,7 @@ class ReservationController extends Controller
         }
     }
 
-    // Renew the reservation
+
     public function renew(RenewReservationRequest $request, $id): JsonResponse
     {
 

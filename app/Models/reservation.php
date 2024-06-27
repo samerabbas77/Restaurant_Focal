@@ -35,7 +35,7 @@ class Reservation extends Model
     protected static function boot()
     {
         parent::boot();
-
+        //p
         static::creating(function ($reservation) {
             $reservation->user_id = Auth::user()->id;
         });
