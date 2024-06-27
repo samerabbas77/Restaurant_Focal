@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
-
 use App\Http\Controllers\Admin\DishController;
+use App\Http\Controllers\Admin\RoleController;
+
+use App\Http\Controllers\Admin\UserController;
 
 
 use App\Http\Controllers\Admin\OrderController;
@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ReservationController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 
 
@@ -97,13 +99,13 @@ Route::get('forgot-password', function () {
     return view('auth.passwords.forgot');
 })->name('password.request');
 
-Route::post('forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
 Route::get('reset-password/{token}', function ($token) {
     return view('auth.reset', ['token' => $token]);
 })->name('auth.password.reset');
 
-Route::post('reset-password', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
+Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 
 
