@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Scopes\UserScope;
+
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
@@ -15,11 +17,19 @@ class Order extends Model
         'total_price',
         'status',
     ];
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::addGlobalScope(new UserScope);
+    // }
     protected static function boot()
     {
         parent::boot();
 
-        static::addGlobalScope(new UserScope);
+        static::creating(function ($order) {
+            $order->user_id = Auth::user()->id;
+        });
     }
 
     public function user()

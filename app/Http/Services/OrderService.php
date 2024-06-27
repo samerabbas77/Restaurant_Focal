@@ -27,7 +27,8 @@ class OrderService
     public function getAllOrders()
     {
         try {
-            $orders = Order::all();
+            $userId = $this->getUserId();
+            $orders = Order::where('user_id',$userId)->get();
             $allOrder = OrderResource::collection($orders);
             return $this->Response($allOrder, "All orders fetched successfully", 200);
         } catch (\Throwable $th) {
@@ -41,7 +42,7 @@ class OrderService
         try {
             $userId = $this->getUserId();
             $checkReservation = Reservation::where('user_id', $userId)
-                                           ->where('status', 'Chackin')
+                                           ->where('status', 'checkedin')
                                            ->exists();
 
             if ($checkReservation) {
@@ -56,8 +57,9 @@ class OrderService
         }
     }
 
-    private function createNewOrder(array $data, $userId)
+    private function createNewOrder(array $data)
     {
+        $userId = $this->getUserId();
         $dishes = $data['dishes'];
         $order = new Order();
         $order->user_id = $userId;
@@ -84,7 +86,8 @@ class OrderService
     public function orderInfo($id)
     {
         try {
-            $order = Order::with('dishes')->findOrFail($id);
+            $userId = $this->getUserId();
+            $order = Order::with('dishes')->where('user_id',$userId)->findOrFail($id);
             return $this->Response(new DetailsOrderResource($order), "Order details fetched successfully", 200);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
@@ -107,10 +110,11 @@ class OrderService
 
     private function updateOrderDetails(Order $order, array $data)
     {
+        $userId = $this->getUserId();
         $dishes = $data['dishes'];
 
         $order->table_id = $data['table_id'];
-
+        $order->user_id=$userId;
         $totalPrice = 0;
         $syncData = [];
 
@@ -129,8 +133,8 @@ class OrderService
     public function deleteOrder($id)
     {
         try {
-            // $userId = $this->getUserId();
-            $order = Order::where('id', $id)->where('status', 'In Queue')->firstOrFail();
+            $userId = $this->getUserId();
+            $order = Order::where('id', $id)->where('user_id',$userId)->where('status', 'In Queue')->firstOrFail();
             $order->dishes()->detach();
             $order->forceDelete();
 
