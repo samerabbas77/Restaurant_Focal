@@ -76,7 +76,7 @@ class ReviewController extends Controller
            $request->validated();
         
            if ($review->user_id !== auth()->user()->id) {
-               return 'you can not edit ,because this review is not yours';
+              return $this->apiResponse( 'You can not edit ,because this review is not yours',400);
            }
            else{
                $review->service_rating=$request->service_rating??$review->service_rating;
@@ -99,7 +99,7 @@ class ReviewController extends Controller
     {
         try{
            if ($review->user_id !== auth()->user()->id) {
-              return 'you can not delete ,because this review is not yours';
+             return $this->apiResponse('You can not delete ,because this review is not yours',400);
            }
            else{
               $review->delete();
