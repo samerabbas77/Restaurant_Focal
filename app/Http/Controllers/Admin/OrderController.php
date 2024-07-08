@@ -34,8 +34,9 @@ class OrderController extends Controller
             $tables = Table::all();
             $dishes = Dish::all();
             $users = User::all();
+            $orders = Order::all();
             $trashedOrders = $this->OrderServices->GetAllOrders();
-            return view('Admin.order', compact('tables', 'dishes', 'users', 'trashedOrders'));
+            return view('Admin.order', compact('tables', 'dishes', 'users', 'trashedOrders','orders'));
         } catch (\Exception $e) {
 
             return redirect()->back()->with('error', 'An error occurred  ' . $e->getMessage());

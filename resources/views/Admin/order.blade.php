@@ -404,10 +404,10 @@
 				@csrf
 				<div class="modal-body">
 					<p>هل أنت متأكد أنك تريد الحذف؟</p><br>
-                    @foreach($orders as $order)
+                    @if(!Empty($order))
 					<input type="hidden" id="deleteOrderId" name="order_id" value="">				
 					<input class="form-control" name="user_id" id="user_id" value="{{$order->user->name}}" type="text" readonly>
-                    @endforeach
+                    @endif
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
