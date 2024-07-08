@@ -17,20 +17,6 @@ class Order extends Model
         'total_price',
         'status',
     ];
-    // protected static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::addGlobalScope(new UserScope);
-    // }
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($order) {
-            $order->user_id = Auth::user()->id;
-        });
-    }
 
     public function user()
     {
