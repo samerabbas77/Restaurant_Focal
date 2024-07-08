@@ -19,7 +19,8 @@ class OrderServices {
 
         $check_reservation = Reservation::select('status')->Where('user_id' ,$request['user_id'])->get();
 
-            if($check_reservation == 'checkedout'){ 
+        //dd($check_reservation);
+            if($check_reservation->first()->status == 'checkedin'){ 
 
                 $order = new Order();
                 $order->user_id = $request['user_id'];
