@@ -15,11 +15,11 @@ class OrderServices {
 
 //========================================================================================================================
     function StoreOrders($request){
+        //dd($request['user_id']);
 
-        $check_reservation = Reservation::where('status','checkedout')
-                                             ->exists();
-            
-            if($check_reservation){ 
+        $check_reservation = Reservation::select('status')->Where('user_id' ,$request['user_id'])->get();
+
+            if($check_reservation == 'checkedout'){ 
 
                 $order = new Order();
                 $order->user_id = $request['user_id'];

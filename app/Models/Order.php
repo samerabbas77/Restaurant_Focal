@@ -23,14 +23,14 @@ class Order extends Model
 
     //     static::addGlobalScope(new UserScope);
     // }
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($order) {
-            $order->user_id = Auth::user()->id;
-        });
-    }
+    //     static::creating(function ($order) {
+    //         $order->user_id = Auth::user()->id;
+    //     });
+    // }
 
     public function user()
     {
